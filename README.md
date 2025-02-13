@@ -97,21 +97,21 @@ API 요청 주소와 해당 요청에 대한 처리가 정의되어있는 앱. �
   - PATH:
     - / 메인 페이지
     - /login 로그인 페이지
-    - /register 회원가입 페이지
-    - /forgot 계정 찾기 페이지
-    - /password_reset 비밀번호 초기화 페이지
+    - /signup 회원가입 페이지
+    - /find 계정 찾기 페이지
+    - /reset 비밀번호 초기화 페이지
     - /profile 프로필 페이지
     - /terms 이용약관 페이지
     - /contact 연락처 페이지
 - **app_place**:  
 장소 관련 처리를 담당하는 앱.
   - PATH:
-    - /place/view 장소 정보 상세 페이지
+    - /place/detail 장소 정보 상세 페이지
     - /place/write 장소 등록 페이지
-    - /place/rewirte 장소 수정 페이지
+    - /place/edit 장소 수정 페이지
 - **app_purchase**:  
 결제 관련 처리를 담당하는 앱.
   - PATH:
     - /purchase/request 결제 요청 페이지
-    - /purchase/result 결제 요청 결과 페이지
-    - /purchase 결제 기록
+    - /purchase/complete 결제 요청 결과 페이지
+    - /purchase/history 결제 기록
