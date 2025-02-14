@@ -1,10 +1,315 @@
 {% extends 'base/base.html' %}
 {% block content %}
 
-   <!-- 메인 -->
-   <main>
+<!-- 헤더 -->
+{% include 'parts/header.html' %}
 
-   </main>
+<!-- 메인 -->
+<main>
+
+   <!-- 대표 이미지 캐로셀 -->
+   <section>
+      <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+         <div class="carousel-inner">
+            <div class="carousel-item active">
+               <div class="w-100"
+                  style="height: 450px; background: url('/static/img/samples/0.jpg') no-repeat center center; background-size: cover;">
+               </div>
+            </div>
+            <div class="carousel-item">
+               <div class="w-100"
+                  style="height: 450px; background: url('/static/img/samples/1.jpg') no-repeat center center; background-size: cover;">
+               </div>
+            </div>
+            <div class="carousel-item">
+               <div class="w-100"
+                  style="height: 450px; background: url('/static/img/samples/2.jpg') no-repeat center center; background-size: cover;">
+               </div>
+            </div>
+         </div>
+         <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+         </a>
+         <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+         </a>
+      </div>
+   </section>
+
+   <!-- 네비게이션 바 -->
+   <section>
+      <div class="bg-color-head shadow">
+         <div class="container menu-bar d-flex align-items-center py-2">
+            <ul class="list-unstyled form-inline mb-0" style="font-size: 18px;">
+               <li class="nav-item active">
+                  <a class="nav-link text-white pl-0" href="#">
+                     Infomation
+                  </a>
+               </li>
+               <li class="nav-item active">
+                  <a class="nav-link text-white pl-4" href="#">
+                     Images
+                  </a>
+               </li>
+               <li class="nav-item active">
+                  <a class="nav-link text-white pl-4" href="#">
+                     Pricing
+                  </a>
+               </li>
+               <li class="nav-item active">
+                  <a class="nav-link text-white pl-4" href="#">
+                     All Reviews
+                  </a>
+               </li>
+               <li class="nav-item active">
+                  <a class="nav-link text-white pl-4" href="#">
+                     Related
+                  </a>
+               </li>
+            </ul>
+         </div>
+      </div>
+   </section>
+
+   <!-- 상세 정보(html) WYSIWIG으로 작성된 상세 정보 -->
+   <section class="container mt-5">
+
+      <!-- 정보 -->
+      <div>
+
+         <!-- 짧은 소갸 -->
+         <p class="text-mute mb-1">
+            The Franklin London – Starhotels Collezione is a luxury hotel located in the heart of London.
+         </p>
+
+         <!-- 이름 -->
+         <h2 class="mb-1 font-weight-bold">
+            The Franklin London – Starhotels Collezione
+         </h2>
+
+         <!-- 위치 -->
+         <p class="mt-4">
+            <a href="https://www.google.com/maps?sca_esv=a12588ecf4d7e578&rlz=1C5CHFA_enKR1053KR1053&output=search&q=The+Franklin+London&source=lnms&fbs=ABzOT_CZsxZeNKUEEOfuRMhc2yCI6hbTw9MNVwGCzBkHjFwaK321z773wCjxZUmvDroqphlIJR493mMxNbRCE7CsjxN0zrcX3q5osSt8yM9HtIcApR-qytgB7SnKESLXhABDXCne24GoJWBDR_kZ0la7ZiHwb-YziOH2eZYEdtGI-iMn_X01NPUZMq-6QTrdt__YKLW2sBwX&entry=mc&ved=1t:200715&ictx=111"
+               class="text-muted" target="_blank">
+               <i class="fi fi-rr-marker"></i> <u>24 Egerton Gardens, Chelsea, London</u>
+            </a>
+         </p>
+
+         <!-- 별점 -->
+         <p class="text-success" style="font-size: 16px;">
+            <span>
+               <i class="fi fi-rs-star"></i><i class="fi fi-rs-star"></i><i class="fi fi-rs-star"></i><i
+                  class="fi fi-rs-star"></i><i class="fi fi-rs-star"></i>
+            </span>
+            0.0
+         </p>
+
+         <!-- 소개(html) -->
+         <div class="mt-4 pt-4 border-top">
+            <p>
+               *아래 내용은 WYSIWIG Editor를 이용해서 자유롭게 작성할 수 있습니다.
+            </p>
+            <iframe src="https://www.youtube.com/embed/KIrmkRfYcA8?si=PERnvWGjS9pghNZu"
+               style="width: 100%; height: 500px;" title="YouTube video player" frameborder="0"
+               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+               referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <div>
+               <div>
+                  <div style="width: 100%; padding-bottom:20px;" align="center">
+                     <a target="_blank" rel="noopener"
+                        href="https://www.ikyu.com/dg01/special/fullyear/brand/00002620/"><img
+                           src="//www.img-ikyu.com/contents/dg/special/fullyear/brand/00002620/image/bn_20200522.png?auto=compress,format&amp;lossless=0"
+                           height="250" alt="The Okura Tokyo- 오쿠라 헤리티지 윙 -" style="margin:0;"></a>
+                  </div>
+               </div>
+            </div>
+            <div>
+               <div>
+                  <div style="width: 100%; padding-bottom:20px;" align="center">
+                     <a target="_blank" rel="noopener"
+                        href="https://www.ikyu.com/dg01/special/fullyear/brand/00002620_2/"><img
+                           src="//www.img-ikyu.com/contents/dg/special/fullyear/brand/00002620/image2/bn_20200522.png?auto=compress,format&amp;lossless=0"
+                           height="250" alt="The Okura Tokyo- 오쿠라 프레스티지 -" style="margin:0;"></a>
+                  </div>
+               </div>
+            </div>
+            <div>
+               <div>
+                  <div style="width: 100%; padding-bottom:20px;" align="center">
+                     <a target="_blank" rel="noopener"
+                        href="https://www.ikyu.com/dg01/special/fullyear/brand/00002620_3/"><img
+                           src="//www.img-ikyu.com/contents/dg/special/fullyear/brand/00002620/image3/bn_20201216.png?auto=compress,format&amp;lossless=0"
+                           height="250" alt="오쿠라 프레스티지 타워 고층의 경치를 일상하는 장소." style="margin:0;"></a>
+                  </div>
+               </div>
+            </div>
+            <div>
+               <div>
+                  <figure class="flex rounded-md text-gray-800 mb-12 p-6">
+                     <div class="mr-6">
+                        <div class="">
+                           <div class="mb-3 text-3xl font-bold">
+                              <font style="vertical-align: inherit;">
+                                 <font style="vertical-align: inherit;">【일휴.com 스파】 Okura Fitness &amp; Spa</font>
+                              </font>
+                           </div>
+                           <p class="my-4 whitespace-pre-line">
+                              <font style="vertical-align: inherit;">
+                                 <font style="vertical-align: inherit;">디자인 컨셉은 「일본과 서양의 문화가 융합한 천공의 치유의 공간」. 트리트먼트에서는,
+                                    일본 최초 상륙,
+                                    그리고 국내에서는 오쿠라만의 전개가 되는, 프랑스의 브랜드 「ANNAYAKE」(아나야케)를 사용. 남녀・연령을 불문하고, 심신의 리프레쉬와 릴렉스를
+                                    제공합니다.
+                                 </font>
+                              </font>
+                           </p>
+                        </div>
+                     </div>
+                  </figure>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+
+   <!-- 이미지들 -->
+   <section class="container mt-5">
+      <div class="py-3 osahan-promos">
+         <div class="d-flex align-items-center mb-3">
+            <h5 class="m-0">Images</h5>
+         </div>
+         <div class="promo-slider pb-0 mb-0">
+            <div class="osahan-slider-item mx-2">
+               <a href="promo_details.html"><img src="/static/img/samples/0.jpg" class="img-fluid mx-auto rounded"></a>
+            </div>
+            <div class="osahan-slider-item mx-2">
+               <a href="promo_details.html"><img src="/static/img/samples/2.jpg" class="img-fluid mx-auto rounded"></a>
+            </div>
+            <div class="osahan-slider-item mx-2">
+               <a href="promo_details.html"><img src="/static/img/samples/1.jpg" class="img-fluid mx-auto rounded"></a>
+            </div>
+            <div class="osahan-slider-item mx-2">
+               <a href="promo_details.html"><img src="/static/img/samples/3.jpg" class="img-fluid mx-auto rounded"></a>
+            </div>
+            <div class="osahan-slider-item mx-2">
+               <a href="promo_details.html"><img src="/static/img/samples/4.jpg" class="img-fluid mx-auto rounded"></a>
+            </div>
+            <div class="osahan-slider-item mx-2">
+               <a href="promo_details.html"><img src="/static/img/samples/5.jpg" class="img-fluid mx-auto rounded"></a>
+            </div>
+         </div>
+      </div>
+   </section>
+
+   <!-- 상품 카드 리스트 -->
+   <section class="container mt-5">
+      <div class="accordion" id="accordionExample">
+         <div class="card border-0 osahan-accor rounded shadow overflow-hidden">
+
+            <!-- 헤더 -->
+            <div class="card-header bg-white border-0 p-0" id="headingOne">
+               <h2 class="mb-0">
+                  <button class="btn d-flex align-items-center bg-white btn-block text-left btn-lg h5 px-3 py-4 m-0"
+                     type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+                     aria-controls="collapseOne">
+                     <h5 class="m-0 font-weight-bold text-dark">
+                        Pricing
+                     </h5>
+                  </button>
+               </h2>
+            </div>
+
+            <!-- 바디 -->
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+               <div class="card-body p-0 border-top">
+                  <div class="osahan-cart">
+
+                     <!-- 상품 카드 -->
+                     {% include 'parts/item_card.html' %}
+                     {% include 'parts/item_card.html' %}
+                     {% include 'parts/item_card.html' %}
+
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+
+   <!-- 리뷰 -->
+   <section class="container mt-5 border-top pt-4">
+
+      <h5 class="mb-4">
+         All Reviews
+      </h5>
+
+      <!-- 리뷰 평점 -->
+      <p class="mb-3">
+      <h3 class="mr-2">
+         0.0
+      </h3>
+      <span class="text-success" style="font-size: 16px;">
+         <i class="fi fi-rs-star"></i><i class="fi fi-rs-star"></i><i class="fi fi-rs-star"></i><i
+            class="fi fi-rs-star"></i><i class="fi fi-rs-star"></i>
+      </span>
+      </p>
+
+      <!-- 리뷰 작성 -->
+      <div class="mb-4">
+         <div class="row">
+            <div class="form-group col-2">
+               <label for="rateSelect">Rate</label>
+               <select class="form-control" id="rateSelect">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+               </select>
+            </div>
+            <div class="form-group col-10">
+               <label for="reviewContent">Write a review...</label>
+               <div style="align-items: center; display: flex;">
+                  <textarea class="form-control mr-2" id="reviewContent" placeholder="Write a review..."
+                     style="width: calc(100% - 160px); height: 34px; display: inline-block;"></textarea>
+                  <a href="#" class="btn btn-primary" style="width: 140px;">
+                     Write Review
+                  </a>
+               </div>
+            </div>
+         </div>
+
+
+      </div>
+
+      <!-- 리뷰 작성 리스트 -->
+      {% include 'parts/review_card.html' %}
+      {% include 'parts/review_card.html' %}
+      {% include 'parts/review_card.html' %}
+
+      </div>
+   </section>
+
+   <!-- 연관 상품 -->
+   <section class="container mt-5 border-top pt-4">
+
+      <h5 class="mb-4">
+         Related
+      </h5>
+
+      <div class="osahan-recommend container">
+         <div class="row">
+            {% include 'parts/place_card.html' %}
+            {% include 'parts/place_card.html' %}
+            {% include 'parts/place_card.html' %}
+            {% include 'parts/place_card.html' %}
+            {% include 'parts/place_card.html' %}
+            {% include 'parts/place_card.html' %}
+         </div>
+      </div>
+
+   </section>
 
    <!-- 스크립트 -->
    <script>
@@ -14,5 +319,10 @@
       }
 
    </script>
+
+</main>
+
+<!-- 푸터 -->
+{% include 'parts/footer.html' %}
 
 {% endblock %}

@@ -2,7 +2,9 @@ from django.shortcuts import render
 
 # 메인 페이지
 def user_index(request):
-    return render(request, 'index.html')
+    return render(request, 'index.html', {
+        'places': [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    })
 
 # 로그인 페이지
 def user_login(request):
