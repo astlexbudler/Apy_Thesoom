@@ -27,28 +27,44 @@
 
 ### **회원 관리 페이지 작성**
 
-- 목표: 로그인, 회원가입, 비밀번호 초기화, 프로필 수정 페이지 
+- 목표: /login(로그인), /signup(회원가입), /find(계정 찾기), /reset(계정 찾기 후 비밀번호 초기화), /profile(프로필) 페이지를 제작하고 해당 페이지의 요청을 처리할 수 있도록 views.py에 코드 작성
 - 작업 범위:
-  - 각 페이지별로 전달받는 contexts 확인. contexts가 제대로 표시되는지 확인하고 수정.
-  - Modal, Alert, Offcanvas, Form 등 세부적인 HTML 코드 확인. 사용자와 제대로 상호작용하는지 확인. 필요한 경우 views에 request를 처리하는 코드 추가.(Form 제출 또는 Fetch 요청 처리 코드 추가)
-  - 사용자 상호작용에 따른 Javascript 코드 작성.(예를들면 아이디 중복 검사 등) 재사용되는 코드의 경우 /static/js/custom.js에 작성해서 사용. 복잡한 조건문이나 계산식, custom.js에 작성된 함수의 경우 주석 작성 필수.
-  - api를 추가하는 경우, app_api에 작성하고 주석 작성.
-  - 프로젝트의 모든 기능이 정상적으로 작동하도록 연결하고 점검하는 단계
-- 필요 기술: HTML, CSS, JavaScript, Python / Django, Django-Template, Bootstrap, HTML5
-- 예상 작업 시간: 약 18시간
-- 보수: 500,000원
+  - 각 페이지별로 필요한 요소와 contexts, 사용자 요청을 처리할 수 있도록 코드 구성. app_user > views > 각 페이지별 함수 부분에 필요한 내용 정리되어있음.
+  - 필요한 경우, BootstrapModal과 SweetAlert, Form 등 사용자 요청을 처리하기 위한 추가 구성 요소 생성. views.py에도 사용자의 요청을 처리하기 위한 추가 코드 생성(POST 요청 처리 등등)
+  - API를 추가하는 경우 app_api에 추가.
+  - 작업 중 모호한 내용이 있을 시 문의 바랍니다.
+- 필요 기술: HTML, CSS, JavaScript, Python / Django, Django-Template, Bootstrap4, HTML5
+- 예상 작업 시간: 약 8시간
+- 보수: 340,000원
 - 작업자: -
 
-### **세부 백엔드 작성**
+### **게시글(PLACE) 관련 페이지 작성**
 
-- 목표: 각 페이지별로 필요한 컨텍스트를 만들어서 전달해주고, API 및 사용자 요청 처리 코드 작성.
+- 목표: /(메인), /place/detail(상세), /place/write(작성), /place/edit(수정) 페이지를 제작하고 해당 페이지의 요청을 처리할 수 있도록 views.py에 코드 작성
 - 작업 범위:
-  - 각 페이지별로 정의된 필요한 컨텍스트 데이터 생성할 수 있도록 코드 작성.
-  - 데이터베이스 관련 코드는 DAO에 작성.
-  - 사용자 요청 처리 코드 작성(POST, RESTFULAPI 등등)
-- 필요 기술: HTML, CSS, JavaScript, Python / Django, Django-Template, Bootstrap, HTML5
-- 예상 작업 시간: 약 10시간
-- 보수: 320,000원
+  - 기본 제작되어있는 메인 페이지와 상세 페이지를 참고하여 나머지 필요한 요소들과 상호작용을 위한 코드 작성.
+  - 각 페이지별로 필요한 요소와 contexts, 사용자 요청을 처리할 수 있도록 코드 구성. app_user, app_place > views > 각 페이지별 함수 부분에 필요한 내용 정리되어있음.
+  - 필요한 경우, BootstrapModal과 SweetAlert, Form 등 사용자 요청을 처리하기 위한 추가 구성 요소 생성. views.py에도 사용자의 요청을 처리하기 위한 추가 코드 생성(POST 요청 처리 등등)
+  - API를 추가하는 경우 app_api에 추가.
+  - 작업 중 모호한 내용이 있을 시 문의 바랍니다.
+- 필요 기술: HTML, CSS, JavaScript, Python / Django, Django-Template, Bootstrap4, HTML5
+- 예상 작업 시간: 약 8시간
+- 보수: 400,000원
+- 작업자: -
+
+### **결제 관련 페이지 작성**
+
+- 목표: /purchase/request(결제 요청), /purchase/history(결제 기록 확인), /purchase/complete(결제 결과 확인) 페이지를 제작하고 해당 페이지의 요청을 처리할 수 있도록 views.py에 코드 작성
+- 작업 범위:
+  - 알리 페이 테스트 결제를 사용하여 결제 요청 페이지 및 CallBack 등 처리를 위한 코드 작성. 
+  - 기본 제작되어있는 메인 페이지와 상세 페이지를 참고하여 나머지 필요한 요소들과 상호작용을 위한 코드 작성.
+  - 각 페이지별로 필요한 요소와 contexts, 사용자 요청을 처리할 수 있도록 코드 구성. app_purchase > views > 각 페이지별 함수 부분에 필요한 내용 정리되어있음.
+  - 필요한 경우, BootstrapModal과 SweetAlert, Form 등 사용자 요청을 처리하기 위한 추가 구성 요소 생성. views.py에도 사용자의 요청을 처리하기 위한 추가 코드 생성(POST 요청 처리 등등)
+  - API를 추가하는 경우 app_api에 추가.
+  - 작업 중 모호한 내용이 있을 시 문의 바랍니다.
+- 필요 기술: HTML, CSS, JavaScript, Python / Django, Django-Template, Bootstrap4, HTML5
+- 예상 작업 시간: 약 8시간
+- 보수: 380,000원
 - 작업자: -
 
 ### **서버 등록**
