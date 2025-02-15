@@ -3,18 +3,18 @@ from django.db import models
 
 class ACCOUNT(AbstractUser):
     # id = models.AutoField(primary_key=True)
-    # username = models.CharField(max_length=150, unique=True) 아이디
+    # username = models.CharField(max_length=150, unique=True) 이메일
     # password = models.CharField(max_length=128)
-    # first_name = models.CharField(max_length=30) # 닉네임
-    # last_name = models.CharField(max_length=150) # 파트너 업체명
-    # email = models.EmailField(max_length=254) # 파트너 이메일
+    # first_name = models.CharField(max_length=30) # 이름
+    # last_name = models.CharField(max_length=150) # 사용 안함
+    # email = models.EmailField(max_length=254) # 사용 안함
     # is_active = models.BooleanField(default=True)
     # is_staff = models.BooleanField(default=False)
     # is_superuser = models.BooleanField(default=False)
     # date_joined = models.DateTimeField(auto_now_add=True)
     # last_login = models.DateTimeField(auto_now=True)
     # groups = models.ManyToManyField(Group)
-    account_type = models.CharField(max_length=50, verbose_name="계정 타입")
+    account_type = models.CharField(max_length=50, verbose_name="사용 안함")
 
 class PLACE(models.Model):
     id = models.AutoField(primary_key=True)
@@ -31,19 +31,19 @@ class PLACE_IMAGE(models.Model):
     image_type = models.CharField(max_length=50, verbose_name="이미지 타입")
     order = models.PositiveIntegerField(verbose_name="이미지 표시 순서")
 
-class PLACE_DATE(models.Model):
-    place = models.ForeignKey(PLACE, on_delete=models.CASCADE, related_name="dates")
-    year = models.PositiveIntegerField(verbose_name="연도")
-    month = models.PositiveIntegerField(verbose_name="월")
-    date = models.PositiveIntegerField(verbose_name="날짜")
-    content = models.TextField(verbose_name="표시할 내용")
-
 class PLACE_ITEM(models.Model):
     place = models.ForeignKey(PLACE, on_delete=models.CASCADE, related_name="items")
     image = models.ImageField(upload_to="place_items/", blank=True, null=True)
     name = models.CharField(max_length=255, verbose_name="상품 이름")
     description = models.TextField(verbose_name="설명(html)")
     price = models.PositiveIntegerField(verbose_name="가격")
+
+class ITEM_DATE(models.Model):
+    item = models.ForeignKey(PLACE_ITEM, on_delete=models.CASCADE, related_name="items")
+    year = models.PositiveIntegerField(verbose_name="연도")
+    month = models.PositiveIntegerField(verbose_name="월")
+    date = models.PositiveIntegerField(verbose_name="날짜")
+    content = models.TextField(verbose_name="표시할 내용")
 
 class REVIEW(models.Model):
     place = models.ForeignKey(PLACE, on_delete=models.CASCADE, related_name="reviews")

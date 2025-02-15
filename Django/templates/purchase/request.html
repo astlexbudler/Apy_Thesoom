@@ -1,18 +1,47 @@
 {% extends 'base/base.html' %}
 {% block content %}
 
-   <!-- 메인 -->
-   <main>
+<!-- 메인 -->
+<main>
+   <div id="calendar-widget">
+      <div id="head-wrapper" class="d-flex align-items-center justify-content-center">
+         <h3 id="month" class="mx-3 text-black"></h3>
+      </div>
+      <div id="calendar-wrapper">
+         <div id="table-wrapper">
+            <h3 id="week"></h3>
+            <table id="calendar-table">
+               <thead>
+                  <tr>
+                     <th>월</th>
+                     <th>화</th>
+                     <th>수</th>
+                     <th>목</th>
+                     <th>금</th>
+                     <th>토</th>
+                     <th>일</th>
+                  </tr>
+               </thead>
+            </table>
+         </div>
+      </div>
+   </div>
+</main>
 
-   </main>
+<!-- 스크립트 -->
+<script>
 
-   <!-- 스크립트 -->
-   <script>
+   window.onload = () => {
+      console.log('0');
 
-      window.onload = () => {
-         console.log('0');
-      }
+      document.querySelector('[data-day="15"]').classList.add('bg-success', 'text-white');
+   }
 
-   </script>
+
+   document.addEventListener("DOMContentLoaded", () => {
+      CalendarWidget.init();
+   });
+
+</script>
 
 {% endblock %}
