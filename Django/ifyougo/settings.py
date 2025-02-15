@@ -62,10 +62,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# scheduler 설정
-APSCHEDULER_DATETIME_FORMAT = "N J, Y, f:s a"
-SCHEDULER_DEFAULT = True
-
 # sitemap 설정
 SITE_ID = 2
 SITE_DOMAIN = 'ifyougo.applifyapplication.com'

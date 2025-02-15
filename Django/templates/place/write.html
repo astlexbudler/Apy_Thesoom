@@ -1,18 +1,34 @@
 {% extends 'base/base.html' %}
 {% block content %}
 
-   <!-- 메인 -->
-   <main>
+<!-- 메인 -->
+<main>
 
-   </main>
+   <div class="form-group mt-2 mb-3">
+      <label>내용</label>
+      <div id="postContent"></div>
+      <div class="d-none" id="viewer"></div>
+   </div>
 
-   <!-- 스크립트 -->
-   <script>
+</main>
 
-      window.onload = () => {
-         console.log('0');
-      }
+<!-- 스크립트 -->
+<script>
 
-   </script>
+   window.onload = () => {
+      console.log('0');
+   }
+
+   const editor = new toastui.Editor({
+      el: document.querySelector('#postContent'),
+      height: '500px',
+      initialEditType: 'wysiwyg',
+      initialValue: '내용을 입력해 주세요.',
+      previewStyle: 'vertical',
+      hideModeSwitch: true,
+      language: 'ko-KR'
+   });
+
+</script>
 
 {% endblock %}
