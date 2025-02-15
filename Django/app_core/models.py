@@ -28,7 +28,7 @@ class PLACE(models.Model):
 class PLACE_IMAGE(models.Model):
     place = models.ForeignKey(PLACE, on_delete=models.CASCADE, related_name="images")
     image = models.ImageField(upload_to="place_images/")
-    image_type = models.CharField(max_length=50, verbose_name="이미지 타입")
+    image_type = models.CharField(max_length=50, verbose_name="이미지 타입, main, sub")
     order = models.PositiveIntegerField(verbose_name="이미지 표시 순서")
 
 class PLACE_ITEM(models.Model):

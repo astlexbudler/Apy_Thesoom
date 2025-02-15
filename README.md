@@ -46,7 +46,7 @@ Django 이용하여 제작한 객실 정보 조회 및 예약 사이트.
     - groups: M2M → Group
   - GROUP (그룹)
     - name 그룹 이름
-  - PLACE (장소)
+  - PLACE (장소) // 호텔
     - id: PK
     - name: 장소 이름
     - intro: 짧은 소개
@@ -59,20 +59,20 @@ Django 이용하여 제작한 객실 정보 조회 및 예약 사이트.
     - image: File
     - image_type: 이미지 타입
     - order: 이미지 표시 순서
-  - PLACE_DATE (장소 일자 정보)
-    - id: PK
-    - place: PLACE
-    - year: 연도
-    - month: 월
-    - date: 날짜
-    - content: 표시할 내용
-  - PLACE_ITEM (장소 상품)
+  - PLACE_ITEM (장소 상품) // 객실, 룸서비스 등등
     - id: PK
     - place: PLACE
     - image: null=True
     - name: 상품 이름
     - description: 설명(html)
     - price: 가격
+  - ITEM_DATE (상품 일자 정보) // 예약정보 또는 일자별 안내 정보
+    - id: PK
+    - item: ITEM
+    - year: 연도
+    - month: 월
+    - date: 날짜
+    - content: 표시할 내용
   - REVIEW (리뷰)
     - id: PK
     - place: PLACE

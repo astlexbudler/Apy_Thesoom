@@ -13,7 +13,7 @@ urlpatterns = [
     path('logout', a.api_logout, name='api_logout'), # 로그아웃 API
 
     # 회원 API
-    # GET: 회원 정보 검색
+    # GET: 회원 정보 검색(아이디로 검색)
     # POST-create: 회원 가입
     # POST-update: 회원 정보 수정
     # DELETE: 회원 탈퇴
