@@ -23,6 +23,7 @@ class PLACE(models.Model):
     location = models.CharField(max_length=255, verbose_name="장소")
     location_link = models.CharField(max_length=300, verbose_name="장소")
     description = models.TextField(verbose_name="소개(html)")
+    status = models.CharField(max_length=50, verbose_name="상태")
 
 class PLACE_IMAGE(models.Model):
     place = models.ForeignKey(PLACE, on_delete=models.CASCADE, related_name="images")
@@ -54,6 +55,9 @@ class REVIEW(models.Model):
 
 class PURCHASE(models.Model):
     item = models.ForeignKey(PLACE_ITEM, on_delete=models.CASCADE, related_name="purchases")
+    book_start_datetime = models.DateTimeField(verbose_name="예약 시작 일시")
+    book_end_datetime = models.DateTimeField(verbose_name="예약 종료 일시")
+    memo = models.TextField(verbose_name="요청 사항")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="결제 시작 일시")
     purchase_at = models.DateTimeField(blank=True, null=True, verbose_name="결제 완료 일시")
     payment_agency = models.CharField(max_length=255, verbose_name="결제사")

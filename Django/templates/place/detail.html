@@ -258,6 +258,7 @@
       <!-- 리뷰 작성 -->
       <div class="mb-4">
          <div class="row">
+            <input type="file" id="reviewImage" style="display: none;">
             <div class="form-group col-2">
                <label for="rateSelect">Rate</label>
                <select class="form-control" id="rateSelect">
@@ -273,6 +274,9 @@
                <div style="align-items: center; display: flex;">
                   <textarea class="form-control mr-2" id="reviewContent" placeholder="Write a review..."
                      style="width: calc(100% - 160px); height: 34px; display: inline-block;"></textarea>
+                  <a href="javascript: document.querySelector('#reviewImage').click();" class="btn btn-info mr-2">
+                     <i class="fi fi-rr-picture"></i>
+                  </a>
                   <a href="#" class="btn btn-primary" style="width: 140px;">
                      Write Review
                   </a>
