@@ -36,7 +36,7 @@
 - 필요 기술: HTML, CSS, JavaScript, Python / Django, Django-Template, Bootstrap4, HTML5
 - 예상 작업 시간: 약 6시간
 - 보수: 480,000원(백앤드: 200,000 / 프런트 280,000원)
-- 작업자: -
+- 작업자: 동근님(백앤드, 프런트는 시간 남으면)
 
 ### **게시글(PLACE) 관련 페이지 작성**
 
@@ -50,7 +50,7 @@
 - 필요 기술: HTML, CSS, JavaScript, Python / Django, Django-Template, Bootstrap4, HTML5
 - 예상 작업 시간: 약 8시간
 - 보수: 620,000원(백앤드: 280,000 / 프런트 340,000원)
-- 작업자: -
+- 작업자: 상윤님
 
 ### **결제 관련 페이지 작성**
 
@@ -65,7 +65,7 @@
 - 필요 기술: HTML, CSS, JavaScript, Python / Django, Django-Template, Bootstrap4, HTML5
 - 예상 작업 시간: 약 8시간
 - 보수: 540,000원 (백엔드: 240,000 / 프런트 300,000원)
-- 작업자: -
+- 작업자: Apy
 
 ### **서버 등록**
 
