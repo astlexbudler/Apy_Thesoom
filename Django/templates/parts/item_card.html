@@ -36,7 +36,8 @@
                   <p class="m-0 text-success font-weight-bold" style="font-size: 20px;">
                      from $ 800
                   </p>
-                  <a href="#" class="btn btn-primary btn-sm mt-2">
+                  <a href="javascript: new bootstrap.Modal(document.getElementById('bookModal')).show();"
+                  class="btn btn-primary btn-sm mt-2">
                      <i class="fi fi-rr-calendar-day"></i> Book Now
                   </a>
                </div>
@@ -46,3 +47,4 @@
       </div>
    </div>
 </div>
+{% include 'parts/book_modal.html' %}
