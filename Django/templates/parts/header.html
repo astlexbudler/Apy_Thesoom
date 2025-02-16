@@ -41,13 +41,27 @@
 
          <!-- 헤더 메뉴 오른쪽 끝 -->
          <div class="ml-auto d-flex align-items-center" style="font-size: 1rem;">
-            <!-- login/signup -->
-            <a href="/login" class="mr-4 text-dark">
-               Login
-            </a>
-            <a href="/signup" class="mr-2 text-dark">
-               Signup
-            </a>
+             {% if request.user.is_authenticated %}
+                 <div>
+                     <a href="/profile" class="mr-4 text-dark">
+                        {{ user.first_name }} 님 반갑습니다.
+                     </a>
+                 </div>
+                 <div>
+                     <a href="/logout" class="mr-2 text-dark">
+                        로그아웃
+                     </a>
+                 </div>
+             {% else %}
+                 <!-- login/signup -->
+                 <a href="/login" class="mr-4 text-dark">
+                    Login
+                 </a>
+                 <a href="/signup" class="mr-2 text-dark">
+                    Signup
+                 </a>
+             {% endif %}
+
          </div>
       </nav>
    </div>

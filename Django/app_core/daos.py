@@ -1,5 +1,6 @@
 # 함수 목록
 # get_account(account_id): 사용자 계정 정보 조회
+# find_account(username): 사용자 조회
 # check_account(account_id): 아이디 중복 확인
 # create_account(email, password, name): 사용자 계정 정보 생성
 # update_account(email, password=None, name=None): 사용자 계정 정보 수정
@@ -23,6 +24,10 @@
 # update_purchase_status(purchase_id, status): 구매 상태 변경
 # get_purchases(account_id): 구매 정보 조회
 
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
 # 사용자 계정 정보 조회
 def get_account(account_id):
 
@@ -38,16 +43,23 @@ def get_account(account_id):
 
     return account
 
+# 아이디 찾기
+def find_account(username):
+    result = User.objects.filter(username=username).exists()
+
+    return result
+
 # 아이디 중복 확인
 def check_account(account_id):
 
     # account_id: 사용자 아이디(username)
+    result = User.objects.get(pk=account_id)
 
     # models.filter를 이용해서 쿼리 작성
 
     return {
-        'success': True,
-        'message': 'Account exists.',
+        'success': result,
+        'message': 'Account' + ' ' if result else "don't " + 'exists.',
     }
 
 # 사용자 계정 정보 생성

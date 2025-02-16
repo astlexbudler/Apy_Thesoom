@@ -1,18 +1,189 @@
 {% extends 'base/base.html' %}
 {% block content %}
 
-   <!-- 메인 -->
-   <main>
+{% load widget_tweaks %}
 
+<!-- 헤더 -->
+{% include 'parts/header.html' %}
+
+   <!-- 메인 -->
+   <main class="flex-grow-1">
+       <div class="bg-image">
+           <div class="container h-100">
+               <div class="row h-100 justify-content-center align-items-center">
+                   <div class="col-12 col-sm-8 col-md-6 col-lg-4">
+                       {# login box #}
+                       <div class="login-box p-5">
+                           <div class="text-center">
+                               <h5 class="font-weight-bold mb-5">회원가입</h5>
+                           </div>
+
+                           {# Django signup Form #}
+                           <form method="post" action="">
+                               {% csrf_token %}
+
+                               <!-- 폼 전체 에러(비밀번호 불일치 등) 표시 -->
+                               {% if form.non_field_errors %}
+                                   <div class="alert alert-danger">
+                                       {% for error in form.non_field_errors %}
+                                           <div>{{ error }}</div>
+                                       {% endfor %}
+                                   </div>
+                               {% endif %}
+
+                               {# 이메일(username) 필드 #}
+                               <div class="form-group">
+                                   {% render_field form.username class="form-control" placeholder="이메일" %}
+                                   <small id="error_username" class="text-danger"></small>
+
+                                   {# 서버 개별 에러 #}
+                                   {% if form.username.errors %}
+                                      <small class="text-danger">
+                                          {% for error in form.username.errors %}
+                                              {{ error }}
+                                          {% endfor %}
+                                      </small>
+                                   {% endif %}
+                                </div>
+
+                               {# 비밀번호(password1) 필드 #}
+                               <div class="form-group">
+                                   {% render_field form.password1 class="form-control" placeholder="비밀번호" %}
+                                   <small id="error_password1" class="text-danger"></small>
+
+                                   {# 서버 개별 에러 #}
+                                   {% if form.password1.errors %}
+                                       <small class="text-danger">
+                                           {% for error in form.password1.errors %}
+                                               {{ error }}
+                                           {% endfor %}
+                                       </small>
+                                   {% endif %}
+                               </div>
+
+                               {# 비밀번호 입력(password2) 필드 #}
+                               <div class="form-group">
+                                   {% render_field form.password2 class="form-control" placeholder="비밀번호 확인" %}
+                                   <small id="error_password2" class="text-danger"></small>
+
+                                   {# 서버 개별 에러 #}
+                                   {% if form.password2.errors %}
+                                       <small class="text-danger">
+                                           {% for error in form.password2.errors %}
+                                               {{ error }}
+                                           {% endfor %}
+                                       </small>
+                                   {% endif %}
+                               </div>
+
+                               {# 이름(first_name) 필드 #}
+                               <div class="form-group">
+                                   {% render_field form.first_name class="form-control" placeholder="이름" %}
+                                   <small id="error_first_name" class="text-danger"></small>
+
+                                   {# 서버 개별 에러 #}
+                                   {% if form.first_name.errors %}
+                                       <small class="text-danger">
+                                           {% for error in form.first_name.errors %}
+                                               {{ error }}
+                                           {% endfor %}
+                                       </small>
+                                   {% endif %}
+                               </div>
+
+                               {# 연락처(contact) 필드 #}
+                               <div class="form-group mb-5">
+                                   {% render_field form.contact class="form-control" placeholder="연락처" %}
+                                   <small id="error_contact" class="text-danger"></small>
+
+                                   {# 서버 개별 에러 #}
+                                   {% if form.contact.errors %}
+                                       <small class="text-danger">
+                                           {% for error in form.contact.errors %}
+                                               {{ error }}
+                                           {% endfor %}
+                                       </small>
+                                   {% endif %}
+                               </div>
+
+                               {# 회원가입 버튼 #}
+                               <button type="submit" class="btn btn-primary btn-block">회원가입</button>
+                            </form>
+                            {# Django signup Form end #}
+                        </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+       {# login box end #}
    </main>
 
-   <!-- 스크립트 -->
-   <script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const fields = {
+            username: {
+                el: document.getElementById('id_username'),
+                err: document.getElementById('error_username'),
+                test: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
+                msg: '올바른 이메일 형식을 입력하세요.'
+            },
+            password1: {
+                el: document.getElementById('id_password1'),
+                err: document.getElementById('error_password1'),
+                test: v => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(v),
+                msg: '비밀번호는 8자 이상 영문자와 숫자 조합이어야 합니다.'
+            },
+            password2: {
+                el: document.getElementById('id_password2'),
+                err: document.getElementById('error_password2'),
+                test: v => v === document.getElementById('id_password1').value,
+                msg: '비밀번호가 일치하지 않습니다.'
+            },
+            first_name: {
+                el: document.getElementById('id_first_name'),
+                err: document.getElementById('error_first_name'),
+                test: v => v.length >= 2 && v.length < 20,
+                msg: '이름은 2자 이상 20자 미만이어야 합니다.'
+            },
+            contact: {
+                el: document.getElementById('id_contact'),
+                err: document.getElementById('error_contact'),
+                test: v => /^\+?[\d\s\-()]{7,}$/.test(v),
+                msg: '올바른 연락처를 입력하세요.'
+            }
+        };
 
-      window.onload = () => {
-         console.log('0');
-      }
+        const btn = document.getElementById('signup-button');
 
-   </script>
+    const validate = () => {
+        let valid = true;
+        
+        for (let key in fields) {
+            const field = fields[key];
+            const value = field.el.value.trim();
+            const ok = value && field.test(value);
+
+            // 입력한 적이 있을 때만 오류 메시지 표시
+            if (field.touched) {
+                field.err.textContent = ok ? '' : field.msg;
+                field.el.classList.toggle('is-invalid', !ok);
+                field.el.classList.toggle('is-valid', ok);
+            } else {
+                field.err.textContent = '';
+                field.el.classList.remove('is-invalid', 'is-valid');
+            }
+            valid = valid && ok;
+        }
+        btn.disabled = !valid;
+    };
+
+    Object.values(fields).forEach(f => {
+        f.el.addEventListener('input', () => {
+            f.touched = true;
+            validate();
+        });
+    });
+});
+</script>
 
 {% endblock %}

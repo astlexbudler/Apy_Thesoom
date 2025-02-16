@@ -24,6 +24,10 @@ urlpatterns = [
     # 로그인 세션은 별도의 만료 기간 없이, 계속 유지되도록(기본값) 설정.
     path('login', v.user_login, name='user_login'),
 
+    # 로그아웃
+    # 페이지는 아니며, Django 에서 제공하는 logout 을 사용 후, 로그인 페이지로 리다이렉트
+    path('logout', v.user_logout, name='user_logout'),
+
     # 회원가입 페이지
     # 흰색 배경.
     # 회원가입 폼에는 이메일(아이디), 비밀번호, 비밀번호 확인, 이름, 전화번호, 회원가입 버튼이 있어야함. 비밀번호는 8자 이상이어야하고, 비밀번호 확인과 일치해야함.
