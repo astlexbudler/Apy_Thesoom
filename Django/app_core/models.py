@@ -54,6 +54,7 @@ class REVIEW(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="작성일")
 
 class PURCHASE(models.Model):
+    account = models.ForeignKey(ACCOUNT, on_delete=models.CASCADE, related_name="purchases")
     item = models.ForeignKey(PLACE_ITEM, on_delete=models.CASCADE, related_name="purchases")
     book_start_datetime = models.DateTimeField(verbose_name="예약 시작 일시")
     book_end_datetime = models.DateTimeField(verbose_name="예약 종료 일시")
