@@ -17,6 +17,7 @@
 # delete_place_item(item_id): 장소 아이템 삭제
 # create_review(place_id, rate, content, images): 리뷰 작성
 # delete_review(review_id): 리뷰 삭제
+# get_item_dates(item_id): 아이템 일정 조회
 # create_item_date(item_id, year, month, date, content): 아이템 일정 생성
 # delete_item_date(item_date_id): 아이템 일정 삭제
 # create_purchase(item_id, book_start_datetime, book_end_datetime, payment_agency, payment_method, payment_info, memo=''): 구매 생성
@@ -322,6 +323,21 @@ def delete_review(review_id):
         'success': True,
         'message': 'Review deleted successfully.',
     }
+
+# 아이템 일정 조회
+def get_item_dates(item_id):
+
+    # item_id: 아이템 아이디
+
+    item_dates = [{
+        'id': 1,
+        'year': 2021,
+        'month': 1,
+        'date': 1,
+        'content': 'Deluxe Room is available.',
+    }]
+
+    return item_dates
 
 # 아이템 일정 생성
 def create_item_date(item_id, year, month, date, content):
