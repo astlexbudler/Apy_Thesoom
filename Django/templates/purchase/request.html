@@ -1,31 +1,163 @@
 {% extends 'base/base.html' %}
 {% block content %}
 
+<!-- 헤더 -->
+{% include 'parts/header.html' %}
+
 <!-- 메인 -->
 <main>
-   <div id="calendar-widget">
-      <div id="head-wrapper" class="d-flex align-items-center justify-content-center">
-         <h3 id="month" class="mx-3 text-black"></h3>
-      </div>
-      <div id="calendar-wrapper">
-         <div id="table-wrapper">
-            <h3 id="week"></h3>
-            <table id="calendar-table">
-               <thead>
-                  <tr>
-                     <th>월</th>
-                     <th>화</th>
-                     <th>수</th>
-                     <th>목</th>
-                     <th>금</th>
-                     <th>토</th>
-                     <th>일</th>
-                  </tr>
-               </thead>
-            </table>
+
+   <!-- 페이지 제목 -->
+   <section class="container mt-5">
+      <h5>
+         객실 예약
+      </h5>
+      <p>
+         <a href="javascript: history.back();" class="text-secondary">
+            <i class="fi fi-rr-angle-left"></i> 뒤로가기
+         </a>
+      </p>
+   </section>
+
+   <!-- 객실 정보 요약 -->
+   <section class="container mt-5">
+      <div class="cart-items bg-white position-relative border shadow rounded">
+
+         <!-- 할인 뱃지 -->
+         <span class="position-absolute">
+            <span class="badge badge-danger m-3">10%</span>
+         </span>
+      
+         <div class="d-flex  align-items-center p-3">
+      
+            <!-- 이미지 -->
+            <img src="/static/img/samples/0.jpg" width="240" class="rounded shadow-sm">
+      
+            <!-- 정보 -->
+            <div class="osahan-cart-item-des d-flex w-100 ml-3">
+               <div class="flex-fill">
+                  <a href="product_details.html" class="text-dark text-decoration-none w-100">
+      
+                     <!-- 상품 이름 -->
+                     <h5 class="mb-1">Executive Suite (Suite Temptation)</h5>
+      
+                     <!-- 상품 설명 -->
+                     <p class="text-muted mt-2">
+                        【조기 할인 60】오쿠라 베스트 레이트로부터 최대 15%OFF! (실료만)<br>
+                        <br>
+                        IN 15:00～29:00<br>
+                        OUT 12:00
+                     </p>
+      
+                     <!-- 상품 가격 -->
+                     <div class="text-right">
+                        <p class="text-muted m-0">
+                           <del>
+                              from $ 1,000
+                           </del>
+                        </p>
+                        <p class="m-0 text-success font-weight-bold" style="font-size: 20px;">
+                           from $ 800
+                        </p>
+                     </div>
+      
+                  </a>
+               </div>
+            </div>
          </div>
       </div>
-   </div>
+   </section>
+
+   <!-- 객실 정보 상세 -->
+   <section class="container mt-5">
+      {{ detail|safe }}
+   </section>
+
+   <!-- 캘린더 -->
+   <section class="container mt-5">
+      <div id="calendar-widget">
+         <div id="head-wrapper" class="d-flex align-items-center justify-content-center">
+            <button id="prev-button" class="btn btn-light">
+               <i class="fi fi-rr-angle-left"></i>
+            </button>
+            <h3 id="month" class="mx-3 text-black"></h3>
+            <button id="next-button" class="btn btn-light">
+               <i class="fi fi-rr-angle-right"></i>
+            </button>
+         </div>
+         <div id="calendar-wrapper">
+            <div id="table-wrapper">
+               <h3 id="week"></h3>
+               <table id="calendar-table">
+                  <thead>
+                     <tr>
+                        <th>월</th>
+                        <th>화</th>
+                        <th>수</th>
+                        <th>목</th>
+                        <th>금</th>
+                        <th>토</th>
+                        <th>일</th>
+                     </tr>
+                  </thead>
+               </table>
+            </div>
+         </div>
+      </div>
+   </section>
+
+   <!--
+      예약 Form
+      - 시작일, 종료일, 예약정보(예약자, 연락처, 요청사항)
+   -->
+   <section class="container mt-5">
+      <h5 class="mb-4">예약하기</h5>
+      <form>
+
+         <!-- 시작일, 종료일 -->
+         <div class="row">
+            <div class="form-group col-6">
+               <label for="exampleInputName1">시작일</label>
+               <input type="date" class="form-control" id="exampleInputName1">
+            </div>
+            <div class="form-group col-6">
+               <label for="exampleInputEmail1">종료일</label>
+               <input type="date" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+            <p class="small text-muted">
+               ※ 예약 가능한 날짜를 선택해주세요. 1박인 경우, 시작일과 종료일을 동일하게 선택해주세요.
+            </p>
+         </div>
+
+         <!-- 예약정보 -->
+         <div class="form-group">
+            <label for="exampleInputPassword1">예약정보</label>
+            <textarea rows="5" placeholder="can we improve?" class="form-control" id="exampleInputHelp1"></textarea>
+            <p class="small text-muted">
+               ※ 예약자 정보를 입력해주세요. 예약자 성함, 연락처, 이메일 주소, 요청사항을 입력해주세요.
+            </p>
+         </div>
+
+         <!-- 약관 동의 -->
+         <div class="form-group mt-5">
+            <input type="checkbox" class="form-check mr-2" id="exampleCheck1" style="display: inline;">
+            <label for="exampleCheck1" style="font-size: 12px; display: inline;">
+               <a href="#">개인정보 처리방침</a>에 동의합니다.
+            </label>
+         </div>
+
+         <button type="submit" class="btn btn-success">
+            <i class="fi fi-rr-check"></i> 예약하기
+         </button>
+      </form>
+   </section>
+
+   <!-- 주의 사항 안내 -->
+   <section class="container mt-5">
+      <h5 class="mb-4">주의 사항</h5>
+      {{ detail|safe }}
+   </section>
+
 </main>
 
 <!-- 스크립트 -->
@@ -34,7 +166,7 @@
    window.onload = () => {
       console.log('0');
 
-      document.querySelector('[data-day="15"]').classList.add('bg-success', 'text-white');
+      // document.querySelector('[data-day="15"]').classList.add('bg-success', 'text-white');
    }
 
 
@@ -43,5 +175,8 @@
    });
 
 </script>
+
+<!-- 푸터 -->
+{% include 'parts/footer.html' %}
 
 {% endblock %}
