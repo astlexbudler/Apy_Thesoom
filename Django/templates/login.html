@@ -38,6 +38,13 @@
                                    </div>
                                {% endif %}
 
+                               {# 비밀번호 변경 성공 표시 #}
+                               {% if password_reset_success == True %}
+                                   <div class="alert alert-success">
+                                       <div>비밀번호 변경에 성공했습니다 ! 다시 로그인해주세요.</div>
+                                   </div>
+                               {% endif %}
+
                                {# 이메일(username) 필드 #}
                                <div class="form-group">
                                   {% render_field form.username class="form-control" placeholder="이메일" %}

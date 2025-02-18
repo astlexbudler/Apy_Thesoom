@@ -23,11 +23,9 @@
                                {% csrf_token %}
 
                                {# 폼 전체 에러(비밀번호 불일치 등) 표시 #}
-                               {% if form.non_field_errors %}
+                               {% if user_exist == False %}
                                    <div class="alert alert-danger">
-                                       {% for error in form.non_field_errors %}
-                                           <div>{{ error }}</div>
-                                       {% endfor %}
+                                       <div>일치하는 사용자가 없습니다.</div>
                                    </div>
                                {% endif %}
 
