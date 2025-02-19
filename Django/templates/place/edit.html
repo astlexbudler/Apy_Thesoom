@@ -1,18 +1,492 @@
 {% extends 'base/base.html' %}
 {% block content %}
 
-   <!-- 메인 -->
-   <main>
+    <!-- 메인 -->
+    <main>
+        <section>
+            <div class="container mt-5">
+                <h2 class="font-weight-bold">장소 내용</h2>
 
-   </main>
+                <!-- 장소 내용 입력 폼 -->
+                <form id="placeContentForm">
+                    <div class="form-group">
+                        <label for="placeName">장소 이름</label>
+                        <input type="text" class="form-control" id="placeName" placeholder="장소 이름을 입력하세요." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="placeShortDescription">짧은 소개</label>
+                        <input type="text" class="form-control" id="placeShortDescription" placeholder="짧은 소개를 입력하세요." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="placeLocation">장소 위치</label>
+                        <input type="text" class="form-control" id="placeLocation" placeholder="장소 위치를 입력하세요." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="placeLocationLink">장소 위치 링크</label>
+                        <input type="url" class="form-control" id="placeLocationLink" placeholder="구글 지도 링크를 입력하세요." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="placeDescription">장소 설명</label>
+                        <div id="placeDescription"></div>
+                    </div>
 
-   <!-- 스크립트 -->
-   <script>
+                    <!-- 장소 내용 등록 버튼 -->
+                    <button type="button" class="btn btn-primary mt-4" id="registerPlaceContentBtn">장소 내용 등록</button>
+                </form>
 
-      window.onload = () => {
-         console.log('0');
-      }
+                <hr>
 
-   </script>
+                <!-- 장소 이미지 입력 폼 -->
+                <form id="placeImageForm">
+                    <div class="form-group">
+                        <label for="mainImage">대표 이미지</label>
+                        <input type="file" class="form-control" id="mainImage" accept="image/*" required>
+                        <div id="mainImagePreview" class="mt-2"></div>
+                        <small>대표 이미지는 장소 카드 및 상단 캐로셀에 표시됩니다.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="subImage">서브 이미지</label>
+                        <input type="file" class="form-control" id="subImage" accept="image/*" required>
+                        <div id="subImagePreview" class="mt-2"></div>
+                        <small>서브 이미지는 상세 정보에 작게 표시됩니다.</small>
+                    </div>
+
+                    <!-- 장소 이미지 등록 버튼 -->
+                    <button type="button" class="btn btn-primary mt-4" id="registerPlaceImageBtn">장소 이미지 등록</button>
+                </form>
+
+                <hr>
+
+                <!-- 상품 목록 -->
+                <h4 class="d-flex justify-content-between align-items-center">
+                    상품 목록
+                    <!-- 상품 등록 버튼 추가 -->
+                    <button type="button" class="btn btn-primary" id="registerItemBtn">상품 등록</button>
+                </h4>
+                <div id="placeItemList" class="mt-3">
+                    <!-- 상품 목록이 여기에 동적으로 추가됩니다 -->
+                    <ul id="itemList" class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            상품1
+                            <button type="button" class="btn btn-danger">삭제</button>
+                        </li>
+                    </ul>
+                </div>
+
+                <hr>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- 상품 등록 모달 -->
+    <div class="modal fade" id="itemModal" tabindex="-1" aria-labelledby="itemModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="itemModalLabel">상품 등록</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>상품 등록을 위해 필요한 정보를 입력하세요.</p>
+                    <!-- 여기에 상품 등록 폼 등을 추가할 수 있습니다. -->
+                    <form id="itemContentForm">
+                        <div class="form-group">
+                            <label for="itemName">상품 이름</label>
+                            <input type="text" class="form-control" id="itemName" placeholder="상품 이름을 입력하세요." required>
+                        </div>
+                        <div class="form-group">
+                            <label for="itemDescription">상품 설명</label>
+                            <div id="itemDescription"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="itemPrice">상품 가격</label>
+                            <input type="text" class="form-control" id="itemPrice" placeholder="상품 가격을 입력하세요." required>
+                        </div>
+                        <div class="form-group">
+                            <label for="itemImage">상품 이미지</label>
+                            <input type="file" class="form-control" id="itemImage" accept="image/*" required>
+                            <div id="itemImagePreview" class="mt-2"></div>
+                        </div>
+
+                        <!-- 장소 내용 등록 버튼 -->
+                        <button type="button" class="btn btn-primary mt-4" id="registerItemContentBtn">상품 등록</button>
+
+                    </form>
+
+                    <hr>
+
+                    <!-- 일정 목록 -->
+                    <h4 class="d-flex justify-content-between align-items-center">
+                        일정 목록
+                        <!-- 일정 등록 버튼 추가 -->
+                        <button type="button" class="btn btn-primary" id="registerDateBtn">일정 등록</button>
+                    </h4>
+                    <div id="itemDateList" class="mt-3">
+                        <!-- 일정 목록이 여기에 동적으로 추가됩니다 -->
+                        <ul id="dateList" class="list-group">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                2021-08-01
+                                <button type="button" class="btn btn-danger">삭제</button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 일정 등록 모달 -->
+    <div class="modal fade" id="dateModal" tabindex="-1" aria-labelledby="dateModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="dateModalLabel">일정 등록</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>일정 등록을 위해 필요한 정보를 입력하세요.</p>
+                    <!-- 여기에 일정 등록 폼 등을 추가할 수 있습니다. -->
+                    <section class="container mt-5">
+                        <div id="calendar-widget">
+                            <div id="head-wrapper" class="d-flex align-items-center justify-content-center">
+                                <button id="prev-button" class="btn btn-light">
+                                    <i class="fi fi-rr-angle-left"></i>
+                                </button>
+                                <h3 id="month" class="mx-3 text-black"></h3>
+                                <button id="next-button" class="btn btn-light">
+                                    <i class="fi fi-rr-angle-right"></i>
+                                </button>
+                            </div>
+                            <div id="calendar-wrapper">
+                                <div id="table-wrapper">
+                                    <h3 id="week"></h3>
+                                    <table id="calendar-table">
+                                        <thead>
+                                        <tr>
+                                            <th>월</th>
+                                            <th>화</th>
+                                            <th>수</th>
+                                            <th>목</th>
+                                            <th>금</th>
+                                            <th>토</th>
+                                            <th>일</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="form-group col-6">
+                        <label for="date">일정</label>
+                        <input type="date" class="form-control" id="date">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dateDescription">일정 내용</label>
+                        <div id="dateDescription"></div>
+                    </div>
+
+                    <button type="button" class="btn btn-primary mt-4" id="registerDateContentBtn">일정 등록</button>
+
+                    <hr>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 스크립트 -->
+    <script>
+        window.onload = () => {
+            console.log('0');
+            const placeId = "{{ place.id }}";
+            console.log("Place ID:", placeId);
+
+            // 장소 상품 목록 로드
+            //loadPlaceItems(placeId);
+
+            // 상품 등록 버튼 클릭 시
+            document.getElementById('registerItemBtn').addEventListener('click', function() {
+                // 모달 띄우기
+                const itemModal = new bootstrap.Modal(document.getElementById('itemModal'));
+                itemModal.show();
+            });
+
+            // 일정 등록 버튼 클릭 시
+            document.getElementById('registerDateBtn').addEventListener('click', function() {
+                // 모달 띄우기
+                const dateModal = new bootstrap.Modal(document.getElementById('dateModal'));
+                dateModal.show();
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            CalendarWidget.init();
+        });
+
+        // Toast UI Editor 설정
+        const placeEditor = new toastui.Editor({
+            el: document.querySelector('#placeDescription'),
+            height: '500px',
+            initialEditType: 'wysiwyg',
+            initialValue: '장소 설명을 입력하세요.',
+            previewStyle: 'vertical',
+            hideModeSwitch: true,
+            language: 'ko-KR'
+        });
+
+        // 장소 내용 등록 버튼 클릭 이벤트
+        document.getElementById('registerPlaceContentBtn').addEventListener('click', function() {
+            const placeId = "{{ place.id }}";
+            const placeName = document.getElementById('placeName').value;
+            const placeShortDescription = document.getElementById('placeShortDescription').value;
+            const placeLocation = document.getElementById('placeLocation').value;
+            const placeLocationLink = document.getElementById('placeLocationLink').value;
+            const placeDescription = placeEditor.getHTML();
+
+            const formData = new FormData();
+            formData.append('place_id', placeId);
+            formData.append('name', placeName);
+            formData.append('intro', placeShortDescription);
+            formData.append('location', placeLocation);
+            formData.append('location_link', placeLocationLink);
+            formData.append('description', placeDescription);
+
+            fetch('/api/update_place', {
+                method: 'POST',
+                body: formData,
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('Place content registered successfully:', data);
+                        alert(data.message); // 성공 메시지
+                    } else {
+                        console.error('Error registering place content:', data.message);
+                        alert('Error: ' + data.message); // 실패 메시지
+                    }
+                })
+                .catch(error => {
+                    console.error('Request failed', error);
+                    alert('Request failed. Please try again.');
+                });
+        });
+
+        // 대표 이미지 미리보기 및 삭제
+        document.getElementById('mainImage').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const mainImageInput = document.getElementById('mainImage');
+            const preview = document.getElementById('mainImagePreview');
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function() {
+                    preview.innerHTML = `<img src="${reader.result}" alt="대표 이미지" class="img-thumbnail" style="max-width: 200px;"> <button type="button" class="btn btn-danger mt-2" id="deleteMainImage">삭제</button>`;
+                    mainImageInput.disabled = true;  // 이미지 등록 후 input 비활성화
+
+                    document.getElementById('deleteMainImage').addEventListener('click', function() {
+                        mainImageInput.value = '';  // 파일 입력 초기화
+                        preview.innerHTML = '';  // 미리보기 삭제
+                        mainImageInput.disabled = false;  // input 다시 활성화
+                    });
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // 서브 이미지 미리보기 및 삭제
+        document.getElementById('subImage').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const subImageInput = document.getElementById('subImage');
+            const preview = document.getElementById('subImagePreview');
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function() {
+                    preview.innerHTML = `<img src="${reader.result}" alt="대표 이미지" class="img-thumbnail" style="max-width: 200px;"> <button type="button" class="btn btn-danger mt-2" id="deleteSubImage">삭제</button>`;
+                    subImageInput.disabled = true;  // 이미지 등록 후 input 비활성화
+
+                    document.getElementById('deleteSubImage').addEventListener('click', function() {
+                        subImageInput.value = '';  // 파일 입력 초기화
+                        preview.innerHTML = '';  // 미리보기 삭제
+                        subImageInput.disabled = false;  // input 다시 활성화
+                    });
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // 장소 이미지 등록 버튼 클릭 이벤트
+        document.getElementById('registerPlaceImageBtn').addEventListener('click', function() {
+            const formData = new FormData();
+            const placeId = "{{ place.id }}";
+            const mainImageFile = document.getElementById('mainImage').files[0];
+            const subImageFile = document.getElementById('subImage').files[0];
+
+            formData.append('place_id', placeId);
+
+            // 대표 이미지가 선택되었을 때만 formData에 추가
+            if (mainImageFile) {
+                formData.append('image', mainImageFile);  // 대표 이미지 추가
+                formData.append('image_type', 'main');    // 이미지 타입 설정
+                formData.append('order', 1);               // 대표 이미지는 첫 번째로 추가
+            } else {
+                console.log("대표 이미지가 선택되지 않았습니다.");
+            }
+
+            // 서브 이미지가 선택되었을 때만 formData에 추가
+            if (subImageFile) {
+                formData.append('image', subImageFile);  // 서브 이미지 추가
+                formData.append('image_type', 'sub');    // 이미지 타입 설정
+                formData.append('order', 2);               // 서브 이미지는 두 번째로 추가
+            } else {
+                console.log("서브 이미지가 선택되지 않았습니다.");
+            }
+
+            // 추가된 formData 확인
+            console.log("formData 내용: ", formData);
+
+            // formData 내부 값 출력 (디버깅용)
+            for (let [key, value] of formData.entries()) {
+                console.log(key, value);
+            }
+
+            /* fetch('/api/create_place_image', {
+                method: 'POST',
+                body: formData,
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('Place images registered successfully:', data);
+                        alert(data.message); // 성공 메시지
+                    } else {
+                        console.error('Error registering place images:', data.message);
+                        alert('Error: ' + data.message); // 실패 메시지
+                    }
+                })
+                .catch(error => {
+                    console.error('Request failed', error);
+                    alert('Request failed. Please try again.');
+                }); */
+        });
+
+        // 장소 상품 목록 로드 함수
+        function loadPlaceItems(placeId) {
+            fetch(`/api/place_item_list?place_id=${placeId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const itemList = document.getElementById('itemList');
+                        itemList.innerHTML = ''; // 기존 목록 초기화
+
+                        data.items.forEach(item => {
+                            const listItem = document.createElement('li');
+                            listItem.classList.add('list-group-item');
+                            listItem.textContent = item.name; // 상품명만 예시로 표시
+                            itemList.appendChild(listItem);
+                        });
+                    } else {
+                        console.error('Error loading place items:', data.message);
+                        alert('Error loading place items: ' + data.message); // 실패 메시지
+                    }
+                })
+                .catch(error => {
+                    console.error('Request failed', error);
+                    alert('Failed to load place items. Please try again.');
+                });
+        }
+
+        document.querySelector('.btn-close').addEventListener('click', function() {
+            const modalElement = document.getElementById('itemModal');
+            const modal = new bootstrap.Modal(modalElement);
+            modal.hide(); // 모달을 닫는 코드
+        });
+
+        // Toast UI Editor 설정
+        const itemEditor = new toastui.Editor({
+            el: document.querySelector('#itemDescription'),
+            height: '500px',
+            initialEditType: 'wysiwyg',
+            initialValue: '상품 설명을 입력하세요.',
+            previewStyle: 'vertical',
+            hideModeSwitch: true,
+            language: 'ko-KR'
+        });
+
+        // 상품 이미지 미리보기 및 삭제
+        document.getElementById('itemImage').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const itemImageInput = document.getElementById('itemImage');
+            const preview = document.getElementById('itemImagePreview');
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function() {
+                    preview.innerHTML = `<img src="${reader.result}" alt="상품 이미지" class="img-thumbnail" style="max-width: 200px;"> <button type="button" class="btn btn-danger mt-2" id="deleteItemImage">삭제</button>`;
+                    itemImageInput.disabled = true;  // 이미지 등록 후 input 비활성화
+
+                    document.getElementById('deleteItemImage').addEventListener('click', function() {
+                        itemImageInput.value = '';  // 파일 입력 초기화
+                        preview.innerHTML = '';  // 미리보기 삭제
+                        itemImageInput.disabled = false;  // input 다시 활성화
+                    });
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // 상품 내용 등록 버튼 클릭 이벤트
+        document.getElementById('registerItemContentBtn').addEventListener('click', function() {
+            const placeId = "{{ place_id }}";
+            const itemName = document.getElementById('itemName').value;
+            const itemDescription = itemEditor.getHTML();
+            const itemPrice = document.getElementById('itemPrice').value;
+            const itemImageFile = document.getElementById('itemImage').files[0];
+
+            const formData = new FormData();
+            formData.append('place_id', placeId);
+            formData.append('name', itemName);
+            formData.append('description', itemDescription);
+            formData.append('price', itemPrice);
+            formData.append('image', itemImageFile);
+
+            fetch('/api/create_place_item', {
+                method: 'POST',
+                body: formData,
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('Place content registered successfully:', data);
+                        alert(data.message); // 성공 메시지
+                    } else {
+                        console.error('Error registering place content:', data.message);
+                        alert('Error: ' + data.message); // 실패 메시지
+                    }
+                })
+                .catch(error => {
+                    console.error('Request failed', error);
+                    alert('Request failed. Please try again.');
+                });
+        });
+
+        // Toast UI Editor 설정
+        const dateEditor = new toastui.Editor({
+            el: document.querySelector('#dateDescription'),
+            height: '500px',
+            initialEditType: 'wysiwyg',
+            initialValue: '일정 설명을 입력하세요.',
+            previewStyle: 'vertical',
+            hideModeSwitch: true,
+            language: 'ko-KR'
+        });
+
+    </script>
 
 {% endblock %}

@@ -1,5 +1,8 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+from app_core import models as mo
+from app_core import daos as do
 
 # 로그인 API
 def api_login(request):
@@ -20,3 +23,379 @@ def api_review(request):
 # 장소 API
 def api_place(request):
     return JsonResponse({'result': 'success'})
+
+# 장소 수정 API
+def update_place(request):
+    if request.method == 'POST':
+        try:
+            # 요청 데이터 가져오기
+            place_id = request.POST.get('place_id')
+            if not place_id:
+                return JsonResponse({'success': False, 'message': 'place_id is required'}, status=400)
+
+            update_place = do.update_place(
+                place_id=place_id,
+                name=request.POST.get('name'),
+                intro=request.POST.get('intro'),
+                location=request.POST.get('location'),
+                location_link=request.POST.get('location_link'),
+                description=request.POST.get('description'),
+            )
+
+            if not update_place['success']:
+                return JsonResponse({
+                    'success': False,
+                    'message': update_place['message'],
+                }, status=400)
+
+            return JsonResponse({
+                'success': True,
+                'message': 'Place updated successfully',
+            })
+
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'message': str(e),
+            }, status=400)
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=405)
+
+# 장소 삭제 API
+def delete_place(request):
+    if request.method == 'DELETE':
+        try:
+            # 요청 데이터 가져오기
+            place_id = request.POST.get('place_id')
+            if not place_id:
+                return JsonResponse({'success': False, 'message': 'place_id is required'}, status=400)
+
+            delete_place = do.delete_place(place_id)
+
+            if not delete_place['success']:
+                return JsonResponse({
+                    'success': False,
+                    'message': delete_place['message'],
+                }, status=400)
+
+            return JsonResponse({
+                'success': True,
+                'message': 'Place deleted successfully',
+            })
+
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'message': str(e),
+            }, status=400)
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=405)
+
+# 장소 이미지 등록 API
+def create_place_image(request):
+    if request.method == 'POST':
+        try:
+            # 요청 데이터 가져오기
+            place_id = request.POST.get('place_id')
+            if not place_id:
+                return JsonResponse({'success': False, 'message': 'place_id is required'}, status=400)
+
+            # 이미지 파일들 가져오기
+            images = request.FILES.getlist('image')
+            image_type = request.POST.getlist('image_type')
+            orders = request.POST.getlist('order')
+
+            if not images:
+                return JsonResponse({'success': False, 'message': 'At least one image is required'}, status=400)
+
+            # 여러 이미지 등록
+            for i, image in enumerate(images):
+                image_type = image_type[i] if i < len(image_type) else None
+                order = orders[i] if i < len(orders) else None
+                create_place_image = do.create_place_image(
+                    place_id=place_id,
+                    image=image,
+                    image_type=image_type,
+                    order=order,
+                )
+
+                if not create_place_image['success']:
+                    return JsonResponse({
+                        'success': False,
+                        'message': create_place_image['message'],
+                    }, status=400)
+
+            return JsonResponse({
+                'success': True,
+                'message': 'Place images created successfully',
+            })
+
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'message': str(e),
+            }, status=400)
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=405)
+
+# 장소 이미지 삭제 API
+def delete_place_image(request):
+    if request.method == 'DELETE':
+        try:
+            # 요청 데이터 가져오기
+            image_id = request.POST.get('image_id')
+            if not image_id:
+                return JsonResponse({'success': False, 'message': 'image_id is required'}, status=400)
+
+            delete_place_image = do.delete_place_image(image_id)
+
+            if not delete_place_image['success']:
+                return JsonResponse({
+                    'success': False,
+                    'message': delete_place_image['message'],
+                }, status=400)
+
+            return JsonResponse({
+                'success': True,
+                'message': 'Place image deleted successfully',
+            })
+
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'message': str(e),
+            }, status=400)
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=405)
+
+# 장소 아이템 상세 API
+def get_place_item_detail(request):
+    if request.method == 'GET':
+        try:
+            # 요청 데이터 가져오기
+            item_id = request.GET.get('item_id')
+            if not item_id:
+                return JsonResponse({'success': False, 'message': 'item_id is required'}, status=400)
+
+            place_item = do.get_place_item_detail(item_id)
+
+            if not place_item['success']:
+                return JsonResponse({
+                    'success': False,
+                    'message': place_item['message'],
+                }, status=400)
+
+            return JsonResponse({
+                'success': True,
+                'message': 'Place item detail',
+                'item': place_item['item'],
+            })
+
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'message': str(e),
+            }, status=400)
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=405)
+
+# 장소 상품 등록 API
+def create_place_item(request):
+    if request.method == 'POST':
+        try:
+            # 요청 데이터 가져오기
+            place_id = request.POST.get('place_id')
+            if not place_id:
+                return JsonResponse({'success': False, 'message': 'place_id is required'}, status=400)
+
+            add_place_item = do.add_place_item(
+                place_id=place_id,
+                image=request.FILES.get('image'),
+                name=request.POST.get('name'),
+                description=request.POST.get('description'),
+                price=request.POST.get('price'),
+            )
+
+            if not add_place_item['success']:
+                return JsonResponse({
+                    'success': False,
+                    'message': add_place_item['message'],
+                }, status=400)
+
+            return JsonResponse({
+                'success': True,
+                'message': 'Place item added successfully',
+                'item_id': add_place_item['item_id'],
+            })
+
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'message': str(e),
+            }, status=400)
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=405)
+
+# 장소 상품 수정 API
+def update_place_item(request):
+    if request.method == 'POST':
+        try:
+            # 요청 데이터 가져오기
+            item_id = request.POST.get('item_id')
+            if not item_id:
+                return JsonResponse({'success': False, 'message': 'item_id is required'}, status=400)
+
+            edit_place_item = do.edit_place_item(
+                item_id=item_id,
+                image=request.FILES.get('image'),
+                name=request.POST.get('name'),
+                description=request.POST.get('description'),
+                price=request.POST.get('price'),
+            )
+
+            if not edit_place_item['success']:
+                return JsonResponse({
+                    'success': False,
+                    'message': edit_place_item['message'],
+                }, status=400)
+
+            return JsonResponse({
+                'success': True,
+                'message': 'Place item updated successfully',
+            })
+
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'message': str(e),
+            }, status=400)
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=405)
+
+# 장소 상품 삭제 API
+def delete_place_item(request):
+    if request.method == 'DELETE':
+        try:
+            # 요청 데이터 가져오기
+            item_id = request.POST.get('item_id')
+            if not item_id:
+                return JsonResponse({'success': False, 'message': 'item_id is required'}, status=400)
+
+            delete_place_item = do.delete_place_item(item_id)
+
+            if not delete_place_item['success']:
+                return JsonResponse({
+                    'success': False,
+                    'message': delete_place_item['message'],
+                }, status=400)
+
+            return JsonResponse({
+                'success': True,
+                'message': 'Place item deleted successfully',
+            })
+
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'message': str(e),
+            }, status=400)
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=405)
+
+# 상품 일정 조회 API
+def get_item_dates(request):
+    if request.method == 'GET':
+        try:
+            # 요청 데이터 가져오기
+            item_id = request.GET.get('item_id')
+            if not item_id:
+                return JsonResponse({'success': False, 'message': 'item_id is required'}, status=400)
+
+            item_dates = do.get_item_dates(item_id)
+
+            if not item_dates['success']:
+                return JsonResponse({
+                    'success': False,
+                    'message': item_dates['message'],
+                }, status=400)
+
+            return JsonResponse({
+                'success': True,
+                'message': 'Item dates',
+                'item_dates': item_dates['item_dates'],
+            })
+
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'message': str(e),
+            }, status=400)
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=405)
+
+# 상품 일정 등록 API
+def create_item_date(request):
+    if request.method == 'POST':
+        try:
+            # 요청 데이터 가져오기
+            item_id = request.POST.get('item_id')
+            if not item_id:
+                return JsonResponse({'success': False, 'message': 'item_id is required'}, status=400)
+
+            add_item_date = do.add_item_date(
+                item_id=item_id,
+                year=request.POST.get('year'),
+                month=request.POST.get('month'),
+                date=request.POST.get('date'),
+                content=request.POST.get('content'),
+            )
+
+            if not add_item_date['success']:
+                return JsonResponse({
+                    'success': False,
+                    'message': add_item_date['message'],
+                }, status=400)
+
+            return JsonResponse({
+                'success': True,
+                'message': 'Item date added successfully',
+                'item_date_id': add_item_date['item_date_id'],
+            })
+
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'message': str(e),
+            }, status=400)
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=405)
+
+# 상품 일정 삭제 API
+def delete_item_date(request):
+    if request.method == 'DELETE':
+        try:
+            # 요청 데이터 가져오기
+            date_id = request.POST.get('date_id')
+            if not date_id:
+                return JsonResponse({'success': False, 'message': 'date_id is required'}, status=400)
+
+            delete_item_date = do.delete_item_date(date_id)
+
+            if not delete_item_date['success']:
+                return JsonResponse({
+                    'success': False,
+                    'message': delete_item_date['message'],
+                }, status=400)
+
+            return JsonResponse({
+                'success': True,
+                'message': 'Item date deleted successfully',
+            })
+
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'message': str(e),
+            }, status=400)
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=405)

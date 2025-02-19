@@ -1,3 +1,5 @@
+from app_core import models as mo
+
 # 함수 목록
 # get_account(account_id): 사용자 계정 정보 조회
 # check_account(account_id): 아이디 중복 확인
@@ -167,11 +169,25 @@ def create_place(name, intro, location, location_link, description, status):
 
     # models.create를 이용해서 쿼리 작성
 
-    return {
-        'success': True,
-        'place_id': 1,
-        'message': 'Place created successfully.',
-    }
+    try:
+        place = mo.PLACE.objects.create(
+            name=name,
+            intro=intro,
+            location=location,
+            location_link=location_link,
+            description=description,
+            status=status
+        )
+        return {
+            'success': True,
+            'place_id': place.id,
+            'message': 'Place created successfully.',
+        }
+    except Exception as e:
+        return {
+            'success': False,
+            'message': str(e),
+        }
 
 # 장소 수정
 def update_place(place_id, name=None, intro=None, location=None, location_link=None, description=None, status=None):
@@ -185,11 +201,30 @@ def update_place(place_id, name=None, intro=None, location=None, location_link=N
     # status: 상태
 
     # models.update를 이용해서 쿼리 작성
-
-    return {
-        'success': True,
-        'message': 'Place updated successfully.',
-    }
+    try:
+        place = mo.PLACE.objects.get(id=place_id)
+        if name:
+            place.name = name
+        if intro:
+            place.intro = intro
+        if location:
+            place.location = location
+        if location_link:
+            place.location_link = location_link
+        if description:
+            place.description = description
+        if status:
+            place.status = status
+        place.save()
+        return {
+            'success': True,
+            'message': 'Place updated successfully.',
+        }
+    except Exception as e:
+        return {
+            'success': False,
+            'message': str(e),
+        }
 
 # 장소 삭제
 def delete_place(place_id):
@@ -197,11 +232,18 @@ def delete_place(place_id):
     # place_id: 장소 아이디
 
     # models.delete를 이용해서 쿼리 작성
-
-    return {
-        'success': True,
-        'message': 'Place deleted successfully.',
-    }
+    try:
+        place = mo.PLACE.objects.get(id=place_id)
+        place.delete()
+        return {
+            'success': True,
+            'message': 'Place deleted successfully.',
+        }
+    except Exception as e:
+        return {
+            'success': False,
+            'message': str(e),
+        }
 
 # 장소 이미지 등록
 def create_place_image(place_id, image, image_type, order):
@@ -212,11 +254,24 @@ def create_place_image(place_id, image, image_type, order):
     # order: 이미지 표시 순서
 
     # models.create를 이용해서 쿼리 작성
-
-    return {
-        'success': True,
-        'message': 'Place image created successfully.',
-    }
+    try:
+        place = mo.PLACE.objects.get(id=place_id)
+        place_image = mo.PLACE_IMAGE.objects.create(
+            place=place,
+            image=image,
+            image_type=image_type,
+            order=order
+        )
+        return {
+            'success': True,
+            'message': 'Place image created successfully.',
+            'image_id': place_image.id,
+        }
+    except Exception as e:
+        return {
+            'success': False,
+            'message': str(e),
+        }
 
 # 장소 이미지 삭제
 def delete_place_image(image_id):
@@ -224,33 +279,51 @@ def delete_place_image(image_id):
     # image_id: 이미지 아이디
 
     # models.delete를 이용해서 쿼리 작성
-
-    return {
-        'success': True,
-        'message': 'Place image deleted successfully.',
-    }
+    try:
+        place_image = mo.PLACE_IMAGE.objects.get(id=image_id)
+        place_image.delete()
+        return {
+            'success': True,
+            'message': 'Place image deleted successfully.',
+        }
+    except Exception as e:
+        return {
+            'success': False,
+            'message': str(e),
+        }
 
 # 장소 아이템 상세
 def get_place_item_detail(item_id):
 
     # item_id: 아이템 아이디
     # models.get을 이용해서 쿼리 작성
+    # ITEM_DATE 테이블에서 아이템 아이디로 필터링
 
-    item = {
-        'id': 1,
-        'name': 'Deluxe Room',
-        'description': '<h1>Deluxe Room</h1><p>Deluxe Room is a luxury room with a view of the city.</p>',
-        'price': 300,
-        'image': '/static/img/samples/2.jpg',
-        'item_dates': [{
-            'id': 1,
-            'year': 2021,
-            'month': 1,
-            'date': 1,
-            'content': 'Deluxe Room is available.',
-        }]
-    }
+    try:
+        item = mo.PLACE_ITEM.objects.get(id=item_id)
+        item_dates = mo.ITEM_DATE.objects.filter(item=item)
 
+        item_dates_list = [{
+            'id': item_date.id,
+            'year': item_date.year,
+            'month': item_date.month,
+            'date': item_date.date,
+            'content': item_date.content,
+        } for item_date in item_dates]
+
+        return {
+            'id': item.id,
+            'name': item.name,
+            'description': item.description,
+            'price': item.price,
+            'image': item.image.url,  # 이미지 URL을 반환
+            'item_dates': item_dates_list
+        }
+    except Exception as e:
+        return {
+            'success': False,
+            'message': str(e),
+        }
     return item
 
 # 장소 아이템 생성
@@ -262,11 +335,24 @@ def create_place_item(place_id, name, description, price):
     # price: 가격
 
     # models.create를 이용해서 쿼리 작성
-
-    return {
-        'success': True,
-        'message': 'Place item created successfully.',
-    }
+    try:
+        place = mo.PLACE.objects.get(id=place_id)
+        item = mo.PLACE_ITEM.objects.create(
+            place=place,
+            name=name,
+            description=description,
+            price=price
+        )
+        return {
+            'success': True,
+            'message': 'Place item created successfully.',
+            'item_id': item.id,
+        }
+    except Exception as e:
+        return {
+            'success': False,
+            'message': str(e),
+        }
 
 # 장소 아이템 수정
 def update_place_item(item_id, name=None, description=None, price=None):
@@ -277,11 +363,24 @@ def update_place_item(item_id, name=None, description=None, price=None):
     # price: 가격
 
     # models.update를 이용해서 쿼리 작성
-
-    return {
-        'success': True,
-        'message': 'Place item updated successfully.',
-    }
+    try:
+        item = mo.PLACE_ITEM.objects.get(id=item_id)
+        if name:
+            item.name = name
+        if description:
+            item.description = description
+        if price:
+            item.price = price
+        item.save()
+        return {
+            'success': True,
+            'message': 'Place item updated successfully.',
+        }
+    except Exception as e:
+        return {
+            'success': False,
+            'message': str(e),
+        }
 
 # 장소 아이템 삭제
 def delete_place_item(item_id):
@@ -289,12 +388,18 @@ def delete_place_item(item_id):
     # item_id: 아이템 아이디
 
     # models.delete를 이용해서 쿼리 작성
-
-    return {
-        'success': True,
-        'message': 'Place item deleted successfully.',
-    }
-
+    try:
+        item = mo.PLACE_ITEM.objects.get(id=item_id)
+        item.delete()
+        return {
+            'success': True,
+            'message': 'Place item deleted successfully.',
+        }
+    except Exception as e:
+        return {
+            'success': False,
+            'message': str(e),
+        }
 
 # 리뷰 작성
 def create_review(place_id, rate, content, images):
@@ -349,11 +454,25 @@ def create_item_date(item_id, year, month, date, content):
     # content: 표시할 내용
 
     # models.create를 이용해서 쿼리 작성
-
-    return {
-        'success': True,
-        'message': 'Item date created successfully.',
-    }
+    try:
+        item = mo.PLACE_ITEM.objects.get(id=item_id)
+        item_date = mo.ITEM_DATE.objects.create(
+            item=item,
+            year=year,
+            month=month,
+            date=date,
+            content=content
+        )
+        return {
+            'success': True,
+            'message': 'Item date created successfully.',
+            'item_date_id': item_date.id,
+        }
+    except Exception as e:
+        return {
+            'success': False,
+            'message': str(e),
+        }
 
 # 아이템 일정 삭제
 def delete_item_date(item_date_id):
@@ -361,11 +480,18 @@ def delete_item_date(item_date_id):
     # item_date_id: 아이템 일정 아이디
 
     # models.delete를 이용해서 쿼리 작성
-
-    return {
-        'success': True,
-        'message': 'Item date deleted successfully.',
-    }
+    try:
+        item_date = mo.ITEM_DATE.objects.get(id=item_date_id)
+        item_date.delete()
+        return {
+            'success': True,
+            'message': 'Item date deleted successfully.',
+        }
+    except Exception as e:
+        return {
+            'success': False,
+            'message': str(e),
+        }
 
 # 구매 생성
 def create_purchase(item_id, book_start_datetime, book_end_datetime, payment_agency, payment_method, payment_info, memo=''):
