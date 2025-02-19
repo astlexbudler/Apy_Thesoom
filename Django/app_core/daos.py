@@ -1,3 +1,4 @@
+import math
 from app_core import models as mo
 
 # 함수 목록
@@ -36,27 +37,24 @@ def get_account(account_id):
 
     # account_id: 사용자 아이디(username)
 
-    account = {
-        'id': 'applify.kr@gmail.com',
-        'name': 'Applify',
-        'is_superuser': True,
-        'date_joined': '2021-01-01 00:00:00',
-        'last_login': '2021-01-01 00:00:00',
+    account = User.objects.get(username=account_id)
+
+    return {
+        'id': account_id,
+        'name': account.username,
+        'is_superuser': account.is_superuser,
     }
 
-    return account
 
 # 아이디 찾기
 def find_account(username):
-    result = User.objects.filter(username=username).exists()
-
-    return result
+    return User.objects.filter(username=username).exists()
 
 # 아이디 중복 확인
 def check_account(account_id):
 
     # account_id: 사용자 아이디(username)
-    result = User.objects.get(pk=account_id)
+    result = User.objects.get(username=account_id)
 
     # models.filter를 이용해서 쿼리 작성
 
@@ -112,16 +110,21 @@ def search_places(search_keyword):
     # models.filter를 이용해서 쿼리 작성
     # 대표 이미지는 PLACE_IMAGE 테이블에서 image_type='main'인 이미지를 사용
 
-    places = [{
-        'id': 1,
-        'name': 'The Franklin London – Starhotels Collezione',
-        'location': '24 Egerton Gardens, Chelsea, London',
-        'avg_rate': 5,
-        'main_images': ['/static/img/samples/0.jpg'],
-        'status': 'active',
-    }]
+    plaecs = mo.PLACE.objects.filter(
+        name__icontains=search_keyword,
+        status='active'
+    )
 
-    return places
+    return [{
+        'id': place.id,
+        'name': place.name,
+        'location': place.location,
+        'avg_rate': math.ceil(sum([place_review.rate for place_review in mo.REVIEW.objects.filter(place=place)]) / len(mo.REVIEW.objects.filter(place=place))) if mo.REVIEW.objects.filter(place=place) else 0,
+        'main_images': [place_main_image.image.url for place_main_image in mo.PLACE_IMAGE.objects.filter(place=place, image_type='main')],
+        'status': place.status,
+        'discount_from_price': place.discount_from_price,
+        'final_from_price': place.final_from_price,
+    } for place in plaecs]
 
 # 장소 세부 내용 확인
 def get_place_detail(place_id):
@@ -131,46 +134,69 @@ def get_place_detail(place_id):
     # PLACE_IMAGE 테이블에서 image_type='main'인 이미지를 사용
     # related_places는 그냥 랜덤으로 6개의 place를 넣도록 함
 
-    place = {
-        'id': 1,
-        'name': 'The Franklin London – Starhotels Collezione',
-        'intro': 'The Franklin London – Starhotels Collezione is a luxury hotel located in the heart of London.',
-        'location': '24 Egerton Gardens, Chelsea, London',
-        'location_link': 'https://www.google.com/maps?sca_esv=a12588ecf4d7e578&rlz=1C5CHFA_enKR1053KR1053&output=search&q=The+Franklin+London&source=lnms&fbs=ABzOT_CZsxZeNKUEEOfuRMhc2yCI6hbTw9MNVwGCzBkHjFwaK321z773wCjxZUmvDroqphlIJR493mMxNbRCE7CsjxN0zrcX3q5osSt8yM9HtIcApR-qytgB7SnKESLXhABDXCne24GoJWBDR_kZ0la7ZiHwb-YziOH2eZYEdtGI-iMn_X01NPUZMq-6QTrdt__YKLW2sBwX&entry=mc&ved=1t:200715&ictx=111',
-        'description': '<h1>The Franklin London – Starhotels Collezione</h1><p>The Franklin London – Starhotels Collezione is a luxury hotel located in the heart of London.</p>',
-        'status': 'active',
-        'main_images': ['/static/img/samples/0.jpg'],
-        'sub_images': ['/static/img/samples/1.jpg'],
+    place = mo.PLACE.objects.get(id=place_id)
+    place_main_images = mo.PLACE_IMAGE.objects.filter(place=place, image_type='main')
+    place_sub_images = mo.PLACE_IMAGE.objects.filter(place=place, image_type='sub')
+    place_items = mo.PLACE_ITEM.objects.filter(place=place)
+    place_reviews = mo.REVIEW.objects.select_related('author').filter(place=place)
+    place_related_places = mo.PLACE.objects.filter(status='active').order_by('?')[:6]
+    avg_rate = math.ceil(sum([place_review.rate for place_review in place_reviews]) / len(place_reviews)) if place_reviews else 0
+
+    return {
+        'id': place.id,
+        'name': place.name,
+        'intro': place.intro,
+        'location': place.location,
+        'location_link': place.location_link,
+        'description': place.description,
+        'discount_from_price': place.discount_from_price,
+        'final_from_price': place.final_from_price,
+        'status': place.status,
+        'main_images': [{
+            'id': place_main_image.pk,
+            'image': place_main_image.image.url,
+        } for place_main_image in place_main_images],
+        'sub_images': [{
+            'id': place_sub_image.pk,
+            'image': place_sub_image.image.url,
+        } for place_sub_image in place_sub_images],
         'items': [{
-            'id': 1,
-            'name': 'Deluxe Room',
-            'description': '<h1>Deluxe Room</h1><p>Deluxe Room is a luxury room with a view of the city.</p>',
-            'price': 300,
-            'image': '/static/img/samples/2.jpg',
-        }],
-        'avg_rate': 5,
+            'id': place_item.pk,
+            'name': place_item.name,
+            'description': place_item.description,
+            'price': place_item.price,
+            'image': place_item.image.url,
+            'dates': [{
+                'id': place_item_date.pk,
+                'year': place_item_date.year,
+                'month': place_item_date.month,
+                'date': place_item_date.date,
+                'content': place_item_date.content,
+            } for place_item_date in mo.ITEM_DATE.objects.filter(item=place_item)],
+        } for place_item in place_items],
+        'avg_rate': avg_rate,
         'reviews': [{
-            'id': 1,
-            'author_name': 'Applify',
-            'rate': 5,
-            'content': 'The Franklin London is a great hotel.',
-            'images': ['/static/img/samples/3.jpg'],
-            'created_at': '2021-01-01 00:00:00',
-        }],
+            'id': place_review.pk,
+            'author_name': place_review.author.first_name,
+            'rate': place_review.rate,
+            'content': place_review.content,
+            'image': place_review.images,
+            'created_at': place_review.created_at,
+        } for place_review in place_reviews],
         'related_places': [{
-            'id': 1,
-            'name': 'The Franklin London – Starhotels Collezione',
-            'location': '24 Egerton Gardens, Chelsea, London',
-            'avg_rate': 5,
-            'main_images': ['/static/img/samples/0.jpg'],
-            'status': 'active',
-        }],
+            'id': place_related_place.id,
+            'name': place_related_place.name,
+            'location': place_related_place.location,
+            'avg_rate': math.ceil(sum([place_review.rate for place_review in mo.REVIEW.objects.filter(place=place_related_place)]) / len(mo.REVIEW.objects.filter(place=place_related_place))) if mo.REVIEW.objects.filter(place=place_related_place) else 0,
+            'main_images': [place_related_main_image.image.url for place_related_main_image in mo.PLACE_IMAGE.objects.filter(place=place_related_place, image_type='main')],
+            'status': place_related_place.status,
+            'discount_from_price': 300,
+            'final_from_price': 200,
+        } for place_related_place in place_related_places],
     }
 
-    return place
-
 # 새 장소 등록
-def create_place(name, intro, location, location_link, description, status):
+def create_place():
 
     # name: 장소 이름
     # intro: 짧은 소개
@@ -183,12 +209,14 @@ def create_place(name, intro, location, location_link, description, status):
 
     try:
         place = mo.PLACE.objects.create(
-            name=name,
-            intro=intro,
-            location=location,
-            location_link=location_link,
-            description=description,
-            status=status
+            name='장소이름',
+            intro='짧은 설명',
+            location='위치 안내',
+            location_link='구글 지도 링크',
+            description='<h1>설명을 작성해주세요.</h1>',
+            status='writing',
+            discount_from_price=300,
+            final_from_price=200
         )
         return {
             'success': True,
@@ -202,7 +230,7 @@ def create_place(name, intro, location, location_link, description, status):
         }
 
 # 장소 수정
-def update_place(place_id, name=None, intro=None, location=None, location_link=None, description=None, status=None):
+def update_place(place_id, name=None, intro=None, location=None, location_link=None, description=None, status=None, discount_from_price=None, final_from_price=None):
 
     # place_id: 장소 아이디
     # name: 장소 이름
@@ -213,30 +241,31 @@ def update_place(place_id, name=None, intro=None, location=None, location_link=N
     # status: 상태
 
     # models.update를 이용해서 쿼리 작성
-    try:
-        place = mo.PLACE.objects.get(id=place_id)
-        if name:
-            place.name = name
-        if intro:
-            place.intro = intro
-        if location:
-            place.location = location
-        if location_link:
-            place.location_link = location_link
-        if description:
-            place.description = description
-        if status:
-            place.status = status
-        place.save()
-        return {
-            'success': True,
-            'message': 'Place updated successfully.',
-        }
-    except Exception as e:
-        return {
-            'success': False,
-            'message': str(e),
-        }
+    place = mo.PLACE.objects.get(id=place_id)
+    if name:
+        place.name = name
+    if intro:
+        place.intro = intro
+    if location:
+        place.location = location
+    if location_link:
+        place.location_link = location_link
+    if description:
+        place.description = description
+    if status:
+        place.status = status
+    if discount_from_price:
+        place.discount_from_price = discount_from_price
+    if final_from_price:
+        place.final_from_price = final_from_price
+    place.status = 'active'
+    place.save()
+
+    return {
+        'success': True,
+        'message': 'Place updated successfully.',
+    }
+
 
 # 장소 삭제
 def delete_place(place_id):
@@ -258,12 +287,11 @@ def delete_place(place_id):
         }
 
 # 장소 이미지 등록
-def create_place_image(place_id, image, image_type, order):
+def create_place_image(place_id, image, image_type):
 
     # place_id: 장소 아이디
     # image: 이미지
     # image_type: 이미지 타입
-    # order: 이미지 표시 순서
 
     # models.create를 이용해서 쿼리 작성
     try:
@@ -272,12 +300,11 @@ def create_place_image(place_id, image, image_type, order):
             place=place,
             image=image,
             image_type=image_type,
-            order=order
         )
         return {
             'success': True,
             'message': 'Place image created successfully.',
-            'image_id': place_image.id,
+            'image_id': place_image.pk,
         }
     except Exception as e:
         return {
@@ -316,7 +343,7 @@ def get_place_item_detail(item_id):
         item_dates = mo.ITEM_DATE.objects.filter(item=item)
 
         item_dates_list = [{
-            'id': item_date.id,
+            'id': item_date.pk,
             'year': item_date.year,
             'month': item_date.month,
             'date': item_date.date,
@@ -324,7 +351,7 @@ def get_place_item_detail(item_id):
         } for item_date in item_dates]
 
         return {
-            'id': item.id,
+            'id': item.pk,
             'name': item.name,
             'description': item.description,
             'price': item.price,
@@ -336,10 +363,9 @@ def get_place_item_detail(item_id):
             'success': False,
             'message': str(e),
         }
-    return item
 
 # 장소 아이템 생성
-def create_place_item(place_id, name, description, price):
+def create_place_item(place_id, name, description, price, image):
 
     # place_id: 장소 아이디
     # name: 상품 이름
@@ -353,12 +379,13 @@ def create_place_item(place_id, name, description, price):
             place=place,
             name=name,
             description=description,
-            price=price
+            price=price,
+            image=image
         )
         return {
             'success': True,
             'message': 'Place item created successfully.',
-            'item_id': item.id,
+            'item_id': item.pk,
         }
     except Exception as e:
         return {
@@ -478,7 +505,7 @@ def create_item_date(item_id, year, month, date, content):
         return {
             'success': True,
             'message': 'Item date created successfully.',
-            'item_date_id': item_date.id,
+            'item_date_id': item_date.pk,
         }
     except Exception as e:
         return {
@@ -539,32 +566,28 @@ def get_purchases(account_id):
 
     # account_id: 사용자 아이디
 
-    purchases = [{
-        'id': 1,
+    purchase = mo.PURCHASE.objects.select_related('item').select_related('item__place').filter(account_id=account_id)
+
+    return [{
+        'id': purchase.pk,
         'place': {
-            'id': 1,
-            'name': 'The Franklin London – Starhotels Collezione',
+            'id': purchase.item.place.pk,
+            'name': purchase.item.place.name,
         },
         'item': {
-            'id': 1,
-            'name': 'Deluxe Room',
-            'description': '<h1>Deluxe Room</h1><p>Deluxe Room is a luxury room with a view of the city.</p>',
-            'price': 300,
-            'image': '/static/img/samples/2.jpg',
+            'id': purchase.item.pk,
+            'name': purchase.item.name,
+            'description': purchase.item.description,
+            'price': purchase.item.price,
+            'image': purchase.item.image.url,
         },
-        'book_start_datetime': '2021-01-01 00:00:00',
-        'book_end_datetime': '2021-01-02 00:00:00',
-        'memo': 'Please prepare a birthday cake.',
-        'created_at': '2021-01-01 00:00:00',
-        'purchase_at': '2021-01-01 00:00:00',
-        'payment_agency': 'ALIPAY',
-        'payment_method': 'credit card',
-        'payment_info': {
-            'card_number': '1234-5678-9012-3456',
-            'expiration_date': '12/23',
-            'cvc': '123',
-        },
-        'status': 'approved',
-    }]
-
-    return purchases
+        'book_start_datetime': purchase.book_start_datetime,
+        'book_end_datetime': purchase.book_end_datetime,
+        'memo': purchase.memo,
+        'created_at': purchase.created_at,
+        'purchase_at': purchase.purchase_at,
+        'payment_agency': purchase.payment_agency,
+        'payment_method': purchase.payment_method,
+        'payment_info': purchase.payment_info,
+        'status': purchase.status,
+    } for purchase in purchase]

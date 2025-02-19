@@ -24,7 +24,7 @@ urlpatterns = [
     # DELETE: 리뷰 삭제
     path('review', a.api_review, name='api_review'),
 
-    # 장소 API
+    # 장소 RESTFUL API
     # POST-item_date: 장소 상품에 날짜 데이터 추가
     # DELETE-item_date: 장소 상품에 날짜 데이터 삭제
     # POST-image: 장소 이미지 추가

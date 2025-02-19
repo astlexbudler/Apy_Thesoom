@@ -37,7 +37,7 @@ def purchase_history(request):
         #return redirect('/') # 메인 페이지로 이동
 
     # 결제 기록 가져오기
-    purchases = daos.get_purchases(request.user.username)
+    purchases = daos.get_purchases(request.user.id)
 
     return render(request, 'purchase/history.html', {
         'purchases': purchases

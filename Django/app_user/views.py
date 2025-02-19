@@ -6,15 +6,19 @@ from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_http_methods
 from django.contrib import messages
 
-from app_core.daos import find_account
+from app_core.daos import *
 from app_core.models import ACCOUNT
 from .forms import CustomUserCreationForm, CustomUserFindForm, CustomPasswordResetForm
 
 
 # 메인 페이지
 def user_index(request):
+
+    # 검색어
+    search = request.GET.get('search', '')
+
     context = {
-        'places': [0, 0, 0, 0, 0, 0, 0, 0, 0]
+        'places': search_places(search),
     }
 
     if request.user.is_authenticated:
@@ -60,6 +64,7 @@ def user_logout(request):
 
 # 회원가입 페이지
 def user_signup(request):
+
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
 
@@ -68,7 +73,12 @@ def user_signup(request):
 
             request.session['signup_success'] = True
 
+            print("회원가입 성공")
+
             return redirect('user_login')
+        else:
+            print("회원가입 실패")
+
     else:
         form = CustomUserCreationForm()
 
@@ -114,7 +124,7 @@ def user_reset(request):
 
             user.set_password(new_password)
 
-            user.save();
+            user.save(); # < 세미클론 안씀 파이썬은
 
             request.session.pop('reset_username', None)
             request.session['password_reset_success'] = True

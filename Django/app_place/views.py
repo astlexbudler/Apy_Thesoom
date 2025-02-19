@@ -1,14 +1,21 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from app_core import daos as do
 from app_core import models as mo
 
 # 장소 정보 상세 페이지
 def place_detail(request):
-    return render(request, 'place/detail.html')
 
-# 장소 등록 페이지
-def place_write(request):
-    return render(request, 'place/write.html')
+    # place id 확인
+    place_id = request.GET.get("place_id")
+    place = do.get_place_detail(place_id)
+    if not place: # 장소 정보가 없을 경우
+        return redirect('/')
+
+    contexts = {
+        "place": place
+    }
+
+    return render(request, 'place/detail.html', contexts)
 
 # 장소 수정 페이지
 def place_edit(request):
@@ -16,23 +23,12 @@ def place_edit(request):
 
     if not place_id:
         # place_id가 없으면 새로운 장소 생성
-        new_place = do.create_place(
-            name="",
-            intro="",
-            location="",
-            location_link="",
-            description="",
-            status="writing"
-        )
-
+        new_place = do.create_place()
         if new_place["success"]:
             place_id = new_place["place_id"]
-        else:
-            return render(request, 'place/edit.html', {"error": new_place["message"]})
 
-    try:
-        place = mo.PLACE.objects.get(id=place_id)
-    except mo.PLACE.DoesNotExist:
-        return render(request, 'place/edit.html', {"error": "해당 장소를 찾을 수 없습니다."})
+    place = do.get_place_detail(place_id)
+    if not place: # 장소 정보가 없을 경우
+        return redirect('/')
 
     return render(request, 'place/edit.html', {"place": place})

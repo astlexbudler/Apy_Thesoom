@@ -28,7 +28,9 @@
    <div class="border-bottom bg-white shadow-sm osahan-main-nav">
       <nav class="navbar navbar-expand-lg navbar-light bg-white osahan-header py-0 container">
          <a class="navbar-brand mr-0" href="/">
-            <div style="background: url('/static/img/logo.png') no-repeat center; background-size: contain; width: 180px; height: 60px;"></div>
+            <div
+               style="background: url('/static/img/logo.png') no-repeat center; background-size: contain; width: 180px; height: 60px;">
+            </div>
          </a>
          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,26 +43,25 @@
 
          <!-- 헤더 메뉴 오른쪽 끝 -->
          <div class="ml-auto d-flex align-items-center" style="font-size: 1rem;">
-             {% if request.user.is_authenticated %}
-                 <div>
-                     <a href="/profile" class="mr-4 text-dark">
-                        {{ user.first_name }} 님 반갑습니다.
-                     </a>
-                 </div>
-                 <div>
-                     <a href="/logout" class="mr-2 text-dark">
-                        로그아웃
-                     </a>
-                 </div>
-             {% else %}
-                 <!-- login/signup -->
-                 <a href="/login" class="mr-4 text-dark">
-                    Login
-                 </a>
-                 <a href="/signup" class="mr-2 text-dark">
-                    Signup
-                 </a>
-             {% endif %}
+            {% if request.user.is_authenticated %}
+            <a href="/profile" class="mr-4 text-dark">
+               {{ user.first_name }} 님 반갑습니다.
+            </a>
+            <a href="/purchase/history" class="mr-4 text-dark">
+               결제기록
+            </a>
+            <a href="/logout" class="mr-2 text-dark">
+               로그아웃
+            </a>
+            {% else %}
+            <!-- login/signup -->
+            <a href="/login" class="mr-4 text-dark">
+               Login
+            </a>
+            <a href="/signup" class="mr-2 text-dark">
+               Signup
+            </a>
+            {% endif %}
 
          </div>
       </nav>

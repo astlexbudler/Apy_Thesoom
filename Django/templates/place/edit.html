@@ -1,99 +1,243 @@
 {% extends 'base/base.html' %}
 {% block content %}
 
-    <!-- 메인 -->
-    <main>
-        <section>
-            <div class="container mt-5">
-                <h2 class="font-weight-bold">장소 내용</h2>
+<!-- 헤더 -->
+{% include 'parts/header.html' %}
 
-                <!-- 장소 내용 입력 폼 -->
-                <form id="placeContentForm">
-                    <div class="form-group">
-                        <label for="placeName">장소 이름</label>
-                        <input type="text" class="form-control" id="placeName" placeholder="장소 이름을 입력하세요." required>
-                    </div>
-                    <div class="form-group">
-                        <label for="placeShortDescription">짧은 소개</label>
-                        <input type="text" class="form-control" id="placeShortDescription" placeholder="짧은 소개를 입력하세요." required>
-                    </div>
-                    <div class="form-group">
-                        <label for="placeLocation">장소 위치</label>
-                        <input type="text" class="form-control" id="placeLocation" placeholder="장소 위치를 입력하세요." required>
-                    </div>
-                    <div class="form-group">
-                        <label for="placeLocationLink">장소 위치 링크</label>
-                        <input type="url" class="form-control" id="placeLocationLink" placeholder="구글 지도 링크를 입력하세요." required>
-                    </div>
-                    <div class="form-group">
-                        <label for="placeDescription">장소 설명</label>
-                        <div id="placeDescription"></div>
-                    </div>
+<!-- 메인 -->
+<main>
 
-                    <!-- 장소 내용 등록 버튼 -->
-                    <button type="button" class="btn btn-primary mt-4" id="registerPlaceContentBtn">장소 내용 등록</button>
-                </form>
+    <!-- 페이지 제목 -->
+    <section class="container mt-5">
+        <h5>
+            장소 생성 및 수정
+        </h5>
+        <p>
+            <a href="javascript: history.back();" class="text-secondary">
+                <i class="fi fi-rr-angle-left"></i> 뒤로가기
+            </a>
+        </p>
+    </section>
 
-                <hr>
+    <!-- 장소 내용 생성 및 수정 -->
+    <section class="container my-5 pb-5 border-bottom">
 
-                <!-- 장소 이미지 입력 폼 -->
-                <form id="placeImageForm">
-                    <div class="form-group">
-                        <label for="mainImage">대표 이미지</label>
-                        <input type="file" class="form-control" id="mainImage" accept="image/*" required>
-                        <div id="mainImagePreview" class="mt-2"></div>
-                        <small>대표 이미지는 장소 카드 및 상단 캐로셀에 표시됩니다.</small>
-                    </div>
-                    <div class="form-group">
-                        <label for="subImage">서브 이미지</label>
-                        <input type="file" class="form-control" id="subImage" accept="image/*" required>
-                        <div id="subImagePreview" class="mt-2"></div>
-                        <small>서브 이미지는 상세 정보에 작게 표시됩니다.</small>
-                    </div>
+        <h6>
+            장소 내용 생성 및 수정
+        </h6>
 
-                    <!-- 장소 이미지 등록 버튼 -->
-                    <button type="button" class="btn btn-primary mt-4" id="registerPlaceImageBtn">장소 이미지 등록</button>
-                </form>
+        <!-- 장소 내용 입력 폼 -->
+        <form id="placeContentForm">
+            <input type="hidden" name="place_id" value="{{ place.id }}">
 
-                <hr>
-
-                <!-- 상품 목록 -->
-                <h4 class="d-flex justify-content-between align-items-center">
-                    상품 목록
-                    <!-- 상품 등록 버튼 추가 -->
-                    <button type="button" class="btn btn-primary" id="registerItemBtn">상품 등록</button>
-                </h4>
-                <div id="placeItemList" class="mt-3">
-                    <!-- 상품 목록이 여기에 동적으로 추가됩니다 -->
-                    <ul id="itemList" class="list-group">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            상품1
-                            <button type="button" class="btn btn-danger">삭제</button>
-                        </li>
-                    </ul>
+            <!-- 장소 이름, 위치 입력 폼 -->
+            <div class="row">
+                <div class="form-group col-6">
+                    <label>장소 이름</label>
+                    <input type="text" class="form-control" name="name" value="{{ place.name }}" required>
                 </div>
-
-                <hr>
-
+                <div class="form-group col-6">
+                    <label>장소 위치</label>
+                    <input type="text" class="form-control" name="location" value="{{ place.location }}" required>
+                </div>
             </div>
-        </section>
-    </main>
+
+            <!-- 기본 가격 입력 폼 -->
+            <div class="row">
+                <div class="form-group col-6">
+                    <label>기본 가격(할인 전)</label>
+                    <input type="text" class="form-control" name="discount_from_price" value="{{ place.discount_from_price }}" required>
+                </div>
+                <div class="form-group col-6">
+                    <label>기본 가격(할인 후)</label>
+                    <input type="text" class="form-control" name="final_from_price" value="{{ place.final_from_price }}" required>
+                </div>
+            </div>
+
+            <!-- 장소 위치 링크 입력 폼 -->
+            <div class="form-group">
+                <label>장소 위치 링크</label>
+                <input type="url" class="form-control" name="location_link" value="{{ place.location_link }}" required>
+            </div>
+
+            <!-- 장소 짧은 소개 입력 폼 -->
+            <div class="form-group">
+                <label>짧은 소개</label>
+                <input type="text" class="form-control" name="intro" value="{{ place.intro }}" required>
+            </div>
+
+            <!-- 장소 설명 입력 폼(Toast UI Editor) -->
+            <div class="form-group">
+                <label for="placeDescription">장소 설명</label>
+                <div id="placeDescription"></div>
+            </div>
+
+            <!-- 장소 내용 등록 버튼 -->
+            <button class="btn btn-primary mt-4" onclick="updatePlace();">
+                <i class="fi fi-rr-edit"></i> 장소 내용 등록
+            </button>
+
+        </form>
+
+    </section>
+
+    <!-- 장소 이미지 생성 및 수정 -->
+    <section class="container mb-5 pb-5 border-bottom">
+
+        <h6>
+            장소 이미지 생성 및 수정
+        </h6>
+
+        <!-- 대표 이미지 썸네일 -->
+        <div class="py-3 osahan-promos">
+            <div class="d-flex align-items-center mb-3">
+                <p>
+                    대표 이미지들
+                </p>
+            </div>
+            <div class="promo-slider pb-0 mb-0">
+                {% for img in place.main_images %}
+                <div class="osahan-slider-item mx-2" onclick="deletePlaceImage('{{img.id}}');" style="cursor: pointer;">
+                    <img src="{{img.image}}" class="img-fluid mx-auto rounded">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- 서브 이미지 썸네일 -->
+        <div class="py-3 osahan-promos">
+            <div class="d-flex align-items-center mb-3">
+                <p>
+                    서브 이미지들
+                </p>
+            </div>
+            <div class="promo-slider pb-0 mb-0">
+                {% for img in place.sub_images %}
+                <div class="osahan-slider-item mx-2" onclick="deletePlaceImage('{{img.id}}');" style="cursor: pointer;">
+                    <img src="{{img.image}}" class="img-fluid mx-auto rounded">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- 이미지 업로드 버튼 -->
+        <input type="file" class="d-none" id="mainImageInput" accept="image/*" onchange="addPlaceImage(this, 'main');">
+        <input type="file" class="d-none" id="subImageInput" accept="image/*" onchange="addPlaceImage(this, 'sub');">
+        <div>
+            <button type="button" class="btn btn-primary mr-2"
+                onclick="document.getElementById('mainImageInput').click();">
+                <i class="fi fi-rr-picture"></i> 대표 이미지 등록
+            </button>
+            <button type="button" class="btn btn-primary" onclick="document.getElementById('subImageInput').click();">
+                <i class="fi fi-rr-picture"></i> 서브 이미지 등록
+            </button>
+        </div>
+
+    </section>
+
+    <!-- 장소 상품 생성 및 수정 -->
+    <section class="container mb-5 pb-5">
+
+        <h6>
+            장소 상품 생성 및 수정
+        </h6>
+
+        <!-- 상품 목록 -->
+        {% for item in place.items %}
+        <div class="cart-items bg-white position-relative border-bottom">
+
+            <!-- 할인 뱃지 
+            <span class="position-absolute">
+                <span class="badge badge-danger m-3">10%</span>
+            </span>-->
+
+            <div class="d-flex p-3">
+
+                <!-- 이미지 -->
+                <img src="{{item.image}}" width="240" class="rounded shadow-sm">
+
+                <!-- 정보 -->
+                <div class="osahan-cart-item-des d-flex w-100 ml-3">
+                    <div class="flex-fill">
+                        <!-- 상품 이름 -->
+                        <h5 class="mb-1">
+                            {{ item.name }}
+                        </h5>
+
+                        <!-- 상품 설명 -->
+                        <div id="itemDescriptionViewer"></div>
+                        <script>
+                            const itemDescriptionViewer = new toastui.Editor.factory({
+                                el: document.querySelector('#itemDescriptionViewer'),
+                                viewer: true,
+                                height: '200px',
+                                initialValue: `{{ item.description|safe }}`,
+                            });
+                        </script>
+
+                        <!-- 상품 가격 -->
+                        <div class="text-right">
+                            <p class="m-0 text-success font-weight-bold" style="font-size: 20px;">
+                                from $ {{ item.price }}
+                            </p>
+                            <a href="#" class="btn btn-danger btn-sm mt-2">
+                                <i class="fi fi-rr-trash"></i>
+                                삭제하기
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 상품 일정 목록 -->
+            <div class="mt-3 p-3">
+                {% for date in item.dates %}
+                <div class="mb-2 pb-2 border-bottom">
+                    <p>
+                        {{date.year}}-{{date.month}}-{{date.date}}: {{date.content}}
+                    </p>
+                    <button class="btn btn-danger" onclick="deleteItemDate('{{ date.id }}');">
+                        삭제
+                    </button>
+                </div>
+                {% endfor %}
+                <p class="text-right">
+                    <a class="btn btn-primary" href="javascript: addItemDate('{{ item.id }}');">
+                        <i class="fi fi-rr-plus"></i> 일정 등록
+                    </a>
+                </p>
+            </div>
+        </div>
+        {% endfor %}
+
+        <!-- 상품 등록 버튼 -->
+        <div class="mt-4 p-3">
+            <button type="button" class="btn btn-primary" onclick="new bootstrap.Modal(document.getElementById('itemModal')).show();">
+                <i class="fi fi-rr-plus"></i> 상품 등록
+            </button>
+        </div>
+
+    </section>
 
     <!-- 상품 등록 모달 -->
-    <div class="modal fade" id="itemModal" tabindex="-1" aria-labelledby="itemModalLabel" aria-hidden="true">
+    <div class="modal" tabindex="-1" id="itemModal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="itemModalLabel">상품 등록</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title">
+                        상품 등록
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
-                    <p>상품 등록을 위해 필요한 정보를 입력하세요.</p>
-                    <!-- 여기에 상품 등록 폼 등을 추가할 수 있습니다. -->
-                    <form id="itemContentForm">
+                    <form id="itemForm">
+                        <input type="hidden" name="place_id" value="{{ place.id }}">
+                        <input type="file" class="d-none" id="itemImage" name="image" accept="image/*" required onchange="makeItemThumbnail(this);">
                         <div class="form-group">
                             <label for="itemName">상품 이름</label>
-                            <input type="text" class="form-control" id="itemName" placeholder="상품 이름을 입력하세요." required>
+                            <input type="text" class="form-control" name="name" placeholder="상품 이름을 입력하세요." required>
                         </div>
                         <div class="form-group">
                             <label for="itemDescription">상품 설명</label>
@@ -101,100 +245,60 @@
                         </div>
                         <div class="form-group">
                             <label for="itemPrice">상품 가격</label>
-                            <input type="text" class="form-control" id="itemPrice" placeholder="상품 가격을 입력하세요." required>
+                            <input type="text" class="form-control" name="price" placeholder="상품 가격을 입력하세요." required>
                         </div>
-                        <div class="form-group">
-                            <label for="itemImage">상품 이미지</label>
-                            <input type="file" class="form-control" id="itemImage" accept="image/*" required>
-                            <div id="itemImagePreview" class="mt-2"></div>
+                        <div id="itemImagePreview"></div>
+                        <div class="text-right">
+                            <button type="button" class="btn btn-primary" onclick="document.getElementById('itemImage').click();">
+                                <i class="fi fi-rr-picture"></i> 이미지 등록
+                            </button>
                         </div>
-
-                        <!-- 장소 내용 등록 버튼 -->
-                        <button type="button" class="btn btn-primary mt-4" id="registerItemContentBtn">상품 등록</button>
-
                     </form>
-
-                    <hr>
-
-                    <!-- 일정 목록 -->
-                    <h4 class="d-flex justify-content-between align-items-center">
-                        일정 목록
-                        <!-- 일정 등록 버튼 추가 -->
-                        <button type="button" class="btn btn-primary" id="registerDateBtn">일정 등록</button>
-                    </h4>
-                    <div id="itemDateList" class="mt-3">
-                        <!-- 일정 목록이 여기에 동적으로 추가됩니다 -->
-                        <ul id="dateList" class="list-group">
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                2021-08-01
-                                <button type="button" class="btn btn-danger">삭제</button>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <hr>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        닫기
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="saveNewItem();">
+                        저장하기
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- 일정 등록 모달 -->
-    <div class="modal fade" id="dateModal" tabindex="-1" aria-labelledby="dateModalLabel" aria-hidden="true">
+    <div class="modal" tabindex="-1" id="dateModal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="dateModalLabel">일정 등록</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title">
+                        일정 등록
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
-                    <p>일정 등록을 위해 필요한 정보를 입력하세요.</p>
-                    <!-- 여기에 일정 등록 폼 등을 추가할 수 있습니다. -->
-                    <section class="container mt-5">
-                        <div id="calendar-widget">
-                            <div id="head-wrapper" class="d-flex align-items-center justify-content-center">
-                                <button id="prev-button" class="btn btn-light">
-                                    <i class="fi fi-rr-angle-left"></i>
-                                </button>
-                                <h3 id="month" class="mx-3 text-black"></h3>
-                                <button id="next-button" class="btn btn-light">
-                                    <i class="fi fi-rr-angle-right"></i>
-                                </button>
-                            </div>
-                            <div id="calendar-wrapper">
-                                <div id="table-wrapper">
-                                    <h3 id="week"></h3>
-                                    <table id="calendar-table">
-                                        <thead>
-                                        <tr>
-                                            <th>월</th>
-                                            <th>화</th>
-                                            <th>수</th>
-                                            <th>목</th>
-                                            <th>금</th>
-                                            <th>토</th>
-                                            <th>일</th>
-                                        </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                            </div>
+                    <form id="dateForm">
+                        <input type="hidden" name="item_id" id="itemId">
+                        <div class="form-group">
+                            <label>날짜
+                            <input type="date" class="form-control" name="date" required>
                         </div>
-                    </section>
-
-                    <div class="form-group col-6">
-                        <label for="date">일정</label>
-                        <input type="date" class="form-control" id="date">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="dateDescription">일정 내용</label>
-                        <div id="dateDescription"></div>
-                    </div>
-
-                    <button type="button" class="btn btn-primary mt-4" id="registerDateContentBtn">일정 등록</button>
-
-                    <hr>
-
+                        <div class="form-group">
+                            <label>내용</label>
+                            <input class="form-control" name="description" placeholder="일정 내용을 입력하세요." required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        닫기
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="saveNewDate();">
+                        저장하기
+                    </button>
                 </div>
             </div>
         </div>
@@ -203,45 +307,199 @@
     <!-- 스크립트 -->
     <script>
         window.onload = () => {
-            console.log('0');
-            const placeId = "{{ place.id }}";
-            console.log("Place ID:", placeId);
 
-            // 장소 상품 목록 로드
-            //loadPlaceItems(placeId);
-
-            // 상품 등록 버튼 클릭 시
-            document.getElementById('registerItemBtn').addEventListener('click', function() {
-                // 모달 띄우기
-                const itemModal = new bootstrap.Modal(document.getElementById('itemModal'));
-                itemModal.show();
-            });
-
-            // 일정 등록 버튼 클릭 시
-            document.getElementById('registerDateBtn').addEventListener('click', function() {
-                // 모달 띄우기
-                const dateModal = new bootstrap.Modal(document.getElementById('dateModal'));
-                dateModal.show();
-            });
         }
-
-        document.addEventListener("DOMContentLoaded", () => {
-            CalendarWidget.init();
-        });
 
         // Toast UI Editor 설정
         const placeEditor = new toastui.Editor({
             el: document.querySelector('#placeDescription'),
             height: '500px',
             initialEditType: 'wysiwyg',
-            initialValue: '장소 설명을 입력하세요.',
+            initialValue: `{{ place.description|safe }}`,
+            previewStyle: 'vertical',
+            hideModeSwitch: true,
+            language: 'ko-KR'
+        });
+        const itemEditor = new toastui.Editor({
+            el: document.querySelector('#itemDescription'),
+            height: '200px',
+            initialEditType: 'wysiwyg',
+            initialValue: '상품 설명을 입력하세요.',
             previewStyle: 'vertical',
             hideModeSwitch: true,
             language: 'ko-KR'
         });
 
+        // 장소 내용 등록 함수
+        updatePlace = async () => {
+            var formData = new FormData(document.getElementById('placeContentForm'));
+            formData.append('description', placeEditor.getHTML());
+
+            // 장소 내용 업데이트 요청 발송
+            var result = await fetch('/api/update_place', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    return data.success;
+                });
+
+            if (result) {
+                alert('장소 내용이 성공적으로 등록되었습니다.');
+                location.href='/place/edit?place_id={{ place.id }}';
+            } else {
+                alert('장소 내용 등록에 실패했습니다. 다시 시도해주세요.');
+            }
+        }
+
+        // 아이템 이미지 미리보기 생성 함수
+        makeItemThumbnail = (e) => {
+            const file = e.files[0];
+            const preview = document.getElementById('itemImagePreview');
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function () {
+                    preview.innerHTML = `<img src="${reader.result}" alt="상품 이미지" style="max-width: 200px;">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // 장소 이미지 추가
+        addPlaceImage = async (e, image_type) => {
+            const file = e.files[0];
+
+            var formData = new FormData();
+            formData.append('place_id', "{{ place.id }}");
+            formData.append('image', file);
+            formData.append('image_type', image_type);
+
+            // 대표 이미지 업로드 요청 발송
+            var result = await fetch('/api/create_place_image', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    return data.success;
+                });
+
+            if (result) {
+                alert('이미지가 성공적으로 등록되었습니다.');
+                location.href='/place/edit?place_id={{ place.id }}';
+            } else {
+                alert('이미지 등록에 실패했습니다. 다시 시도해주세요.');
+            }
+        }
+
+        // 장소 이미지 삭제
+        deletePlaceImage = async (imageId) => {
+            var formData = new FormData();
+            formData.append('image_id', imageId);
+
+            // 대표 이미지 삭제 요청 발송
+            var result = await fetch('/api/delete_place_image', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    return data.success;
+                });
+
+            if (result) {
+                alert('이미지가 성공적으로 삭제되었습니다.');
+                location.href='/place/edit?place_id={{ place.id }}';
+            } else {
+                alert('이미지 삭제에 실패했습니다. 다시 시도해주세요.');
+            }
+        }
+
+        // 새로운 상품 저장 함수
+        saveNewItem = async () => {
+            var formData = new FormData(document.getElementById('itemForm'));
+            var content = itemEditor.getHTML();
+            formData.append('description', content);
+
+            // 새로운 상품 생성 요청 발송
+            var result = await fetch('/api/create_place_item', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                return data.success;
+            });
+
+            if (result) {
+                alert('상품이 성공적으로 등록되었습니다.');
+                location.href='/place/edit?place_id={{ place.id }}';
+            } else {
+                alert('상품 등록에 실패했습니다. 다시 시도해주세요.');
+            }
+        }
+
+        // 새로운 일정 저장 함수
+        addItemDate = (itemId) => {
+            document.getElementById('itemId').value = itemId;
+            new bootstrap.Modal(document.getElementById('dateModal')).show();
+        }
+        saveNewDate = async () => {
+            var formData = new FormData(document.getElementById('dateForm'));
+            formData.append('item_id', document.getElementById('itemId').value);
+
+            // 새로운 일정 생성 요청 발송
+            var result = await fetch('/api/create_item_date', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                return data.success;
+            });
+
+            if (result) {
+                alert('일정이 성공적으로 등록되었습니다.');
+                location.href='/place/edit?place_id={{ place.id }}';
+            } else {
+                alert('일정 등록에 실패했습니다. 다시 시도해주세요.');
+            }
+        }
+
+        deleteItemDate = async (dateId) => {
+            var formData = new FormData();
+            formData.append('date_id', dateId);
+
+            // 일정 삭제 요청 발송
+            var result = await fetch('/api/delete_item_date', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                return data.success;
+            });
+
+            if (result) {
+                alert('일정이 성공적으로 삭제되었습니다.');
+                location.href='/place/edit?place_id={{ place.id }}';
+            } else {
+                alert('일정 삭제에 실패했습니다. 다시 시도해주세요.');
+            }
+        }
+
+
+        /*
         // 장소 내용 등록 버튼 클릭 이벤트
-        document.getElementById('registerPlaceContentBtn').addEventListener('click', function() {
+        document.getElementById('registerPlaceContentBtn').addEventListener('click', function () {
             const placeId = "{{ place.id }}";
             const placeName = document.getElementById('placeName').value;
             const placeShortDescription = document.getElementById('placeShortDescription').value;
@@ -275,21 +533,22 @@
                     console.error('Request failed', error);
                     alert('Request failed. Please try again.');
                 });
-        });
+        });*/
 
+        /*
         // 대표 이미지 미리보기 및 삭제
-        document.getElementById('mainImage').addEventListener('change', function(e) {
+        document.getElementById('mainImage').addEventListener('change', function (e) {
             const file = e.target.files[0];
             const mainImageInput = document.getElementById('mainImage');
             const preview = document.getElementById('mainImagePreview');
 
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function() {
+                reader.onload = function () {
                     preview.innerHTML = `<img src="${reader.result}" alt="대표 이미지" class="img-thumbnail" style="max-width: 200px;"> <button type="button" class="btn btn-danger mt-2" id="deleteMainImage">삭제</button>`;
                     mainImageInput.disabled = true;  // 이미지 등록 후 input 비활성화
 
-                    document.getElementById('deleteMainImage').addEventListener('click', function() {
+                    document.getElementById('deleteMainImage').addEventListener('click', function () {
                         mainImageInput.value = '';  // 파일 입력 초기화
                         preview.innerHTML = '';  // 미리보기 삭제
                         mainImageInput.disabled = false;  // input 다시 활성화
@@ -300,18 +559,18 @@
         });
 
         // 서브 이미지 미리보기 및 삭제
-        document.getElementById('subImage').addEventListener('change', function(e) {
+        document.getElementById('subImage').addEventListener('change', function (e) {
             const file = e.target.files[0];
             const subImageInput = document.getElementById('subImage');
             const preview = document.getElementById('subImagePreview');
 
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function() {
+                reader.onload = function () {
                     preview.innerHTML = `<img src="${reader.result}" alt="대표 이미지" class="img-thumbnail" style="max-width: 200px;"> <button type="button" class="btn btn-danger mt-2" id="deleteSubImage">삭제</button>`;
                     subImageInput.disabled = true;  // 이미지 등록 후 input 비활성화
 
-                    document.getElementById('deleteSubImage').addEventListener('click', function() {
+                    document.getElementById('deleteSubImage').addEventListener('click', function () {
                         subImageInput.value = '';  // 파일 입력 초기화
                         preview.innerHTML = '';  // 미리보기 삭제
                         subImageInput.disabled = false;  // input 다시 활성화
@@ -322,7 +581,7 @@
         });
 
         // 장소 이미지 등록 버튼 클릭 이벤트
-        document.getElementById('registerPlaceImageBtn').addEventListener('click', function() {
+        document.getElementById('registerPlaceImageBtn').addEventListener('click', function () {
             const formData = new FormData();
             const placeId = "{{ place.id }}";
             const mainImageFile = document.getElementById('mainImage').files[0];
@@ -373,8 +632,8 @@
                 .catch(error => {
                     console.error('Request failed', error);
                     alert('Request failed. Please try again.');
-                }); */
-        });
+                }); 
+        }); 
 
         // 장소 상품 목록 로드 함수
         function loadPlaceItems(placeId) {
@@ -402,91 +661,20 @@
                 });
         }
 
-        document.querySelector('.btn-close').addEventListener('click', function() {
+        document.querySelector('.btn-close').addEventListener('click', function () {
             const modalElement = document.getElementById('itemModal');
             const modal = new bootstrap.Modal(modalElement);
             modal.hide(); // 모달을 닫는 코드
-        });
+        });*/
 
         // Toast UI Editor 설정
-        const itemEditor = new toastui.Editor({
-            el: document.querySelector('#itemDescription'),
-            height: '500px',
-            initialEditType: 'wysiwyg',
-            initialValue: '상품 설명을 입력하세요.',
-            previewStyle: 'vertical',
-            hideModeSwitch: true,
-            language: 'ko-KR'
-        });
 
-        // 상품 이미지 미리보기 및 삭제
-        document.getElementById('itemImage').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            const itemImageInput = document.getElementById('itemImage');
-            const preview = document.getElementById('itemImagePreview');
-
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function() {
-                    preview.innerHTML = `<img src="${reader.result}" alt="상품 이미지" class="img-thumbnail" style="max-width: 200px;"> <button type="button" class="btn btn-danger mt-2" id="deleteItemImage">삭제</button>`;
-                    itemImageInput.disabled = true;  // 이미지 등록 후 input 비활성화
-
-                    document.getElementById('deleteItemImage').addEventListener('click', function() {
-                        itemImageInput.value = '';  // 파일 입력 초기화
-                        preview.innerHTML = '';  // 미리보기 삭제
-                        itemImageInput.disabled = false;  // input 다시 활성화
-                    });
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        // 상품 내용 등록 버튼 클릭 이벤트
-        document.getElementById('registerItemContentBtn').addEventListener('click', function() {
-            const placeId = "{{ place_id }}";
-            const itemName = document.getElementById('itemName').value;
-            const itemDescription = itemEditor.getHTML();
-            const itemPrice = document.getElementById('itemPrice').value;
-            const itemImageFile = document.getElementById('itemImage').files[0];
-
-            const formData = new FormData();
-            formData.append('place_id', placeId);
-            formData.append('name', itemName);
-            formData.append('description', itemDescription);
-            formData.append('price', itemPrice);
-            formData.append('image', itemImageFile);
-
-            fetch('/api/create_place_item', {
-                method: 'POST',
-                body: formData,
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        console.log('Place content registered successfully:', data);
-                        alert(data.message); // 성공 메시지
-                    } else {
-                        console.error('Error registering place content:', data.message);
-                        alert('Error: ' + data.message); // 실패 메시지
-                    }
-                })
-                .catch(error => {
-                    console.error('Request failed', error);
-                    alert('Request failed. Please try again.');
-                });
-        });
-
-        // Toast UI Editor 설정
-        const dateEditor = new toastui.Editor({
-            el: document.querySelector('#dateDescription'),
-            height: '500px',
-            initialEditType: 'wysiwyg',
-            initialValue: '일정 설명을 입력하세요.',
-            previewStyle: 'vertical',
-            hideModeSwitch: true,
-            language: 'ko-KR'
-        });
 
     </script>
+
+</main>
+
+<!-- 푸터 -->
+{% include 'parts/footer.html' %}
 
 {% endblock %}

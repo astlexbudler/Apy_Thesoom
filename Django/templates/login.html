@@ -6,93 +6,93 @@
 <!-- 헤더 -->
 {% include 'parts/header.html' %}
 
-   <!-- 메인 -->
-   <main class="flex-grow-1">
-       <div class="bg-image">
-           <div class="container h-100">
-               <div class="row h-100 justify-content-center align-items-center">
-                   <div class="col-12 col-sm-8 col-md-6 col-lg-4">
-                       {# login box #}
-                       <div class="login-box p-5">
-                           <div class="text-center">
-                               <h5 class="font-weight-bold mb-5">로그인</h5>
-                           </div>
-
-                           {# Django login Form #}
-                           <form method="post" action="">
-                               {% csrf_token %}
-
-                               {# 폼 전체 에러(비밀번호 불일치 등) 표시 #}
-                               {% if form.non_field_errors %}
-                                   <div class="alert alert-danger">
-                                       {% for error in form.non_field_errors %}
-                                           <div>{{ error }}</div>
-                                       {% endfor %}
-                                   </div>
-                               {% endif %}
-                           
-                               {# 회원가입 성공 표시 #}
-                               {% if signup_success == True %}
-                                   <div class="alert alert-success">
-                                       <div>회원가입에 성공했습니다 ! 다시 로그인해주세요.</div>
-                                   </div>
-                               {% endif %}
-
-                               {# 비밀번호 변경 성공 표시 #}
-                               {% if password_reset_success == True %}
-                                   <div class="alert alert-success">
-                                       <div>비밀번호 변경에 성공했습니다 ! 다시 로그인해주세요.</div>
-                                   </div>
-                               {% endif %}
-
-                               {# 이메일(username) 필드 #}
-                               <div class="form-group">
-                                  {% render_field form.username class="form-control" placeholder="이메일" %}
-
-                                   {# 개별 에러 #}
-                                   {% if form.username.errors %}
-                                      <small class="text-danger">
-                                          {% for error in form.username.errors %}
-                                              {{ error }}
-                                          {% endfor %}
-                                      </small>
-                                   {% endif %}
-                                </div>
-
-                               {# 비밀번호(password) 필드 #}
-                               <div class="form-group">
-                                   {% render_field form.password class="form-control" placeholder="비밀번호" %}
-
-                                   <!-- 개별 에러 -->
-                                   {% if form.password.errors %}
-                                       <small class="text-danger">
-                                           {% for error in form.password.errors %}
-                                               {{ error }}
-                                           {% endfor %}
-                                       </small>
-                                   {% endif %}
-                               </div>
-
-                               {# 계정 찾기 버튼 #}
-                               <div class="text-right mt-3 mb-2">
-                                  <a href="{% url 'user_find' %}">계정 찾기</a>
-                               </div>
-
-                               {# 로그인 버튼 #}
-                               <button type="submit" class="btn btn-primary btn-block">로그인</button>
-                            </form>
-                            {# Django login Form end #}
-
-                           {# 회원가입 버튼 #}
-                           <div class="text-center mt-3">
-                              <small>아직 계정이 없으신가요? <a href="{% url 'user_signup' %}">회원가입</a></small>
-                           </div>
+<!-- 메인 -->
+<main class="flex-grow-1">
+    <div class="bg-image">
+        <div class="container h-100">
+            <div class="row h-100 justify-content-center align-items-center">
+                <div class="col-12 col-sm-8 col-md-6 col-lg-4">
+                    {# login box #}
+                    <div class="login-box p-5">
+                        <div class="text-center">
+                            <h5 class="font-weight-bold mb-5">로그인</h5>
                         </div>
-                   </div>
-               </div>
-           </div>
-       </div>
-       {# login box end #}
-   </main>
+
+                        {# Django login Form #}
+                        <form method="post" action="">
+                            {% csrf_token %}
+
+                            {# 폼 전체 에러(비밀번호 불일치 등) 표시 #}
+                            {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {% for error in form.non_field_errors %}
+                                <div>{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+
+                            {# 회원가입 성공 표시 #}
+                            {% if signup_success == True %}
+                            <div class="alert alert-success">
+                                <div>회원가입에 성공했습니다 ! 다시 로그인해주세요.</div>
+                            </div>
+                            {% endif %}
+
+                            {# 비밀번호 변경 성공 표시 #}
+                            {% if password_reset_success == True %}
+                            <div class="alert alert-success">
+                                <div>비밀번호 변경에 성공했습니다 ! 다시 로그인해주세요.</div>
+                            </div>
+                            {% endif %}
+
+                            {# 이메일(username) 필드 #}
+                            <div class="form-group">
+                                {% render_field form.username class="form-control" placeholder="이메일" %}
+
+                                {# 개별 에러 #}
+                                {% if form.username.errors %}
+                                <small class="text-danger">
+                                    {% for error in form.username.errors %}
+                                    {{ error }}
+                                    {% endfor %}
+                                </small>
+                                {% endif %}
+                            </div>
+
+                            {# 비밀번호(password) 필드 #}
+                            <div class="form-group">
+                                {% render_field form.password class="form-control" placeholder="비밀번호" %}
+
+                                <!-- 개별 에러 -->
+                                {% if form.password.errors %}
+                                <small class="text-danger">
+                                    {% for error in form.password.errors %}
+                                    {{ error }}
+                                    {% endfor %}
+                                </small>
+                                {% endif %}
+                            </div>
+
+                            {# 계정 찾기 버튼 #}
+                            <div class="text-right mt-3 mb-2">
+                                <a href="{% url 'user_find' %}">계정 찾기</a>
+                            </div>
+
+                            {# 로그인 버튼 #}
+                            <button type="submit" class="btn btn-primary btn-block">로그인</button>
+                        </form>
+                        {# Django login Form end #}
+
+                        {# 회원가입 버튼 #}
+                        <div class="text-center mt-3">
+                            <small>아직 계정이 없으신가요? <a href="{% url 'user_signup' %}">회원가입</a></small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {# login box end #}
+</main>
 
 {% endblock %}
