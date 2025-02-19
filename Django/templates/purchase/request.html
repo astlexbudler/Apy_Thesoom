@@ -103,17 +103,17 @@
    -->
    <section class="container mt-5">
       <h5 class="mb-4">예약하기</h5>
-      <form>
+      <form id="reservation-form">
 
          <!-- 시작일, 종료일 -->
          <div class="row">
             <div class="form-group col-6">
-               <label for="exampleInputName1">시작일</label>
-               <input type="date" class="form-control" id="exampleInputName1">
+               <label>시작일</label>
+               <input type="date" class="form-control" name="start_date">
             </div>
             <div class="form-group col-6">
-               <label for="exampleInputEmail1">종료일</label>
-               <input type="date" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+               <label>종료일</label>
+               <input type="date" class="form-control" name="end_date">
             </div>
             <p class="small text-muted">
                ※ 예약 가능한 날짜를 선택해주세요. 1박인 경우, 시작일과 종료일을 동일하게 선택해주세요.
@@ -123,7 +123,7 @@
          <!-- 예약정보 -->
          <div class="form-group">
             <label for="exampleInputPassword1">예약정보</label>
-            <textarea rows="5" placeholder="can we improve?" class="form-control" id="exampleInputHelp1"></textarea>
+            <textarea rows="5" placeholder="can we improve?" class="form-control" name="memo"></textarea>
             <p class="small text-muted">
                ※ 예약자 정보를 입력해주세요. 예약자 성함, 연락처, 이메일 주소, 요청사항을 입력해주세요.
             </p>
@@ -136,11 +136,10 @@
                <a href="#">개인정보 처리방침</a>에 동의합니다.
             </label>
          </div>
-
-         <button type="submit" class="btn btn-success">
-            <i class="fi fi-rr-check"></i> 예약하기
-         </button>
       </form>
+      <button class="btn btn-success" onclick="submitReservationForm()">
+         <i class="fi fi-rr-check"></i> 예약하기
+      </button>
    </section>
 
    <!-- 주의 사항 안내 -->
@@ -164,13 +163,33 @@
 
       {% for date in item.dates %}
       document.querySelector(`[data-day="{{date}}"]`).classList.add('bg-danger', 'text-white');
+      document.querySelector(`[data-day="{{date}}"]`).innerHTML += '{{item.content}}';
       {% endfor %}
    }
-
 
    document.addEventListener("DOMContentLoaded", () => {
       CalendarWidget.init();
    });
+
+   submitReservationForm = async () => {
+      var formData = document.getElementById('reservation-form');
+
+      // 예약 정보 작성 요청
+      var result = await fetch('/purchase/request?item_id={{item.id}}', {
+         method: 'POST',
+         body: new FormData(formData),
+      })
+      .then(response => response.json())
+      .then(data => {
+         console.log(data);
+         if (data.result == 'success') {
+            alert('예약이 완료되었습니다.');
+            location.href = '/purchase/history';
+         } else {
+            alert('예약에 실패했습니다.');
+         }
+      });
+   }
 
 </script>
 

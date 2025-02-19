@@ -77,4 +77,4 @@ class PURCHASE(models.Model):
     payment_agency = models.CharField(max_length=255, verbose_name="결제사")
     payment_method = models.CharField(max_length=255, verbose_name="결제 방법")
     payment_info = models.JSONField(verbose_name="결제 정보(json)")
-    status = models.CharField(max_length=50, verbose_name="결제 상태")
+    status = models.CharField(max_length=50, verbose_name="결제 상태, pending, completed, canceled, refunded")

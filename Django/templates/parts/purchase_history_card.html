@@ -9,21 +9,23 @@
       <div class="osahan-cart-item-des d-flex w-100 ml-3">
          <div class="flex-fill">
             <!-- 상품 이름 -->
-            <h5 class="mb-1">Executive Suite (Suite Temptation)</h5>
+            <h5 class="mb-1">
+               {{purchase.item.name}}
+            </h5>
 
             <!-- 상품 설명 -->
             <p class="text-muted mt-2">
-               예약일: 2021-09-01 12:00:00 ~ 2021-09-02 12:00:00<br>
-               요청사항: 예약자 이름: 홍길동, 예약자 연락처: 010-1234-5678, 기타 요청사항: 빠른 체크인 부탁드립니다.
+               예약일: {{purchase.book_start_datetime}} ~ {{purchase.book_end_datetime}}<br>
+               요청사항: {{purchase.memo}}
             </p>
 
             <!-- 상품 가격 -->
             <div class="text-right">
                <p class="text-muted m-0">
-                  Alipay (credit card) 2021-09-01 12:00:00
+                  {{purchase.payment_agency}} {{purchase.payment_method}} {{purchase.created_at}}
                </p>
                <p class="m-0" style="font-size: 18px;">
-                  $ 800
+                  $ {{purchase.item.price}}
                </p>
             </div>
 

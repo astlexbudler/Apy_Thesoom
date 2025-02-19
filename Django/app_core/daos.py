@@ -1,5 +1,8 @@
 import math
 from app_core import models as mo
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+import datetime
 
 # 함수 목록
 # get_account(account_id): 사용자 계정 정보 조회
@@ -533,7 +536,7 @@ def delete_item_date(item_date_id):
         }
 
 # 구매 생성
-def create_purchase(item_id, book_start_datetime, book_end_datetime, payment_agency, payment_method, payment_info, memo=''):
+def create_purchase(account_id, item_id, book_start_datetime, book_end_datetime, payment_agency, payment_method, payment_info, memo=''):
 
     # item_id: 아이템 아이디
     # book_start_datetime: 예약 시작 일시
@@ -542,6 +545,18 @@ def create_purchase(item_id, book_start_datetime, book_end_datetime, payment_age
     # payment_method: 결제 방법
     # payment_info: 결제 정보(json)
     # memo: 요청 사항
+
+    mo.PURCHASE.objects.create(
+        account_id=account_id,
+        item_id=item_id,
+        book_start_datetime=book_start_datetime,
+        book_end_datetime=book_end_datetime,
+        payment_agency=payment_agency,
+        payment_method=payment_method,
+        payment_info=payment_info,
+        memo=memo,
+        status='completed'
+    )
 
     return {
         'success': True,
@@ -581,8 +596,8 @@ def get_purchases(account_id):
             'price': purchase.item.price,
             'image': purchase.item.image.url,
         },
-        'book_start_datetime': purchase.book_start_datetime,
-        'book_end_datetime': purchase.book_end_datetime,
+        'book_start_datetime': datetime.datetime.strftime(purchase.book_start_datetime, '%Y-%m-%d'),
+        'book_end_datetime': datetime.datetime.strftime(purchase.book_end_datetime, '%Y-%m-%d'),
         'memo': purchase.memo,
         'created_at': purchase.created_at,
         'purchase_at': purchase.purchase_at,
