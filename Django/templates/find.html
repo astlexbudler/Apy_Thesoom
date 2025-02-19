@@ -1,18 +1,103 @@
 {% extends 'base/base.html' %}
 {% block content %}
 
-   <!-- 메인 -->
-   <main>
+{% load widget_tweaks %}
 
+<!-- 헤더 -->
+{% include 'parts/header.html' %}
+
+   <!-- 메인 -->
+   <main class="flex-grow-1">
+       <div class="bg-image">
+           <div class="container h-100">
+               <div class="row h-100 justify-content-center align-items-center">
+                   <div class="col-12 col-sm-8 col-md-6 col-lg-4">
+                       {# login box #}
+                       <div class="login-box p-5">
+                           <div class="text-center">
+                               <h5 class="font-weight-bold mb-5">계정 찾기</h5>
+                           </div>
+
+                           {# Django user find Form #}
+                           <form method="post" action="">
+                               {% csrf_token %}
+
+                               {# 폼 전체 에러(비밀번호 불일치 등) 표시 #}
+                               {% if user_exist == False %}
+                                   <div class="alert alert-danger">
+                                       <div>일치하는 사용자가 없습니다.</div>
+                                   </div>
+                               {% endif %}
+
+                               {# 이메일(username) 필드 #}
+                               <div class="form-group mb-5">
+                                   {% render_field form.username class="form-control" placeholder="이메일" %}
+                                   <small id="error_username" class="text-danger"></small>
+
+                                   {# 개별 에러 #}
+                                   {% if form.username.errors %}
+                                      <small class="text-danger">
+                                          {% for error in form.username.errors %}
+                                              {{ error }}
+                                          {% endfor %}
+                                      </small>
+                                   {% endif %}
+                                </div>
+
+                               {# 계정 찾기 버튼 #}
+                               <button type="submit" class="btn btn-primary btn-block">계정 찾기</button>
+                            </form>
+                            {# Django user find Form end #}
+                        </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+       {# login box end #}
    </main>
 
-   <!-- 스크립트 -->
-   <script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const fields = {
+            username: {
+                el: document.getElementById('id_username'),
+                err: document.getElementById('error_username'),
+                test: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
+                msg: '올바른 이메일 형식을 입력하세요.'
+            }
+        };
 
-      window.onload = () => {
-         console.log('0');
-      }
+        const btn = document.getElementById('signup-button');
 
-   </script>
+    const validate = () => {
+        let valid = true;
+
+        for (let key in fields) {
+            const field = fields[key];
+            const value = field.el.value.trim();
+            const ok = value && field.test(value);
+
+            // 입력한 적이 있을 때만 오류 메시지 표시
+            if (field.touched) {
+                field.err.textContent = ok ? '' : field.msg;
+                field.el.classList.toggle('is-invalid', !ok);
+                field.el.classList.toggle('is-valid', ok);
+            } else {
+                field.err.textContent = '';
+                field.el.classList.remove('is-invalid', 'is-valid');
+            }
+            valid = valid && ok;
+        }
+        btn.disabled = !valid;
+    };
+
+    Object.values(fields).forEach(f => {
+        f.el.addEventListener('input', () => {
+            f.touched = true;
+            validate();
+        });
+    });
+});
+</script>
 
 {% endblock %}

@@ -1,7 +1,17 @@
 from django.contrib.auth.models import AbstractUser, Group
+from django.core.validators import RegexValidator, MinLengthValidator
 from django.db import models
 
 class ACCOUNT(AbstractUser):
+    phone_validator = RegexValidator(
+        regex=r'^\d+$',
+        message="연락처는 숫자만 입력 가능합니다.",
+    )
+    phone_minimum_length_validator = MinLengthValidator(
+        limit_value=7,
+        message="연락처는 최소 7자리 이상이어야 합니다."
+    )
+
     # id = models.AutoField(primary_key=True)
     # username = models.CharField(max_length=150, unique=True) 이메일
     # password = models.CharField(max_length=128)
@@ -14,6 +24,7 @@ class ACCOUNT(AbstractUser):
     # date_joined = models.DateTimeField(auto_now_add=True)
     # last_login = models.DateTimeField(auto_now=True)
     # groups = models.ManyToManyField(Group)
+    contact = models.CharField(max_length=20, validators=[phone_validator, phone_minimum_length_validator]) # 연락처
     account_type = models.CharField(max_length=50, verbose_name="사용 안함")
 
 class PLACE(models.Model):

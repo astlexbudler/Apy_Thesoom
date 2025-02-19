@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'app_purchase',
     'app_place',
     'corsheaders',
+    'widget_tweaks'
 ]
 
 MIDDLEWARE = [

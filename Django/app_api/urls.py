@@ -10,7 +10,7 @@ urlpatterns = [
     path('login', a.api_login, name='api_login'), # 로그인 API
 
     # 로그아웃 API
-    path('logout', a.api_logout, name='api_logout'), # 로그아웃 API
+    # path('logout', a.api_logout, name='api_logout'), # 로그아웃 API
 
     # 회원 API
     # GET: 회원 정보 검색(아이디로 검색)
