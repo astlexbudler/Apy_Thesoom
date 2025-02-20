@@ -1,18 +1,175 @@
 {% extends 'base/base.html' %}
+{% load widget_tweaks %}
 {% block content %}
 
-   <!-- 메인 -->
-   <main>
+<!-- 헤더 -->
+{% include 'parts/header.html' %}
 
-   </main>
+<main class="flex-grow-1">
+  <div class="container my-5">
+    <h2 class="mb-4">프로필</h2>
+    <div class="profile-info">
+      <!-- 이메일 (수정 불가) -->
+      <div class="mb-3">
+        <label class="font-weight-bold">이메일:</label>
+        <span>{{ user.username }}</span>
+      </div>
 
-   <!-- 스크립트 -->
-   <script>
+      <!-- 이름 -->
+      <div class="mb-3">
+        <label class="font-weight-bold">이름:</label>
+        <span id="display-first_name">{{ user.first_name }}</span>
+        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#editNameModal">
+          <i class="flaticon-rr"></i> 수정
+        </button>
+      </div>
 
-      window.onload = () => {
-         console.log('0');
-      }
+      <!-- 연락처 -->
+      <div class="mb-3">
+        <label class="font-weight-bold">연락처:</label>
+        <span id="display-contact">{{ user.contact }}</span>
+        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#editContactModal">
+          <i class="flaticon-rr"></i> 수정
+        </button>
+      </div>
 
-   </script>
+      <!-- 비밀번호 변경 -->
+      <div class="mb-3">
+        <label class="font-weight-bold">비밀번호 변경:</label>
+        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#changePasswordModal">
+          <i class="flaticon-rr"></i> 변경
+        </button>
+      </div>
+
+      <!-- 회원 탈퇴 -->
+      <div class="mb-3">
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteAccountModal">
+          <i class="flaticon-rr"></i> 회원 탈퇴
+        </button>
+      </div>
+
+      <!-- 결제 기록 확인 -->
+      <div class="mb-3">
+        <a href="{% url 'purchase_history' %}" class="btn btn-info">
+          <i class="flaticon-rr"></i> 결제 기록 확인
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 이름 수정 Modal -->
+  <div class="modal fade" id="editNameModal" tabindex="-1" role="dialog" aria-labelledby="editNameModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <form method="post" action="{% url 'update_name' %}">
+        {% csrf_token %}
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editNameModalLabel">이름 수정</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="닫기">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="first_name">이름</label>
+              <input type="text" class="form-control" id="first_name" name="first_name" value="{{ user.first_name }}">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+            <button type="submit" class="btn btn-primary">저장</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 연락처 수정 Modal -->
+  <div class="modal fade" id="editContactModal" tabindex="-1" role="dialog" aria-labelledby="editContactModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <form method="post" action="{% url 'update_contact' %}">
+        {% csrf_token %}
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editContactModalLabel">연락처 수정</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="닫기">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="contact">연락처</label>
+              <input type="text" class="form-control" id="contact" name="contact" value="{{ user.contact }}">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+            <button type="submit" class="btn btn-primary">저장</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 비밀번호 변경 Modal -->
+  <div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <form method="post" action="{% url 'change_password' %}">
+        {% csrf_token %}
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="changePasswordModalLabel">비밀번호 변경</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="닫기">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="new_password1">새 비밀번호</label>
+              <input type="password" class="form-control" id="new_password1" name="new_password1">
+            </div>
+            <div class="form-group">
+              <label for="new_password2">비밀번호 확인</label>
+              <input type="password" class="form-control" id="new_password2" name="new_password2">
+            </div>
+            <small class="form-text text-muted">
+              비밀번호는 8자 이상 영문자와 숫자 조합이어야 합니다.
+            </small>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+            <button type="submit" class="btn btn-primary">변경</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 회원 탈퇴 확인 Modal -->
+  <div class="modal fade" id="deleteAccountModal" tabindex="-1" role="dialog" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <form method="post" action="{% url 'delete_account' %}">
+        {% csrf_token %}
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteAccountModalLabel">회원 탈퇴 확인</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="닫기">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>정말로 회원 탈퇴하시겠습니까?</p>
+            <p>탈퇴 시 모든 사용자 데이터가 삭제되며 복구할 수 없습니다.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+            <button type="submit" class="btn btn-danger">탈퇴</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</main>
 
 {% endblock %}
