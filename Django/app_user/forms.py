@@ -5,38 +5,37 @@ from django.utils.translation import gettext_lazy as _
 import re
 
 class CustomUserCreationForm(UserCreationForm):
-    """
-    회원 생성 폼입니다.
-    """
+    # 회원 생성 폼입니다.
 
     error_messages = {
-        "password_mismatch": _("비밀번호가 일치하지 않습니다."),
+        "password_mismatch": _("Passwords do not match."),
     }
 
     class Meta:
         model = ACCOUNT
-        fields = ('username', 'password1', 'password2', 'first_name', 'contact')
+        # username=이메일, password1=비밀번호, password2=비밀번호 확인, first_name=이름, last_name=연락처
+        fields = ('username', 'password1', 'password2', 'first_name', 'last_name')
 
 
 class CustomUserFindForm(forms.Form):
     username = forms.EmailField(
         widget= forms.EmailInput(attrs={
             'class': 'form-control',
-            'placeholder': '이메일'
+            'placeholder': 'Enter your email',
         }),
     )
 
 
 class CustomPasswordResetForm(forms.Form):
     password1 = forms.CharField(
-        label="새 비밀번호",
+        label="New password",
         widget=forms.PasswordInput(attrs={'class': 'form-control'}),
-        help_text="8자 이상, 영문자와 숫자를 모두 포함해서 입력하세요."
+        help_text="Enter your new password. It must be at least 8 characters long and contain a combination of letters and numbers."
     )
     password2 = forms.CharField(
-        label="비밀번호 확인",
+        label="Confirm password",
         widget=forms.PasswordInput(attrs={'class': 'form-control'}),
-        help_text="위와 동일한 비밀번호를 입력하세요."
+        help_text="Re-enter your new password for confirmation."
     )
 
     def clean(self):
@@ -45,12 +44,12 @@ class CustomPasswordResetForm(forms.Form):
         password2 = cleaned_data.get("password2")
         if password1 and password2:
             if password1 != password2:
-                raise forms.ValidationError("비밀번호가 일치하지 않습니다.")
+                raise forms.ValidationError("Passwords do not match.")
             if len(password1) < 8:
-                raise forms.ValidationError("비밀번호는 8자 이상이어야 합니다.")
+                raise forms.ValidationError("Password must be at least 8 characters long")
             # 영문자와 숫자가 모두 포함되었는지 체크
             if not re.search(r'[A-Za-z]', password1) or not re.search(r'[0-9]', password1):
-                raise forms.ValidationError("비밀번호는 영문자와 숫자를 모두 포함해야 합니다.")
+                raise forms.ValidationError("Password must contain a combination of letters and numbers.")
         return cleaned_data
 
 

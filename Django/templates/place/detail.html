@@ -226,6 +226,7 @@
 
       <!-- 리뷰 작성 -->
       <div class="mb-4">
+         {% if reviewable %}
          <div class="row">
             <input type="file" id="reviewImage" style="display: none;">
             <div class="form-group col-2">
@@ -246,13 +247,17 @@
                   <a href="javascript: document.querySelector('#reviewImage').click();" class="btn btn-info mr-2">
                      <i class="fi fi-rr-picture"></i>
                   </a>
-                  <a href="#" class="btn btn-primary" style="width: 140px;">
+                  <a class="btn btn-primary" style="width: 140px;" href="javascript: writeReview();">
                      Write Review
                   </a>
                </div>
             </div>
          </div>
-
+         {% else %}
+         <div class="alert alert-info">
+            Only users who have made a reservation can write reviews.
+         </div>
+         {% endif %}
 
       </div>
 
@@ -294,6 +299,37 @@
          height: '500px',
          initialValue: `{{ place.description|safe }}`,
       });
+
+      writeReview = async () => {
+         const rate = document.querySelector('#rateSelect').value;
+         const content = document.querySelector('#reviewContent').value;
+         const image = document.querySelector('#reviewImage').files[0];
+
+         const formData = new FormData();
+         formData.append('place_id', '{{ place.id }}');
+         formData.append('rate', rate);
+         formData.append('content', content);
+         formData.append('image', image);
+
+         const success = await fetch(`/api/review`, {
+            method: 'POST',
+            body: formData,
+            headers: {
+               'X-CSRFToken': '{{ csrf_token }}'
+            }
+         })
+         .then(response => response.json())
+         .then(data => {
+            console.log(data);
+            return data['success']
+         });
+
+         if (success) {
+            location.reload();
+         } else {
+            alert('Failed to write review.');
+         }
+      }
 
    </script>
 

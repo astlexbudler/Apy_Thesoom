@@ -38,29 +38,44 @@
          </button>
 
          <!-- 헤더 메뉴 중간 -->
-         <div class="ml-3 d-flex align-items-center">
-         </div>
+         <div class="ml-3 d-flex align-items-center"></div>
 
          <!-- 헤더 메뉴 오른쪽 끝 -->
          <div class="ml-auto d-flex align-items-center" style="font-size: 1rem;">
             {% if request.user.is_authenticated %}
-            <a href="/profile" class="mr-4 text-dark">
-               {{ user.first_name }} 님 반갑습니다.
+
+            {% if request.user.is_superuser %}
+            <!-- 관리자 페이지 -->
+            <a href="/place/edit" class="mr-3 text-white bg-primary rounded-pill p-2 icofont-size border shadow-sm">
+               <i class="fi fi-rr-file-edit"></i> New
             </a>
-            <a href="/purchase/history" class="mr-4 text-dark">
-               결제기록
+            {% endif %}
+
+            <!-- 프로필 -->
+            <a href="/profile" class="mr-3 text-dark bg-light rounded-pill p-2 icofont-size border shadow-sm">
+               <i class="fi fi-rr-user"></i> Profile
             </a>
-            <a href="/logout" class="mr-2 text-dark">
-               로그아웃
+
+            <!-- 결제 기록 -->
+            <a href="/purchase/history" class="mr-3 text-dark bg-light rounded-pill p-2 icofont-size border shadow-sm">
+               <i class="fi fi-rr-wallet-arrow"></i> Purchase
+            </a>
+
+            <!-- 로그아웃 -->
+            <a href="/logout" class="text-dark bg-light rounded-pill p-2 icofont-size border shadow-sm">
+               <i class="fi fi-rr-sign-out-alt"></i> Logout
             </a>
             {% else %}
-            <!-- login/signup -->
-            <a href="/login" class="mr-4 text-dark">
-               Login
+            <!-- 로그인 -->
+            <a href="/login" class="mr-3 text-dark bg-light rounded-pill p-2 icofont-size border shadow-sm">
+               <i class="fi fi-rr-user"></i> Login
             </a>
-            <a href="/signup" class="mr-2 text-dark">
-               Signup
+
+            <!-- 회원가입 -->
+            <a href="/signup" class="text-dark bg-light rounded-pill p-2 icofont-size border shadow-sm">
+               <i class="fi fi-rr-user-add"></i> Signup
             </a>
+
             {% endif %}
 
          </div>

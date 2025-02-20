@@ -11,8 +11,15 @@ def place_detail(request):
     if not place: # 장소 정보가 없을 경우
         return redirect('/')
 
+    # 사용자가 구매한적이 있는지 확인
+    reviewable = False
+    for item in place['items']:
+        if mo.PURCHASE.objects.select_related('item').filter(account=request.user, item__id=item['id']).exists():
+            reviewable = True
+
     contexts = {
-        "place": place
+        "place": place,
+        'reviewable': reviewable
     }
 
     return render(request, 'place/detail.html', contexts)

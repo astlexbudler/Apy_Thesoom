@@ -10,11 +10,11 @@
    <!-- 페이지 제목 -->
    <section class="container mt-5">
       <h5>
-         객실 예약
+         Book
       </h5>
       <p>
          <a href="javascript: history.back();" class="text-secondary">
-            <i class="fi fi-rr-angle-left"></i> 뒤로가기
+            <i class="fi fi-rr-angle-left"></i> goBack
          </a>
       </p>
    </section>
@@ -54,7 +54,7 @@
 
                      <!-- 상품 가격 -->
                      <div class="text-right">
-                        <p class="m-0 text-success font-weight-bold" style="font-size: 20px;">
+                        <p class="m-0 text-success" style="font-size: 20px;">
                            from $ {{item.price}}
                         </p>
                      </div>
@@ -82,13 +82,13 @@
                <table id="calendar-table">
                   <thead>
                      <tr>
-                        <th>월</th>
-                        <th>화</th>
-                        <th>수</th>
-                        <th>목</th>
-                        <th>금</th>
-                        <th>토</th>
-                        <th>일</th>
+                        <th>Mon</th>
+                        <th>Tue</th>
+                        <th>Wen</th>
+                        <th>Thr</th>
+                        <th>Fri</th>
+                        <th>Sat</th>
+                        <th>Sun</th>
                      </tr>
                   </thead>
                </table>
@@ -102,30 +102,30 @@
       - 시작일, 종료일, 예약정보(예약자, 연락처, 요청사항)
    -->
    <section class="container mt-5">
-      <h5 class="mb-4">예약하기</h5>
+      <h5 class="mb-4">Book</h5>
       <form id="reservation-form">
 
          <!-- 시작일, 종료일 -->
          <div class="row">
             <div class="form-group col-6">
-               <label>시작일</label>
+               <label>Start Date</label>
                <input type="date" class="form-control" name="start_date">
             </div>
             <div class="form-group col-6">
-               <label>종료일</label>
+               <label>End Date</label>
                <input type="date" class="form-control" name="end_date">
             </div>
             <p class="small text-muted">
-               ※ 예약 가능한 날짜를 선택해주세요. 1박인 경우, 시작일과 종료일을 동일하게 선택해주세요.
+               ※ Please select the available date. If you want to book for one day, please select the same date for the start and end dates.
             </p>
          </div>
 
          <!-- 예약정보 -->
          <div class="form-group">
-            <label for="exampleInputPassword1">예약정보</label>
+            <label for="exampleInputPassword1">Memo</label>
             <textarea rows="5" placeholder="can we improve?" class="form-control" name="memo"></textarea>
             <p class="small text-muted">
-               ※ 예약자 정보를 입력해주세요. 예약자 성함, 연락처, 이메일 주소, 요청사항을 입력해주세요.
+               ※ Please enter the reservation information. Please enter the name, contact information, email address, and request.
             </p>
          </div>
 
@@ -133,18 +133,18 @@
          <div class="form-group mt-5">
             <input type="checkbox" class="form-check mr-2" id="exampleCheck1" style="display: inline;">
             <label for="exampleCheck1" style="font-size: 12px; display: inline;">
-               <a href="#">개인정보 처리방침</a>에 동의합니다.
+               I agree to the <a href="/terms" target="_blank">Privacy Policy and Terms of Service</a>
             </label>
          </div>
       </form>
       <button class="btn btn-success" onclick="submitReservationForm()">
-         <i class="fi fi-rr-check"></i> 예약하기
+         <i class="fi fi-rr-check"></i> Book Now
       </button>
    </section>
 
    <!-- 주의 사항 안내 -->
    <section class="container mt-5">
-      <h5 class="mb-4">주의 사항</h5>
+      <h5 class="mb-4">Cautions</h5>
       <div class="px-10 py-8"><div class="flex items-center space-x-2 justify-between"><h3 class="font-bold text-gray-800 text-2xl"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Cancellation Policy</font></font></h3></div><div class="mt-4"><table class="pc:text-base w-full border-x border-t text-left text-sm"><tbody><tr class="grid grid-cols-4 border-b"><th class="pc:col-span-1 col-span-2 flex break-all border-r bg-gray-100 p-3 font-normal"><span><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">From 15:00 3 days before</font></font></span></th><td class="pc:col-span-3 col-span-2 break-all p-3"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">100%</font></font></td></tr><tr class="grid grid-cols-4 border-b"><th class="pc:col-span-1 col-span-2 flex break-all border-r bg-gray-100 p-3 font-normal"><span><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">No stay</font></font></span></th><td class="pc:col-span-3 col-span-2 break-all p-3"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">100%</font></font></td></tr></tbody></table></div><!----></div>
       <div class="px-10 py-8"><div class="flex items-center space-x-2 justify-between"><h3 class="font-bold text-gray-800 text-2xl"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Children</font></font></h3></div><div class="mt-5"><table class="pc:text-base w-full border-x border-t text-left text-sm"><tbody><tr class="grid grid-cols-4 border-b"><th class="pc:col-span-1 col-span-2 flex break-all border-r bg-gray-100 p-3 font-normal"><span><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Sleeping together</font></font></span></th><td class="pc:col-span-3 col-span-2 break-all p-3"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Up to 2 people</font></font></td></tr><tr class="grid grid-cols-4 border-b"><th class="pc:col-span-1 col-span-2 flex break-all border-r bg-gray-100 p-3 font-normal"><span><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Upper grades of elementary school</font></font></span></th><td class="pc:col-span-3 col-span-2 break-all p-3"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">100% of adult rate</font></font></td></tr><tr class="grid grid-cols-4 border-b"><th class="pc:col-span-1 col-span-2 flex break-all border-r bg-gray-100 p-3 font-normal"><span><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Elementary school lower grades</font></font></span></th><td class="pc:col-span-3 col-span-2 break-all p-3"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">100% of adult rate</font></font></td></tr><tr class="grid grid-cols-4 border-b"><th class="pc:col-span-1 col-span-2 flex break-all border-r bg-gray-100 p-3 font-normal"><span><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Infants and toddlers (meals and bedding provided)</font></font></span></th><td class="pc:col-span-3 col-span-2 break-all p-3"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Not acceptable</font></font></td></tr><tr class="grid grid-cols-4 border-b"><th class="pc:col-span-1 col-span-2 flex break-all border-r bg-gray-100 p-3 font-normal"><span><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Infants (no meals, bedding provided)</font></font></span></th><td class="pc:col-span-3 col-span-2 break-all p-3"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Not acceptable</font></font></td></tr><tr class="grid grid-cols-4 border-b"><th class="pc:col-span-1 col-span-2 flex break-all border-r bg-gray-100 p-3 font-normal"><span><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Infants (meals provided, bedding not provided)</font></font></span></th><td class="pc:col-span-3 col-span-2 break-all p-3"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Not acceptable</font></font></td></tr><tr class="grid grid-cols-4 border-b"><th class="pc:col-span-1 col-span-2 flex break-all border-r bg-gray-100 p-3 font-normal"><span><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Infants (no meals or bedding)</font></font></span></th><td class="pc:col-span-3 col-span-2 break-all p-3"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">free</font></font></td></tr></tbody></table></div><p class="mt-8 text-gray-800"><span class="whitespace-pre-line"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">[About children sharing existing beds] Children aged 11 years and under (elementary school students) can stay free of charge if they share existing beds. (Breakfast excluded) Please note that children aged 12 years and over will be charged the same price as adults. If children staying on the Club Floor or Heritage Wing (with Club Lounge access) wish to use the Club Lounge or have breakfast, an additional fee will be charged. *Club Lounge access... 0-5 years: Free 6-11 years: 4,500 yen (incl. consumption tax and service charge)</font></font></span></p><p class="mt-4 text-gray-800"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">*The number of meals for children will be based on the meal conditions of the plan.</font></font></p></div>
       <div class="px-10 py-8"><div class="flex items-center space-x-2 justify-between"><h3 class="font-bold text-gray-800 text-2xl"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Notice from the facility</font></font></h3></div><div class="mt-4"><p class="mb-2"><span class="whitespace-pre-line"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">(Updated February 15, 2025) Please check the official website for the latest information on the facilities in the hotel. ● Changes and reductions The business hours of some facilities at The Okura Tokyo have been changed. Please be sure to check the official website. * Breakfast at Orchid is only available to guests staying at the hotel on Saturdays, Sundays, and holidays, and from March 1st (Sat) to April 27th (Sun). * Nouvelle Epoque will only be open for breakfast on Tuesdays, except for holidays and the day before holidays. * Yamazato will only be open for breakfast on Wednesdays, except for holidays and the day before holidays. ● Prestige Tower All guest rooms will be non-smoking From September 1st (Sun), 2024, all guest rooms in the Prestige Tower will be non-smoking. Smoking will continue to be permitted in the hotel's smoking booths and some guest rooms in the Heritage Wing. Please note that heated tobacco products are also permitted in smoking areas. Thank you for your understanding and cooperation. * Reservations for the Heritage Wing Smoking Room can be made by phone. Please contact the room reservation department for availability, rates, etc.</font></font></span></p></div><!----></div>
@@ -159,11 +159,9 @@
 <script>
 
    window.onload = () => {
-      console.log('0');
-
-      {% for date in item.dates %}
-      document.querySelector(`[data-day="{{date}}"]`).classList.add('bg-danger', 'text-white');
-      document.querySelector(`[data-day="{{date}}"]`).innerHTML += '{{item.content}}';
+      {% for date in item_dates %}
+      document.querySelector(`[data-day="{{date.date}}"]`).style.backgroundColor = 'gainsboro';
+      document.querySelector(`[data-day="{{date.date}}"]`).innerHTML += '<p class="small text-center">{{date.content}}</p>';
       {% endfor %}
    }
 
@@ -172,6 +170,12 @@
    });
 
    submitReservationForm = async () => {
+
+      if (!document.getElementById('exampleCheck1').checked) {
+         alert('Please agree to the terms and conditions.');
+         return;
+      }
+
       var formData = document.getElementById('reservation-form');
 
       // 예약 정보 작성 요청

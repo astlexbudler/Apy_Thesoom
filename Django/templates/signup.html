@@ -3,9 +3,6 @@
 
 {% load widget_tweaks %}
 
-<!-- 헤더 -->
-{% include 'parts/header.html' %}
-
 <!-- 메인 -->
 <main class="flex-grow-1">
     <div class="bg-image">
@@ -13,9 +10,15 @@
             <div class="row h-100 justify-content-center align-items-center">
                 <div class="col-12 col-sm-8 col-md-6 col-lg-4">
                     {# login box #}
-                    <div class="login-box p-5">
+                    <div class="login-box p-4">
+
+                        <a href="javascript: history.back();" class="text-secondary">
+                            <i class="fi fi-rr-angle-left"></i> goBack
+                        </a>
                         <div class="text-center">
-                            <h5 class="font-weight-bold mb-5">회원가입</h5>
+                            <h4 class="mt-4 mb-5">
+                                Signup
+                            </h4>
                         </div>
 
                         {# Django signup Form #}
@@ -33,8 +36,8 @@
 
                             {# 이메일(username) 필드 #}
                             <div class="form-group">
-                                <label for="id_username">이메일</label>
-                                {% render_field form.username class="form-control" placeholder="이메일" %}
+                                <label for="id_username">Your Email</label>
+                                {% render_field form.username class="form-control" placeholder="Enter your email" %}
                                 <small id="error_username" class="text-danger"></small>
 
                                 {# 서버 개별 에러 #}
@@ -49,8 +52,8 @@
 
                             {# 비밀번호(password1) 필드 #}
                             <div class="form-group">
-                                <label for="id_password1">비밀번호</label>
-                                {% render_field form.password1 class="form-control" placeholder="비밀번호" %}
+                                <label for="id_password1">Password</label>
+                                {% render_field form.password1 class="form-control" placeholder="Enter your password" %}
                                 <small id="error_password1" class="text-danger"></small>
 
                                 {# 서버 개별 에러 #}
@@ -65,8 +68,8 @@
 
                             {# 비밀번호 입력(password2) 필드 #}
                             <div class="form-group">
-                                <label for="id_password2">비밀번호 확인</label>
-                                {% render_field form.password2 class="form-control" placeholder="비밀번호 확인" %}
+                                <label for="id_password2">Confirm Password</label>
+                                {% render_field form.password2 class="form-control" placeholder="Re-enter your password" %}
                                 <small id="error_password2" class="text-danger"></small>
 
                                 {# 서버 개별 에러 #}
@@ -81,8 +84,8 @@
 
                             {# 이름(first_name) 필드 #}
                             <div class="form-group mt-4">
-                                <label for="id_first_name">이름</label>
-                                {% render_field form.first_name class="form-control" placeholder="이름" %}
+                                <label for="id_first_name">Your Name</label>
+                                {% render_field form.first_name class="form-control" placeholder="Enter your name" %}
                                 <small id="error_first_name" class="text-danger"></small>
 
                                 {# 서버 개별 에러 #}
@@ -97,8 +100,8 @@
 
                             {# 연락처(contact) 필드 #}
                             <div class="form-group mb-5">
-                                <label for="id_contact">연락처</label>
-                                {% render_field form.contact class="form-control" placeholder="연락처" %}
+                                <label for="id_contact">Contact</label>
+                                {% render_field form.contact class="form-control" placeholder="Enter your Phone number or Email" %}
                                 <small id="error_contact" class="text-danger"></small>
 
                                 {# 서버 개별 에러 #}
@@ -112,7 +115,7 @@
                             </div>
 
                             {# 회원가입 버튼 #}
-                            <button type="submit" class="btn btn-primary btn-block">회원가입</button>
+                            <button type="submit" class="btn btn-primary btn-block">Signup</button>
                         </form>
                         {# Django signup Form end #}
                     </div>
@@ -130,31 +133,31 @@
                 el: document.getElementById('id_username'),
                 err: document.getElementById('error_username'),
                 test: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
-                msg: '올바른 이메일 형식을 입력하세요.'
+                msg: 'Regular email address is required.'
             },
             password1: {
                 el: document.getElementById('id_password1'),
                 err: document.getElementById('error_password1'),
                 test: v => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(v),
-                msg: '비밀번호는 8자 이상 영문자와 숫자 조합이어야 합니다.'
+                msg: 'Password must contain at least 8 characters including letters and numbers.'
             },
             password2: {
                 el: document.getElementById('id_password2'),
                 err: document.getElementById('error_password2'),
                 test: v => v === document.getElementById('id_password1').value,
-                msg: '비밀번호가 일치하지 않습니다.'
+                msg: 'Passwords do not match.'
             },
             first_name: {
                 el: document.getElementById('id_first_name'),
                 err: document.getElementById('error_first_name'),
                 test: v => v.length >= 2 && v.length < 20,
-                msg: '이름은 2자 이상 20자 미만이어야 합니다.'
+                msg: 'Name must be between 2 and 20 characters.'
             },
             contact: {
                 el: document.getElementById('id_contact'),
                 err: document.getElementById('error_contact'),
-                test: v => /^\+?[\d\s\-()]{7,}$/.test(v),
-                msg: '올바른 연락처를 입력하세요.'
+                test: v => v.length >= 6 && v.length < 30,
+                msg: 'Enter a valid phone number or email address.'
             }
         };
 

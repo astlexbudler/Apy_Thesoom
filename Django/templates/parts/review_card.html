@@ -2,10 +2,11 @@
    <div style="display: flex; justify-content:left;">
       <div style="display: inline-block; text-align: left;">
 
-         <!-- 리뷰 작성자 -->
-         <span class="h6">
-            리뷰 작성자
-         </span>
+         {% if review.image %}
+         <div
+            style="background-image: url('{{review.image}}'); background-size: cover; background-position: center; width: 200px; height: 200px; border-radius: 10px;">
+         </div>
+         {% endif %}
 
       </div>
       <div style="display: inline-block; text-align: left;">
@@ -13,25 +14,53 @@
          <!-- 리뷰 내용 -->
          <div class="pl-4 ml-4 border-left">
 
-            <!-- 평점 -->
+            <!-- 리뷰 작성자 -->
+            <span class="h6">
+               {{review.author_name}}
+            </span>
+
             <p>
+               <!-- 평점 -->
                <span class="h6">
-                  0.0
+                  {{review.rate}}
                </span>
-               <span class="text-success" style="font-size: 14px;">
-                  <i class="fi fi-rs-star"></i><i class="fi fi-rs-star"></i><i class="fi fi-rs-star"></i><i
-                     class="fi fi-rs-star"></i><i class="fi fi-rs-star"></i>
+               <span>
+                  {% if place.avg_rate > 0 %}
+                  <i class="fi fi-ss-star text-warning"></i>
+                  {% else %}
+                  <i class="fi fi-rs-star text-secondary"></i>
+                  {% endif %}
+                  {% if place.avg_rate > 1 %}
+                  <i class="fi fi-ss-star text-warning"></i>
+                  {% else %}
+                  <i class="fi fi-rs-star text-secondary"></i>
+                  {% endif %}
+                  {% if place.avg_rate > 2 %}
+                  <i class="fi fi-ss-star text-warning"></i>
+                  {% else %}
+                  <i class="fi fi-rs-star text-secondary"></i>
+                  {% endif %}
+                  {% if place.avg_rate > 3 %}
+                  <i class="fi fi-ss-star text-warning"></i>
+                  {% else %}
+                  <i class="fi fi-rs-star text-secondary"></i>
+                  {% endif %}
+                  {% if place.avg_rate > 4 %}
+                  <i class="fi fi-ss-star text-warning"></i>
+                  {% else %}
+                  <i class="fi fi-rs-star text-secondary"></i>
+                  {% endif %}
                </span>
             </p>
 
             <!-- 리뷰 내용 -->
             <p>
-               일본 최초 상륙, 그리고 국내에서는 오쿠라만의 전개가 되는, 프랑스의 브랜드 「ANNAYAKE」(아나야케)를 사용. 남녀・연령을 불문하
+               {{review.content}}
             </p>
 
             <!-- 작성일 -->
             <p class="text-muted small">
-               <span>2021-09-01</span>
+               {{review.created_at}}
             </p>
 
          </div>

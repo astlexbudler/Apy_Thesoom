@@ -18,7 +18,51 @@ def api_account(request):
     return JsonResponse({'result': 'success'})
 
 # 리뷰 API
+# POST: 리뷰 작성
+# DELETE: 리뷰 삭제
 def api_review(request):
+
+    if request.method == 'POST':
+        # 요청 데이터 가져오기
+        place_id = request.POST.get('place_id')
+        review = do.create_review(
+            place_id=place_id,
+            account_id=request.user.id,
+            rate=request.POST.get('rate'),
+            content=request.POST.get('content'),
+            image= request.FILES.get('image'),
+        )
+
+        if not review['success']:
+            return JsonResponse({
+                'success': False,
+                'message': review['message'],
+            }, status=400)
+
+        return JsonResponse({
+            'success': True,
+            'message': 'Review created successfully',
+        })
+
+    elif request.method == 'DELETE':
+        # 요청 데이터 가져오기
+        review_id = request.POST.get('review_id')
+        if not review_id:
+            return JsonResponse({'success': False, 'message': 'review_id is required'}, status=400)
+
+        delete_review = do.delete_review(review_id)
+
+        if not delete_review['success']:
+            return JsonResponse({
+                'success': False,
+                'message': delete_review['message'],
+            }, status=400)
+
+        return JsonResponse({
+            'success': True,
+            'message': 'Review deleted successfully',
+        })
+
     return JsonResponse({'result': 'success'})
 
 # 장소 API
@@ -29,8 +73,6 @@ def api_place(request):
 @ csrf_exempt
 def update_place(request):
     if request.method == 'POST':
-
-        print(request.POST.dict())
 
         # 요청 데이터 가져오기
         place_id = request.POST.get('place_id')
@@ -46,6 +88,7 @@ def update_place(request):
             description=request.POST.get('description'),
             discount_from_price=request.POST.get('discount_from_price'),
             final_from_price=request.POST.get('final_from_price'),
+            place_status=request.POST.get('status'),
         )
         print(update_place)
 
@@ -104,18 +147,19 @@ def create_place_image(request):
             return JsonResponse({'success': False, 'message': 'place_id is required'}, status=400)
 
         # 이미지 파일들 가져오기
-        image = request.FILES.get('image')
+        images = request.FILES.getlist('images')
         image_type = request.POST.get('image_type')
 
-        if not image:
-            return JsonResponse({'success': False, 'message': 'At least one image is required'}, status=400)
-
         # 이미지 순서 가져오기
-        do.create_place_image(
-            place_id=place_id,
-            image=image,
-            image_type=image_type,
-        )
+        print('images:', images)
+        for image in images:
+            print('image:', image)
+            do.create_place_image(
+                place_id=place_id,
+                image=image,
+                image_type=image_type,
+            )
+
 
         return JsonResponse({
             'success': True,
@@ -126,7 +170,7 @@ def create_place_image(request):
     return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=405)
 
 # 장소 이미지 삭제 API
-@ csrf_exempt
+@csrf_exempt
 def delete_place_image(request):
 
     # 요청 데이터 가져오기
@@ -350,8 +394,9 @@ def create_item_date(request):
     return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=405)
 
 # 상품 일정 삭제 API
-@ csrf_exempt
+@csrf_exempt
 def delete_item_date(request):
+
     # 요청 데이터 가져오기
     date_id = request.POST.get('date_id')
     if not date_id:

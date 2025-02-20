@@ -44,7 +44,8 @@ def get_account(account_id):
 
     return {
         'id': account_id,
-        'name': account.username,
+        'name': account.first_name,
+        'contact': account.last_name,
         'is_superuser': account.is_superuser,
     }
 
@@ -107,7 +108,7 @@ def delete_account(email):
     }
 
 # 장소 정보 검색
-def search_places(search_keyword):
+def search_places(search_keyword, place_status):
 
     # search_keyword: 검색어(장소 이름)
     # models.filter를 이용해서 쿼리 작성
@@ -115,7 +116,7 @@ def search_places(search_keyword):
 
     plaecs = mo.PLACE.objects.filter(
         name__icontains=search_keyword,
-        status='active'
+        status__in=place_status
     )
 
     return [{
@@ -183,7 +184,7 @@ def get_place_detail(place_id):
             'author_name': place_review.author.first_name,
             'rate': place_review.rate,
             'content': place_review.content,
-            'image': place_review.images,
+            'image': '/media/' + str(place_review.images) if place_review.images else None,
             'created_at': place_review.created_at,
         } for place_review in place_reviews],
         'related_places': [{
@@ -212,11 +213,11 @@ def create_place():
 
     try:
         place = mo.PLACE.objects.create(
-            name='장소이름',
-            intro='짧은 설명',
-            location='위치 안내',
-            location_link='구글 지도 링크',
-            description='<h1>설명을 작성해주세요.</h1>',
+            name='name',
+            intro='short intro description',
+            location='location info',
+            location_link='map location link',
+            description='<h1>Please write description here.</h1>',
             status='writing',
             discount_from_price=300,
             final_from_price=200
@@ -233,7 +234,7 @@ def create_place():
         }
 
 # 장소 수정
-def update_place(place_id, name=None, intro=None, location=None, location_link=None, description=None, status=None, discount_from_price=None, final_from_price=None):
+def update_place(place_id, name, intro, location, location_link, description, discount_from_price, final_from_price, place_status):
 
     # place_id: 장소 아이디
     # name: 장소 이름
@@ -245,23 +246,14 @@ def update_place(place_id, name=None, intro=None, location=None, location_link=N
 
     # models.update를 이용해서 쿼리 작성
     place = mo.PLACE.objects.get(id=place_id)
-    if name:
-        place.name = name
-    if intro:
-        place.intro = intro
-    if location:
-        place.location = location
-    if location_link:
-        place.location_link = location_link
-    if description:
-        place.description = description
-    if status:
-        place.status = status
-    if discount_from_price:
-        place.discount_from_price = discount_from_price
-    if final_from_price:
-        place.final_from_price = final_from_price
-    place.status = 'active'
+    place.name = name
+    place.intro = intro
+    place.location = location
+    place.location_link = location_link
+    place.description = description
+    place.discount_from_price = discount_from_price
+    place.final_from_price = final_from_price
+    place.status = place_status
     place.save()
 
     return {
@@ -444,7 +436,7 @@ def delete_place_item(item_id):
         }
 
 # 리뷰 작성
-def create_review(place_id, rate, content, images):
+def create_review(place_id, account_id, rate, content, image):
 
     # place_id: 장소 아이디
     # rate: 평점(1~5)
@@ -452,10 +444,17 @@ def create_review(place_id, rate, content, images):
     # images: 이미지(리스트)
 
     # models.create를 이용해서 쿼리 작성
+    review = mo.REVIEW.objects.create(
+        place= mo.PLACE.objects.get(id=place_id),
+        author= User.objects.get(id=account_id),
+        rate=rate,
+        content=content,
+        images=image
+    )
 
     return {
         'success': True,
-        'review_id': 1,
+        'review_id': review.pk,
         'message': 'Review created successfully.',
     }
 
@@ -476,15 +475,18 @@ def get_item_dates(item_id):
 
     # item_id: 아이템 아이디
 
-    item_dates = [{
-        'id': 1,
-        'year': 2021,
-        'month': 1,
-        'date': 1,
-        'content': 'Deluxe Room is available.',
-    }]
+    # 이번달만
+    this_month = datetime.datetime.now().month
+    dates = mo.ITEM_DATE.objects.filter(item_id=item_id, month=this_month)
 
-    return item_dates
+    return [{
+        'id': date.pk,
+        'year': date.year,
+        'month': date.month,
+        'date': date.date,
+        'content': date.content,
+    } for date in dates]
+
 
 # 아이템 일정 생성
 def create_item_date(item_id, year, month, date, content):

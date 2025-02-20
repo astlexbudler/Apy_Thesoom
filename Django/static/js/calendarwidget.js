@@ -27,7 +27,7 @@ const CalendarWidget = {
 
     // 달력 생성
     createCal: function () {
-        this.$month.textContent = `${this.today.getFullYear()}년 ${this.MONTH[this.today.getMonth()]}월`;
+        this.$month.textContent = `Year ${this.today.getFullYear()} Month ${this.MONTH[this.today.getMonth()]}`;
 
         const firstDate = new Date(this.today.getFullYear(), this.today.getMonth(), 1);
         const lastDate = new Date(this.today.getFullYear(), this.today.getMonth() + 1, 0);
