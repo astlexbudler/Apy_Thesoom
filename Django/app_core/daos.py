@@ -47,7 +47,7 @@ def get_account(account_id):
     return {
         'id': account_id,
         'name': account.first_name,
-        'contact': account.last_name,
+        'contact': account.contact,
         'is_superuser': account.is_superuser,
     }
 

@@ -13,8 +13,8 @@ class CustomUserCreationForm(UserCreationForm):
 
     class Meta:
         model = ACCOUNT
-        # username=이메일, password1=비밀번호, password2=비밀번호 확인, first_name=이름, last_name=연락처
-        fields = ('username', 'password1', 'password2', 'first_name', 'last_name')
+        # username=이메일, password1=비밀번호, password2=비밀번호 확인, first_name=이름, contact=연락처
+        fields = ('username', 'password1', 'password2', 'first_name', 'contact')
 
 
 class CustomUserFindForm(forms.Form):

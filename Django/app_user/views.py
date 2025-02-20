@@ -23,7 +23,6 @@ def user_index(request):
         places = daos.search_places(search, ['active', 'inactive'])
     else:
         places = daos.search_places(search, ['active'])
-    print(places)
 
     return render(request, 'index.html', {
         'places': places,
