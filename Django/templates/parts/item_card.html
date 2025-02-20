@@ -1,48 +1,45 @@
 <div class="cart-items bg-white position-relative border-bottom">
 
-   <!-- 할인 뱃지 -->
+   <!-- 할인 뱃지 
    <span class="position-absolute">
       <span class="badge badge-danger m-3">10%</span>
-   </span>
+   </span>-->
 
-   <div class="d-flex  align-items-center p-3">
+   <div class="d-flex p-3">
 
       <!-- 이미지 -->
-      <img src="/static/img/samples/0.jpg" width="240" class="rounded shadow-sm">
+      <img src="{{item.image}}" width="240" class="rounded shadow-sm">
 
       <!-- 정보 -->
       <div class="osahan-cart-item-des d-flex w-100 ml-3">
          <div class="flex-fill">
-            <a href="product_details.html" class="text-dark text-decoration-none w-100">
 
-               <!-- 상품 이름 -->
-               <h5 class="mb-1">Executive Suite (Suite Temptation)</h5>
+            <!-- 상품 이름 -->
+            <h5 class="mb-1">
+               {{item.name}}
+            </h5>
 
-               <!-- 상품 설명 -->
-               <p class="text-muted mt-2">
-                  【조기 할인 60】오쿠라 베스트 레이트로부터 최대 15%OFF! (실료만)<br>
-                  <br>
-                  IN 15:00～29:00<br>
-                  OUT 12:00
+            <!-- 상품 설명 -->
+            <div id="itemDescriptionViewer"></div>
+            <script>
+               const itemDescriptionViewer = new toastui.Editor.factory({
+                  el: document.querySelector('#itemDescriptionViewer'),
+                  viewer: true,
+                  height: '200px',
+                  initialValue: `{{ item.description|safe }}`,
+               });
+            </script>
+
+            <!-- 상품 가격 -->
+            <div class="text-right">
+               <p class="m-0 text-success" style="font-size: 20px;">
+                  from $ {{item.price}}
                </p>
+               <a href="/purchase/request?item_id={{item.id}}" class="btn btn-primary btn-sm mt-2">
+                  <i class="fi fi-rr-calendar-day"></i> Book Now
+               </a>
+            </div>
 
-               <!-- 상품 가격 -->
-               <div class="text-right">
-                  <p class="text-muted m-0">
-                     <del>
-                        from $ 1,000
-                     </del>
-                  </p>
-                  <p class="m-0 text-success font-weight-bold" style="font-size: 20px;">
-                     from $ 800
-                  </p>
-                  <a href="/purchase/request"
-                  class="btn btn-primary btn-sm mt-2">
-                     <i class="fi fi-rr-calendar-day"></i> Book Now
-                  </a>
-               </div>
-
-            </a>
          </div>
       </div>
    </div>

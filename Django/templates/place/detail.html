@@ -11,21 +11,15 @@
    <section>
       <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
          <div class="carousel-inner">
+
+            {% for img in place.main_images %}
             <div class="carousel-item active">
                <div class="w-100"
-                  style="height: 450px; background: url('/static/img/samples/0.jpg') no-repeat center center; background-size: cover;">
+                  style="height: 450px; background: url('{{img.image}}') no-repeat center center; background-size: cover;">
                </div>
             </div>
-            <div class="carousel-item">
-               <div class="w-100"
-                  style="height: 450px; background: url('/static/img/samples/1.jpg') no-repeat center center; background-size: cover;">
-               </div>
-            </div>
-            <div class="carousel-item">
-               <div class="w-100"
-                  style="height: 450px; background: url('/static/img/samples/2.jpg') no-repeat center center; background-size: cover;">
-               </div>
-            </div>
+            {% endfor %}
+
          </div>
          <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -81,29 +75,52 @@
 
          <!-- 짧은 소갸 -->
          <p class="text-mute mb-1">
-            The Franklin London – Starhotels Collezione is a luxury hotel located in the heart of London.
+            {{ place.intro }}
          </p>
 
          <!-- 이름 -->
          <h2 class="mb-1 font-weight-bold">
-            The Franklin London – Starhotels Collezione
+            {{ place.name }}
          </h2>
 
          <!-- 위치 -->
          <p class="mt-4">
-            <a href="https://www.google.com/maps?sca_esv=a12588ecf4d7e578&rlz=1C5CHFA_enKR1053KR1053&output=search&q=The+Franklin+London&source=lnms&fbs=ABzOT_CZsxZeNKUEEOfuRMhc2yCI6hbTw9MNVwGCzBkHjFwaK321z773wCjxZUmvDroqphlIJR493mMxNbRCE7CsjxN0zrcX3q5osSt8yM9HtIcApR-qytgB7SnKESLXhABDXCne24GoJWBDR_kZ0la7ZiHwb-YziOH2eZYEdtGI-iMn_X01NPUZMq-6QTrdt__YKLW2sBwX&entry=mc&ved=1t:200715&ictx=111"
+            <a href="{{place.location_link}}"
                class="text-muted" target="_blank">
-               <i class="fi fi-rr-marker"></i> <u>24 Egerton Gardens, Chelsea, London</u>
+               <i class="fi fi-rr-marker"></i> <u>{{place.location}}</u>
             </a>
          </p>
 
          <!-- 별점 -->
-         <p class="text-success" style="font-size: 16px;">
+         <p style="font-size: 16px;">
             <span>
-               <i class="fi fi-rs-star"></i><i class="fi fi-rs-star"></i><i class="fi fi-rs-star"></i><i
-                  class="fi fi-rs-star"></i><i class="fi fi-rs-star"></i>
+               {% if place.avg_rate > 0 %}
+               <i class="fi fi-ss-star text-warning"></i>
+               {% else %}
+               <i class="fi fi-rs-star text-secondary"></i>
+               {% endif %}
+               {% if place.avg_rate > 1 %}
+               <i class="fi fi-ss-star text-warning"></i>
+               {% else %}
+               <i class="fi fi-rs-star text-secondary"></i>
+               {% endif %}
+               {% if place.avg_rate > 2 %}
+               <i class="fi fi-ss-star text-warning"></i>
+               {% else %}
+               <i class="fi fi-rs-star text-secondary"></i>
+               {% endif %}
+               {% if place.avg_rate > 3 %}
+               <i class="fi fi-ss-star text-warning"></i>
+               {% else %}
+               <i class="fi fi-rs-star text-secondary"></i>
+               {% endif %}
+               {% if place.avg_rate > 4 %}
+               <i class="fi fi-ss-star text-warning"></i>
+               {% else %}
+               <i class="fi fi-rs-star text-secondary"></i>
+               {% endif %}
             </span>
-            0.0
+            {{place.avg_rate}}
          </p>
 
          <!-- 소개(html) -->
@@ -120,24 +137,11 @@
             <h5 class="m-0">Images</h5>
          </div>
          <div class="promo-slider pb-0 mb-0">
+            {% for img in place.sub_images %}
             <div class="osahan-slider-item mx-2">
-               <a href="promo_details.html"><img src="/static/img/samples/0.jpg" class="img-fluid mx-auto rounded"></a>
+               <img src="{{img.image}}" class="img-fluid mx-auto rounded">
             </div>
-            <div class="osahan-slider-item mx-2">
-               <a href="promo_details.html"><img src="/static/img/samples/2.jpg" class="img-fluid mx-auto rounded"></a>
-            </div>
-            <div class="osahan-slider-item mx-2">
-               <a href="promo_details.html"><img src="/static/img/samples/1.jpg" class="img-fluid mx-auto rounded"></a>
-            </div>
-            <div class="osahan-slider-item mx-2">
-               <a href="promo_details.html"><img src="/static/img/samples/3.jpg" class="img-fluid mx-auto rounded"></a>
-            </div>
-            <div class="osahan-slider-item mx-2">
-               <a href="promo_details.html"><img src="/static/img/samples/4.jpg" class="img-fluid mx-auto rounded"></a>
-            </div>
-            <div class="osahan-slider-item mx-2">
-               <a href="promo_details.html"><img src="/static/img/samples/5.jpg" class="img-fluid mx-auto rounded"></a>
-            </div>
+            {% endfor %}
          </div>
       </div>
    </section>
@@ -166,9 +170,9 @@
                   <div class="osahan-cart">
 
                      <!-- 상품 카드 -->
+                     {% for item in place.items %}
                      {% include 'parts/item_card.html' %}
-                     {% include 'parts/item_card.html' %}
-                     {% include 'parts/item_card.html' %}
+                     {% endfor %}
 
                   </div>
                </div>
@@ -186,17 +190,43 @@
 
       <!-- 리뷰 평점 -->
       <p class="mb-3">
-      <h3 class="mr-2">
-         0.0
-      </h3>
-      <span class="text-success" style="font-size: 16px;">
-         <i class="fi fi-rs-star"></i><i class="fi fi-rs-star"></i><i class="fi fi-rs-star"></i><i
-            class="fi fi-rs-star"></i><i class="fi fi-rs-star"></i>
-      </span>
+         <h3 class="mr-2">
+            {{ place.avg_rate }}
+         </h3>
+         <span style="font-size: 16px;">
+            <span>
+               {% if place.avg_rate > 0 %}
+               <i class="fi fi-ss-star text-warning"></i>
+               {% else %}
+               <i class="fi fi-rs-star text-secondary"></i>
+               {% endif %}
+               {% if place.avg_rate > 1 %}
+               <i class="fi fi-ss-star text-warning"></i>
+               {% else %}
+               <i class="fi fi-rs-star text-secondary"></i>
+               {% endif %}
+               {% if place.avg_rate > 2 %}
+               <i class="fi fi-ss-star text-warning"></i>
+               {% else %}
+               <i class="fi fi-rs-star text-secondary"></i>
+               {% endif %}
+               {% if place.avg_rate > 3 %}
+               <i class="fi fi-ss-star text-warning"></i>
+               {% else %}
+               <i class="fi fi-rs-star text-secondary"></i>
+               {% endif %}
+               {% if place.avg_rate > 4 %}
+               <i class="fi fi-ss-star text-warning"></i>
+               {% else %}
+               <i class="fi fi-rs-star text-secondary"></i>
+               {% endif %}
+            </span>
+         </span>
       </p>
 
       <!-- 리뷰 작성 -->
       <div class="mb-4">
+         {% if reviewable %}
          <div class="row">
             <input type="file" id="reviewImage" style="display: none;">
             <div class="form-group col-2">
@@ -217,20 +247,24 @@
                   <a href="javascript: document.querySelector('#reviewImage').click();" class="btn btn-info mr-2">
                      <i class="fi fi-rr-picture"></i>
                   </a>
-                  <a href="#" class="btn btn-primary" style="width: 140px;">
+                  <a class="btn btn-primary" style="width: 140px;" href="javascript: writeReview();">
                      Write Review
                   </a>
                </div>
             </div>
          </div>
-
+         {% else %}
+         <div class="alert alert-info">
+            Only users who have made a reservation can write reviews.
+         </div>
+         {% endif %}
 
       </div>
 
       <!-- 리뷰 작성 리스트 -->
+      {% for review in place.reviews %}
       {% include 'parts/review_card.html' %}
-      {% include 'parts/review_card.html' %}
-      {% include 'parts/review_card.html' %}
+      {% endfor %}
 
       </div>
    </section>
@@ -244,12 +278,9 @@
 
       <div class="osahan-recommend container">
          <div class="row">
+            {% for place in place.related_places %}
             {% include 'parts/place_card.html' %}
-            {% include 'parts/place_card.html' %}
-            {% include 'parts/place_card.html' %}
-            {% include 'parts/place_card.html' %}
-            {% include 'parts/place_card.html' %}
-            {% include 'parts/place_card.html' %}
+            {% endfor %}
          </div>
       </div>
 
@@ -266,8 +297,39 @@
          el: document.querySelector('#viewer'),
          viewer: true,
          height: '500px',
-         initialValue: `{{ post.content|safe }}`,
+         initialValue: `{{ place.description|safe }}`,
       });
+
+      writeReview = async () => {
+         const rate = document.querySelector('#rateSelect').value;
+         const content = document.querySelector('#reviewContent').value;
+         const image = document.querySelector('#reviewImage').files[0];
+
+         const formData = new FormData();
+         formData.append('place_id', '{{ place.id }}');
+         formData.append('rate', rate);
+         formData.append('content', content);
+         formData.append('image', image);
+
+         const success = await fetch(`/api/review`, {
+            method: 'POST',
+            body: formData,
+            headers: {
+               'X-CSRFToken': '{{ csrf_token }}'
+            }
+         })
+         .then(response => response.json())
+         .then(data => {
+            console.log(data);
+            return data['success']
+         });
+
+         if (success) {
+            location.reload();
+         } else {
+            alert('Failed to write review.');
+         }
+      }
 
    </script>
 

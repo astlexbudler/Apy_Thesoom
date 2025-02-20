@@ -28,7 +28,9 @@
    <div class="border-bottom bg-white shadow-sm osahan-main-nav">
       <nav class="navbar navbar-expand-lg navbar-light bg-white osahan-header py-0 container">
          <a class="navbar-brand mr-0" href="/">
-            <div style="background: url('/static/img/logo.png') no-repeat center; background-size: contain; width: 180px; height: 60px;"></div>
+            <div
+               style="background: url('/static/img/logo.png') no-repeat center; background-size: contain; width: 180px; height: 60px;">
+            </div>
          </a>
          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,31 +38,45 @@
          </button>
 
          <!-- 헤더 메뉴 중간 -->
-         <div class="ml-3 d-flex align-items-center">
-         </div>
+         <div class="ml-3 d-flex align-items-center"></div>
 
          <!-- 헤더 메뉴 오른쪽 끝 -->
          <div class="ml-auto d-flex align-items-center" style="font-size: 1rem;">
-             {% if request.user.is_authenticated %}
-                 <div>
-                     <a href="/profile" class="mr-4 text-dark">
-                        {{ user.first_name }} 님 반갑습니다.
-                     </a>
-                 </div>
-                 <div>
-                     <a href="/logout" class="mr-2 text-dark">
-                        로그아웃
-                     </a>
-                 </div>
-             {% else %}
-                 <!-- login/signup -->
-                 <a href="/login" class="mr-4 text-dark">
-                    Login
-                 </a>
-                 <a href="/signup" class="mr-2 text-dark">
-                    Signup
-                 </a>
-             {% endif %}
+            {% if request.user.is_authenticated %}
+
+            {% if request.user.is_superuser %}
+            <!-- 관리자 페이지 -->
+            <a href="/place/edit" class="mr-3 text-white bg-primary rounded-pill p-2 icofont-size border shadow-sm">
+               <i class="fi fi-rr-file-edit"></i> New
+            </a>
+            {% endif %}
+
+            <!-- 프로필 -->
+            <a href="/profile" class="mr-3 text-dark bg-light rounded-pill p-2 icofont-size border shadow-sm">
+               <i class="fi fi-rr-user"></i> Profile
+            </a>
+
+            <!-- 결제 기록 -->
+            <a href="/purchase/history" class="mr-3 text-dark bg-light rounded-pill p-2 icofont-size border shadow-sm">
+               <i class="fi fi-rr-wallet-arrow"></i> Purchase
+            </a>
+
+            <!-- 로그아웃 -->
+            <a href="/logout" class="text-dark bg-light rounded-pill p-2 icofont-size border shadow-sm">
+               <i class="fi fi-rr-sign-out-alt"></i> Logout
+            </a>
+            {% else %}
+            <!-- 로그인 -->
+            <a href="/login" class="mr-3 text-dark bg-light rounded-pill p-2 icofont-size border shadow-sm">
+               <i class="fi fi-rr-user"></i> Login
+            </a>
+
+            <!-- 회원가입 -->
+            <a href="/signup" class="text-dark bg-light rounded-pill p-2 icofont-size border shadow-sm">
+               <i class="fi fi-rr-user-add"></i> Signup
+            </a>
+
+            {% endif %}
 
          </div>
       </nav>

@@ -1,0 +1,35 @@
+<div class="cart-items bg-white position-relative border shadow rounded mb-5">
+
+   <div class="d-flex p-3">
+
+      <!-- 이미지 -->
+      <img src="/static/img/samples/0.jpg" width="240" class="rounded shadow-sm">
+
+      <!-- 정보 -->
+      <div class="osahan-cart-item-des d-flex w-100 ml-3">
+         <div class="flex-fill">
+            <!-- 상품 이름 -->
+            <h5 class="mb-1">
+               {{purchase.item.name}}
+            </h5>
+
+            <!-- 상품 설명 -->
+            <p class="text-muted mt-2">
+               Date: {{purchase.book_start_datetime}} ~ {{purchase.book_end_datetime}}<br>
+               Memo: {{purchase.memo}}
+            </p>
+
+            <!-- 상품 가격 -->
+            <div class="text-right">
+               <p class="text-muted m-0">
+                  {{purchase.payment_agency}} {{purchase.payment_method}} {{purchase.created_at}}
+               </p>
+               <p class="m-0" style="font-size: 18px;">
+                  $ {{purchase.item.price}}
+               </p>
+            </div>
+
+         </div>
+      </div>
+   </div>
+</div>

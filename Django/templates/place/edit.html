@@ -1,18 +1,504 @@
 {% extends 'base/base.html' %}
 {% block content %}
 
-   <!-- 메인 -->
-   <main>
+<!-- Header -->
+{% include 'parts/header.html' %}
 
-   </main>
+<!-- Main -->
+<main>
 
-   <!-- 스크립트 -->
-   <script>
+    <!-- Page Title -->
+    <section class="container mt-5">
+        <h5>
+            Create and Edit Place
+        </h5>
+        <a href="javascript: history.back();" class="text-secondary">
+            <i class="fi fi-rr-angle-left"></i> Go Back
+        </a>
+    </section>
 
-      window.onload = () => {
-         console.log('0');
-      }
+    <!-- Create and Edit Place Content -->
+    <section class="container my-5 pb-5 border-bottom">
 
-   </script>
+        <h6>
+            Create and Edit Place Content
+        </h6>
+
+        <!-- Place Content Form -->
+        <form id="placeContentForm">
+            <input type="hidden" name="place_id" value="{{ place.id }}">
+
+            <!-- Place Name and Location Form -->
+            <div class="row">
+                <div class="form-group col-6">
+                    <label>Place Name</label>
+                    <input type="text" class="form-control" name="name" value="{{ place.name }}" required>
+                </div>
+                <div class="form-group col-6">
+                    <label>Place Location</label>
+                    <input type="text" class="form-control" name="location" value="{{ place.location }}" required>
+                </div>
+            </div>
+
+            <!-- Base Price Form -->
+            <div class="row">
+                <div class="form-group col-5">
+                    <label>Base Price (Before Discount)</label>
+                    <input type="text" class="form-control" name="discount_from_price" value="{{ place.discount_from_price }}" required>
+                </div>
+                <div class="form-group col-5">
+                    <label>Base Price (After Discount)</label>
+                    <input type="text" class="form-control" name="final_from_price" value="{{ place.final_from_price }}" required>
+                </div>
+                <div class="form-group col-2">
+                    <label>Status</label>
+                    <select class="form-select form-control" name="status" required>
+                        <option value="active" {% if place.status == 'active' %}selected{% endif %}>Show</option>
+                        <option value="writing" {% if place.status == 'writing' %}selected{% endif %}>Hide</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Place Location Link Form -->
+            <div class="form-group">
+                <label>Place Location Link</label>
+                <input type="url" class="form-control" name="location_link" value="{{ place.location_link }}" required>
+            </div>
+
+            <!-- Short Introduction Form -->
+            <div class="form-group">
+                <label>Short Introduction</label>
+                <input type="text" class="form-control" name="intro" value="{{ place.intro }}" required>
+            </div>
+
+            <!-- Place Description Form (Toast UI Editor) -->
+            <div class="form-group">
+                <label for="placeDescription">Place Description</label>
+                <div id="placeDescription"></div>
+            </div>
+
+        </form>
+
+        <!-- Register Place Content Button -->
+        <button class="btn btn-primary mt-4" onclick="updatePlace();">
+            <i class="fi fi-rr-edit"></i> Register Place Content
+        </button>
+
+    </section>
+
+    <!-- Create and Edit Place Images -->
+    <section class="container mb-5 pb-5 border-bottom">
+
+        <h6>
+            Create and Edit Place Images
+        </h6>
+
+        <!-- Main Image Thumbnails -->
+        <div class="py-3 osahan-promos">
+            <div class="d-flex align-items-center mb-3">
+                <p>
+                    Main Images(Click to Delete)
+                </p>
+            </div>
+            <div class="promo-slider pb-0 mb-0">
+                {% for img in place.main_images %}
+                <div class="osahan-slider-item mx-2" onclick="deletePlaceImage('{{img.id}}');" style="cursor: pointer;">
+                    <img src="{{img.image}}" class="img-fluid mx-auto rounded">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Sub Image Thumbnails -->
+        <div class="py-3 osahan-promos">
+            <div class="d-flex align-items-center mb-3">
+                <p>
+                    Sub Images(Click to Delete)
+                </p>
+            </div>
+            <div class="promo-slider pb-0 mb-0">
+                {% for img in place.sub_images %}
+                <div class="osahan-slider-item mx-2" onclick="deletePlaceImage('{{img.id}}');" style="cursor: pointer;">
+                    <img src="{{img.image}}" class="img-fluid mx-auto rounded">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Image Upload Buttons -->
+        <input type="file" class="d-none" id="mainImageInput" accept="image/*" onchange="addPlaceImage(this, 'main');" multiple>
+        <input type="file" class="d-none" id="subImageInput" accept="image/*" onchange="addPlaceImage(this, 'sub');" multiple>
+        <div>
+            <button type="button" class="btn btn-primary mr-2"
+                onclick="document.getElementById('mainImageInput').click();">
+                <i class="fi fi-rr-picture"></i> Register Main Image
+            </button>
+            <button type="button" class="btn btn-primary" onclick="document.getElementById('subImageInput').click();">
+                <i class="fi fi-rr-picture"></i> Register Sub Image
+            </button>
+        </div>
+
+    </section>
+
+    <!-- Create and Edit Place Items -->
+    <section class="container mb-5 pb-5">
+
+        <h6>
+            Create and Edit Place Items
+        </h6>
+
+        <!-- Item List -->
+        {% for item in place.items %}
+        <div class="cart-items bg-white position-relative border-bottom">
+
+            <div class="d-flex p-3">
+
+                <!-- Image -->
+                <img src="{{item.image}}" width="240" class="rounded shadow-sm">
+
+                <!-- Information -->
+                <div class="osahan-cart-item-des d-flex w-100 ml-3">
+                    <div class="flex-fill">
+                        <!-- Item Name -->
+                        <h5 class="mb-1">
+                            {{ item.name }}
+                        </h5>
+
+                        <!-- Item Description -->
+                        <div id="itemDescriptionViewer"></div>
+                        <script>
+                            const itemDescriptionViewer = new toastui.Editor.factory({
+                                el: document.querySelector('#itemDescriptionViewer'),
+                                viewer: true,
+                                height: '200px',
+                                initialValue: `{{ item.description|safe }}`,
+                            });
+                        </script>
+
+                        <!-- Item Price -->
+                        <div class="text-right">
+                            <p class="m-0 text-success" style="font-size: 20px;">
+                                from $ {{ item.price }}
+                            </p>
+                            <a href="#" class="btn btn-danger btn-sm mt-2">
+                                <i class="fi fi-rr-trash"></i>
+                                Delete
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item Date List -->
+            <div class="mt-3 p-3">
+                {% for date in item.dates %}
+                <div class="mb-2 pb-2 border-bottom">
+                    <p>
+                        {{date.year}}-{{date.month}}-{{date.date}}: {{date.content}}
+                    </p>
+                    <button class="btn btn-danger" onclick="deleteItemDate('{{ date.id }}');">
+                        Delete
+                    </button>
+                </div>
+                {% endfor %}
+                <p class="text-right">
+                    <a class="btn btn-primary" href="javascript: addItemDate('{{ item.id }}');">
+                        <i class="fi fi-rr-plus"></i> Add Date
+                    </a>
+                </p>
+            </div>
+        </div>
+        {% endfor %}
+
+        <!-- Register Item Button -->
+        <div class="mt-4 p-3">
+            <button type="button" class="btn btn-primary" onclick="new bootstrap.Modal(document.getElementById('itemModal')).show();">
+                <i class="fi fi-rr-plus"></i> Register Item
+            </button>
+        </div>
+
+    </section>
+
+    <!-- Register Item Modal -->
+    <div class="modal" tabindex="-1" id="itemModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        Register Item
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="itemForm">
+                        <input type="hidden" name="place_id" value="{{ place.id }}">
+                        <input type="file" class="d-none" id="itemImage" name="image" accept="image/*" required onchange="makeItemThumbnail(this);">
+                        <div class="form-group">
+                            <label for="itemName">Item Name</label>
+                            <input type="text" class="form-control" name="name" placeholder="Enter item name." required>
+                        </div>
+                        <div class="form-group">
+                            <label>Item Description</label>
+                            <div id="itemDescription"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Item Price</label>
+                            <input type="text" class="form-control" name="price" placeholder="Enter item price." required>
+                        </div>
+                        <div id="itemImagePreview"></div>
+                    </form>
+                    <div class="text-right">
+                        <button class="btn btn-primary" onclick="document.getElementById('itemImage').click();">
+                            <i class="fi fi-rr-picture"></i> Register Image
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="saveNewItem();">
+                        Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Date Modal -->
+    <div class="modal" tabindex="-1" id="dateModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        Register Date
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="dateForm">
+                        <input type="hidden" name="item_id" id="itemId">
+                        <div class="form-group">
+                            <label>Date
+                            <input type="date" class="form-control" name="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Content</label>
+                            <input class="form-control" name="description" placeholder="Enter date content." required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="saveNewDate();">
+                        Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Toast UI Editor Settings
+        const placeEditor = new toastui.Editor({
+            el: document.querySelector('#placeDescription'),
+            height: '500px',
+            initialEditType: 'wysiwyg',
+            initialValue: `{{ place.description|safe }}`,
+            previewStyle: 'vertical',
+            hideModeSwitch: true,
+            language: 'ko-KR'
+        });
+        const itemEditor = new toastui.Editor({
+            el: document.querySelector('#itemDescription'),
+            height: '200px',
+            initialEditType: 'wysiwyg',
+            initialValue: 'Enter item description.',
+            previewStyle: 'vertical',
+            hideModeSwitch: true,
+            language: 'ko-KR'
+        });
+
+        // Update Place Content Function
+        updatePlace = async () => {
+            var formData = new FormData(document.getElementById('placeContentForm'));
+            formData.append('description', placeEditor.getHTML());
+
+            // Send Update Place Content Request
+            var result = await fetch('/api/update_place', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    return data.success;
+                });
+
+            if (result) {
+                alert('Place content has been successfully registered.');
+                location.href='/place/edit?place_id={{ place.id }}';
+            } else {
+                alert('Failed to register place content. Please try again.');
+            }
+        }
+
+        // Create Item Thumbnail Function
+        makeItemThumbnail = (e) => {
+            const file = e.files[0];
+            const preview = document.getElementById('itemImagePreview');
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function () {
+                    preview.innerHTML = `<img src="${reader.result}" alt="Item Image" style="max-width: 200px;">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Add Place Image
+        addPlaceImage = async (e, image_type) => {
+            const files = e.files;
+
+            var formData = new FormData();
+            formData.append('place_id', "{{ place.id }}");
+            // images 배열을 개별적으로 추가
+            for (var i = 0; i < files.length; i++) {
+                formData.append('images', files[i]);
+            }
+            formData.append('image_type', image_type);
+
+            // Send Add Place Image Request
+            var result = await fetch('/api/create_place_image', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    return data.success;
+                });
+
+            if (result) {
+                alert('Image has been successfully registered.');
+                location.href='/place/edit?place_id={{ place.id }}';
+            } else {
+                alert('Failed to register image. Please try again.');
+            }
+        }
+
+        // Delete Place Image
+        deletePlaceImage = async (imageId) => {
+            var formData = new FormData();
+            formData.append('image_id', imageId);
+
+            // Send Delete Place Image Request
+            var result = await fetch('/api/delete_place_image', {
+                method: 'POST',
+                body: formData,
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    return data.success;
+                });
+
+            if (result) {
+                alert('Image has been successfully deleted.');
+                location.href='/place/edit?place_id={{ place.id }}';
+            } else {
+                alert('Failed to delete image. Please try again.');
+            }
+        }
+
+        // Save New Item Function
+        saveNewItem = async () => {
+            var formData = new FormData(document.getElementById('itemForm'));
+            var content = itemEditor.getHTML();
+            formData.append('description', content);
+
+            // Send Create New Item Request
+            var result = await fetch('/api/create_place_item', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                return data.success;
+            });
+
+            if (result) {
+                alert('Item has been successfully registered.');
+                location.href='/place/edit?place_id={{ place.id }}';
+            } else {
+                alert('Failed to register item. Please try again.');
+            }
+        }
+
+        // Add Item Date Function
+        addItemDate = (itemId) => {
+            document.getElementById('itemId').value = itemId;
+            new bootstrap.Modal(document.getElementById('dateModal')).show();
+        }
+        saveNewDate = async () => {
+            var formData = new FormData(document.getElementById('dateForm'));
+            formData.append('item_id', document.getElementById('itemId').value);
+
+            // Send Create New Date Request
+            var result = await fetch('/api/create_item_date', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                return data.success;
+            });
+
+            if (result) {
+                alert('Date has been successfully registered.');
+                location.href='/place/edit?place_id={{ place.id }}';
+            } else {
+                alert('Failed to register date. Please try again.');
+            }
+        }
+
+        deleteItemDate = async (dateId) => {
+            var formData = new FormData();
+            formData.append('date_id', dateId);
+
+            // Send Delete Date Request
+            var result = await fetch('/api/delete_item_date', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                return data.success;
+            });
+
+            if (result) {
+                alert('Date has been successfully deleted.');
+                location.href='/place/edit?place_id={{ place.id }}';
+            } else {
+                alert('Failed to delete date. Please try again.');
+            }
+        }
+    </script>
+
+</main>
+
+<!-- Footer -->
+{% include 'parts/footer.html' %}
 
 {% endblock %}

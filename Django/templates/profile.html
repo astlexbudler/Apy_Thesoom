@@ -5,170 +5,152 @@
 <!-- 헤더 -->
 {% include 'parts/header.html' %}
 
-<main class="flex-grow-1">
-  <div class="container my-5">
-    <h2 class="mb-4">프로필</h2>
-    <div class="profile-info">
-      <!-- 이메일 (수정 불가) -->
-      <div class="mb-3">
-        <label class="font-weight-bold">이메일:</label>
-        <span>{{ user.username }}</span>
-      </div>
+<main>
 
-      <!-- 이름 -->
-      <div class="mb-3">
-        <label class="font-weight-bold">이름:</label>
-        <span id="display-first_name">{{ user.first_name }}</span>
-        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#editNameModal">
-          <i class="flaticon-rr"></i> 수정
-        </button>
-      </div>
+  <!-- 페이지 제목 -->
+  <section class="container mt-5">
+    <h5>
+      Profile
+    </h5>
+    <a href="javascript: history.back();" class="text-secondary">
+      <i class="fi fi-rr-angle-left"></i> goBack
+    </a>
+  </section>
 
-      <!-- 연락처 -->
-      <div class="mb-3">
-        <label class="font-weight-bold">연락처:</label>
-        <span id="display-contact">{{ user.contact }}</span>
-        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#editContactModal">
-          <i class="flaticon-rr"></i> 수정
-        </button>
-      </div>
+  <!-- 프로필 정보 -->
+  <section class="container my-5">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="osahan-account bg-white rounded shadow overflow-hidden">
 
-      <!-- 비밀번호 변경 -->
-      <div class="mb-3">
-        <label class="font-weight-bold">비밀번호 변경:</label>
-        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#changePasswordModal">
-          <i class="flaticon-rr"></i> 변경
-        </button>
-      </div>
-
-      <!-- 회원 탈퇴 -->
-      <div class="mb-3">
-        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteAccountModal">
-          <i class="flaticon-rr"></i> 회원 탈퇴
-        </button>
-      </div>
-
-      <!-- 결제 기록 확인 -->
-      <div class="mb-3">
-        <a href="{% url 'purchase_history' %}" class="btn btn-info">
-          <i class="flaticon-rr"></i> 결제 기록 확인
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- 이름 수정 Modal -->
-  <div class="modal fade" id="editNameModal" tabindex="-1" role="dialog" aria-labelledby="editNameModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <form method="post" action="{% url 'update_name' %}">
-        {% csrf_token %}
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editNameModalLabel">이름 수정</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="닫기">
-              <span aria-hidden="true">&times;</span>
-            </button>
+          <!-- 프로필 요약 -->
+          <div class="p-4 profile text-center border-bottom">
+            <h6 class="font-weight-bold m-0 mt-2">
+              {{account.name}}
+            </h6>
+            <p class="small text-muted m-0">
+              {{account.id}} / {{account.contact}}
+            </p>
           </div>
-          <div class="modal-body">
-            <div class="form-group">
-              <label for="first_name">이름</label>
-              <input type="text" class="form-control" id="first_name" name="first_name" value="{{ user.first_name }}">
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-            <button type="submit" class="btn btn-primary">저장</button>
+
+          <!-- 네비게이션 바 -->
+          <div class="account-sections">
+            <ul class="list-group">
+              <a href="/profile" class="text-decoration-none text-dark">
+                <li class="border-bottom bg-white d-flex align-items-center p-3">
+                  <span class="text-white bg-danger rounded-pill p-2 icofont-size border shadow-sm mr-2">
+                    <i class="fi fi-rr-user"></i>
+                  </span> My Account
+                  <span class="badge badge-success p-1 badge-pill ml-auto"><i class="icofont-simple-right"></i></span>
+                </li>
+              </a>
+              <a href="/profile?tab=change_password" class="text-decoration-none text-dark">
+                <li class="border-bottom bg-white d-flex align-items-center p-3">
+                  <span class="text-white bg-success rounded-pill p-2 icofont-size border shadow-sm mr-2">
+                    <i class="fi fi-rr-key"></i>
+                  </span> Change Password
+                  <span class="badge badge-success p-1 badge-pill ml-auto"><i class="icofont-simple-right"></i></span>
+                </li>
+              </a>
+              <a href="/purchase/history" class="text-decoration-none text-dark">
+                <li class="border-bottom bg-white d-flex align-items-center p-3">
+                  <span class="text-white bg-secondary rounded-pill p-2 icofont-size border shadow-sm mr-2">
+                    <i class="fi fi-rr-book"></i>
+                  </span> Purchase History
+                  <span class="badge badge-success p-1 badge-pill ml-auto"><i class="icofont-simple-right"></i></span>
+                </li>
+              </a>
+              <a href="#" class="text-decoration-none text-dark">
+                <li class="border-bottom bg-red d-flex align-items-center p-3">
+                  <span class="text-white rounded-pill p-2 icofont-size border shadow-sm mr-2" style="background-color: red;">
+                    <i class="fi fi-rr-delete-user"></i>
+                  </span> Deactivate Account
+                  <span class="badge badge-success p-1 badge-pill ml-auto"><i class="icofont-simple-right"></i></span>
+                </li>
+              </a>
+              <a href="/terms" class="text-decoration-none text-dark">
+                <li class="border-bottom bg-white d-flex align-items-center p-3">
+                  <i class="icofont-info-circle osahan-icofont bg-primary"></i>Terms, Privacy & Policy
+                  <span class="badge badge-success p-1 badge-pill ml-auto"><i class="icofont-simple-right"></i></span>
+                </li>
+              </a>
+              <a href="/contact" class="text-decoration-none text-dark">
+                <li class="border-bottom bg-white d-flex align-items-center p-3">
+                  <i class="icofont-phone osahan-icofont bg-warning"></i>Help & Support
+                  <span class="badge badge-success p-1 badge-pill ml-auto"><i class="icofont-simple-right"></i></span>
+                </li>
+              </a>
+            </ul>
           </div>
         </div>
-      </form>
-    </div>
-  </div>
+      </div>
 
-  <!-- 연락처 수정 Modal -->
-  <div class="modal fade" id="editContactModal" tabindex="-1" role="dialog" aria-labelledby="editContactModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <form method="post" action="{% url 'update_contact' %}">
-        {% csrf_token %}
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editContactModalLabel">연락처 수정</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="닫기">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
+      <!-- 프로필 정보 수정 -->
+      <div class="col-lg-8 p-4 bg-white rounded shadow d-none" id="edit_profile">
+        <h4 class="mb-4 profile-title">My account</h4>
+        <div class="p-0">
+          <form action="#">
             <div class="form-group">
-              <label for="contact">연락처</label>
-              <input type="text" class="form-control" id="contact" name="contact" value="{{ user.contact }}">
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-            <button type="submit" class="btn btn-primary">저장</button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- 비밀번호 변경 Modal -->
-  <div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <form method="post" action="{% url 'change_password' %}">
-        {% csrf_token %}
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="changePasswordModalLabel">비밀번호 변경</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="닫기">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="form-group">
-              <label for="new_password1">새 비밀번호</label>
-              <input type="password" class="form-control" id="new_password1" name="new_password1">
+              <label for="email">Email</label>
+              <input type="email" class="form-control" id="email" value="{{account.id}}" readonly>
             </div>
             <div class="form-group">
-              <label for="new_password2">비밀번호 확인</label>
-              <input type="password" class="form-control" id="new_password2" name="new_password2">
+              <label for="name">User Name</label>
+              <input class="form-control" id="name" value="{{account.name}}">
             </div>
-            <small class="form-text text-muted">
-              비밀번호는 8자 이상 영문자와 숫자 조합이어야 합니다.
-            </small>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-            <button type="submit" class="btn btn-primary">변경</button>
-          </div>
+            <div class="form-group">
+              <label for="contact">Contact</label>
+              <input class="form-control" id="contact" value="{{account.contact}}">
+            </div>
+            <div class="text-right">
+              <button type="submit" class="btn btn-success">
+                Save Changes
+              </button>
+            </div>
+          </form>
         </div>
-      </form>
-    </div>
-  </div>
+      </div>
 
-  <!-- 회원 탈퇴 확인 Modal -->
-  <div class="modal fade" id="deleteAccountModal" tabindex="-1" role="dialog" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <form method="post" action="{% url 'delete_account' %}">
-        {% csrf_token %}
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="deleteAccountModalLabel">회원 탈퇴 확인</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="닫기">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p>정말로 회원 탈퇴하시겠습니까?</p>
-            <p>탈퇴 시 모든 사용자 데이터가 삭제되며 복구할 수 없습니다.</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-            <button type="submit" class="btn btn-danger">탈퇴</button>
-          </div>
+      <!-- 비밀번호 수정 -->
+      <div class="col-lg-8 p-4 bg-white rounded shadow d-none" id="change_password">
+        <h4 class="mb-4 profile-title">Change Password</h4>
+        <div class="p-0">
+          <form action="#">
+            <div class="form-group">
+              <label for="password1">New Password</label>
+              <input type="password" class="form-control" id="password1" placeholder="New Password">
+            </div>
+            <div class="form-group">
+              <label for="password2">User Name</label>
+              <input type="password" class="form-control" id="password2" placeholder="Confirm Password">
+            </div>
+            <div class="text-right">
+              <button type="submit" class="btn btn-success">
+                Save Change
+              </button>
+            </div>
+          </form>
         </div>
-      </form>
+      </div>
+
     </div>
-  </div>
+  </section>
+
+  <!-- 스크립트 -->
+  <script>
+
+    window.onload = () => {
+
+      const tab = '{{request.GET.tab}}';
+      console.log(tab);
+      if (tab == 'change_password') {
+        document.getElementById('change_password').classList.remove('d-none');
+      } else {
+        document.getElementById('edit_profile').classList.remove('d-none');
+      }
+    }
+
+  </script>
 
 </main>
 

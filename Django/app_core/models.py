@@ -35,12 +35,14 @@ class PLACE(models.Model):
     location_link = models.CharField(max_length=300, verbose_name="장소")
     description = models.TextField(verbose_name="소개(html)")
     status = models.CharField(max_length=50, verbose_name="상태")
+    discount_from_price = models.PositiveIntegerField(verbose_name="할인 전 가격")
+    final_from_price = models.PositiveIntegerField(verbose_name="할인 후 가격")
 
 class PLACE_IMAGE(models.Model):
     place = models.ForeignKey(PLACE, on_delete=models.CASCADE, related_name="images")
     image = models.ImageField(upload_to="place_images/")
     image_type = models.CharField(max_length=50, verbose_name="이미지 타입, main, sub")
-    order = models.PositiveIntegerField(verbose_name="이미지 표시 순서")
+    order = models.PositiveIntegerField(verbose_name="이미지 표시 순서", default=0)
 
 class PLACE_ITEM(models.Model):
     place = models.ForeignKey(PLACE, on_delete=models.CASCADE, related_name="items")
@@ -75,4 +77,4 @@ class PURCHASE(models.Model):
     payment_agency = models.CharField(max_length=255, verbose_name="결제사")
     payment_method = models.CharField(max_length=255, verbose_name="결제 방법")
     payment_info = models.JSONField(verbose_name="결제 정보(json)")
-    status = models.CharField(max_length=50, verbose_name="결제 상태")
+    status = models.CharField(max_length=50, verbose_name="결제 상태, pending, completed, canceled, refunded")

@@ -1,18 +1,44 @@
 {% extends 'base/base.html' %}
 {% block content %}
 
-   <!-- 메인 -->
-   <main>
+<!-- 헤더 -->
+{% include 'parts/header.html' %}
 
-   </main>
+<!-- 메인 -->
+<main>
 
-   <!-- 스크립트 -->
-   <script>
+   <!-- 페이지 제목 -->
+   <section class="container mt-5 mb-2">
+      <h5>
+         Purchase History
+      </h5>
+      <a href="javascript: history.back();" class="text-secondary">
+         <i class="fi fi-rr-angle-left"></i> goBack
+      </a>
+   </section>
 
-      window.onload = () => {
-         console.log('0');
-      }
+   <!-- 결제 기록 목록 -->
+   <section class="container mt-5">
 
-   </script>
+      <!-- 결제 기록 카드 -->
+      {% for purchase in purchases %}
+      {% include 'parts/purchase_history_card.html' %}
+      {% endfor %}
+
+   </section>
+
+</main>
+
+<!-- 스크립트 -->
+<script>
+
+   window.onload = () => {
+      console.log('0');
+   }
+
+</script>
+
+<!-- 푸터 -->
+{% include 'parts/footer.html' %}
 
 {% endblock %}

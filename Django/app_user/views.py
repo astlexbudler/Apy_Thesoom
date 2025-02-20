@@ -5,38 +5,45 @@ from django.contrib.auth.decorators import login_required
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_http_methods
 from django.contrib import messages
+from app_core import daos
 
-from app_core.daos import find_account
+from app_core.daos import *
 from app_core.models import ACCOUNT
 from .forms import CustomUserCreationForm, CustomUserFindForm, CustomPasswordResetForm
 
 
 # 메인 페이지
 def user_index(request):
-    context = {
-        'places': [0, 0, 0, 0, 0, 0, 0, 0, 0]
-    }
 
-    if request.user.is_authenticated:
-        current_user = get_object_or_404(ACCOUNT, username=request.user)
+    # 검색어
+    search = request.GET.get('search', '')
 
-        context['user'] = current_user
+    account = daos.get_account(request.user.username)
+    if request.user.is_superuser:
+        places = daos.search_places(search, ['active', 'inactive'])
+    else:
+        places = daos.search_places(search, ['active'])
+    print(places)
 
-    return render(request, 'index.html', context)
+    return render(request, 'index.html', {
+        'places': places,
+        'search': search,
+        'account': account,
+    })
 
 # 로그인 페이지
 def user_login(request):
     signup_success = request.session.get('signup_success', False)
     password_reset_success = request.session.get('password_reset_success', False)
 
-    if request.method == 'POST':
+    if request.method == 'POST': # 로그인 시도
         form = AuthenticationForm(request, data=request.POST)
 
         form.error_messages = {
             'invalid_login': _(
-                '계정 정보가 일치하지 않습니다.'
+                'Invalid username or password. Please enter a correct username and password.'
             ),
-            'inactive': _('휴면 계정입니다.'),
+            'inactive': _('This account is inactive.'),
         }
 
         if form.is_valid():
@@ -60,6 +67,7 @@ def user_logout(request):
 
 # 회원가입 페이지
 def user_signup(request):
+
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
 
@@ -68,7 +76,12 @@ def user_signup(request):
 
             request.session['signup_success'] = True
 
+            print("회원가입 성공")
+
             return redirect('user_login')
+        else:
+            print("회원가입 실패")
+
     else:
         form = CustomUserCreationForm()
 
@@ -114,7 +127,7 @@ def user_reset(request):
 
             user.set_password(new_password)
 
-            user.save();
+            user.save()
 
             request.session.pop('reset_username', None)
             request.session['password_reset_success'] = True
@@ -128,9 +141,11 @@ def user_reset(request):
 # 프로필
 @login_required
 def user_profile(request):
-    UserChangeForm
+    account = daos.get_account(request.user.username)
 
-    return render(request, 'profile.html')
+    return render(request, 'profile.html' , {
+        'account': account,
+    })
 
 @login_required
 @require_http_methods(["POST"])
@@ -140,7 +155,7 @@ def user_delete(request):
     user.delete()
     logout(request)
 
-    messages.success(request, "회원 탈퇴가 완료되었습니다.")
+    messages.success(request, "Account deleted successfully.")
 
     return redirect('home')  # 메인 페이지 또는 원하는 페이지로 리다이렉트
 
