@@ -40,7 +40,9 @@ def get_account(account_id):
 
     # account_id: 사용자 아이디(username)
 
-    account = User.objects.get(username=account_id)
+    account = User.objects.filter(username=account_id).first()
+    if not account:
+        return None
 
     return {
         'id': account_id,
@@ -596,7 +598,7 @@ def get_purchases(account_id):
             'name': purchase.item.name,
             'description': purchase.item.description,
             'price': purchase.item.price,
-            'image': purchase.item.image.url,
+            'image': '/media/' + str(purchase.item.image) if purchase.item.image else None,
         },
         'book_start_datetime': datetime.datetime.strftime(purchase.book_start_datetime, '%Y-%m-%d'),
         'book_end_datetime': datetime.datetime.strftime(purchase.book_end_datetime, '%Y-%m-%d'),

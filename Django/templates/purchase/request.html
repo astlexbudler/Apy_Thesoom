@@ -187,10 +187,10 @@
       .then(data => {
          console.log(data);
          if (data.result == 'success') {
-            alert('예약이 완료되었습니다.');
+            alert('Successfully reserved.');
             location.href = '/purchase/history';
          } else {
-            alert('예약에 실패했습니다.');
+            alert('Failed to reserve.');
          }
       });
    }

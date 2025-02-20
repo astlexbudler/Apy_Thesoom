@@ -35,9 +35,15 @@
                <p class="m-0 text-success" style="font-size: 20px;">
                   from $ {{item.price}}
                </p>
+               {% if request.user.is_authenticated %}
                <a href="/purchase/request?item_id={{item.id}}" class="btn btn-primary btn-sm mt-2">
                   <i class="fi fi-rr-calendar-day"></i> Book Now
                </a>
+               {% else %}
+               <a href="/login" class="btn btn-primary btn-sm mt-2">
+                  <i class="fi fi-rr-calendar-day"></i> Book Now
+               </a>
+               {% endif %}
             </div>
 
          </div>
