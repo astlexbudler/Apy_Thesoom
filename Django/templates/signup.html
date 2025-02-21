@@ -120,7 +120,7 @@
                             </div>
 
                             {# 회원가입 버튼 #}
-                            <button type="submit" class="btn btn-primary btn-block">Signup</button>
+                            <button id="signup-button" type="submit" class="btn btn-primary btn-block">Signup</button>
                         </form>
                         {# Django signup Form end #}
                     </div>
@@ -145,7 +145,7 @@
             password1: {
                 el: document.getElementById('id_password1'),
                 err: document.getElementById('error_password1'),
-                test: v => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d][A-Za-z\d!@#$%^&*()_+]{8,}$/.test(v),
+                test: v => /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/.test(v),
                 msg: 'Password must contain at least 8 characters including letters, numbers, and special characters.'
             },
             password2: {

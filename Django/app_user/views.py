@@ -1,15 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout
-from django.contrib.auth.forms import AuthenticationForm, UserChangeForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import gettext_lazy as _
-from django.views.decorators.http import require_http_methods
 from django.contrib import messages
 from app_core import daos
 
 from app_core.daos import *
 from app_core.models import ACCOUNT
-from .forms import CustomUserCreationForm, CustomUserFindForm, CustomPasswordResetForm
+from .forms import CustomUserCreationForm, CustomUserFindForm, CustomPasswordResetForm, CustomUserChangeForm
 
 
 # 메인 페이지
@@ -32,8 +31,8 @@ def user_index(request):
 
 # 로그인 페이지
 def user_login(request):
-    signup_success = request.session.get('signup_success', False)
-    password_reset_success = request.session.get('password_reset_success', False)
+    signup_success = request.session.pop('signup_success', False)
+    password_reset_success = request.session.pop('password_reset_success', False)
 
     if request.method == 'POST': # 로그인 시도
         form = AuthenticationForm(request, data=request.POST)
@@ -42,7 +41,6 @@ def user_login(request):
             'invalid_login': _(
                 'Invalid username or password. Please enter a correct username and password.'
             ),
-            'inactive': _('This account is inactive.'),
         }
 
         if form.is_valid():
@@ -129,7 +127,7 @@ def user_reset(request):
             user.save()
 
             request.session.pop('reset_username', None)
-            request.session['password_reset_success'] = True
+            messages.success(request, 'Password has been reset successfully!')
 
             return redirect('user_login')
     else:
@@ -140,23 +138,72 @@ def user_reset(request):
 # 프로필
 @login_required
 def user_profile(request):
-    account = daos.get_account(request.user.username)
+    user = request.user
+    profile_change = request.session.pop('profile_change', False)
+
+    if request.method == 'POST':
+        form = CustomUserChangeForm(request.POST, instance=user)
+
+        if form.is_valid():
+            form.save()
+            request.session['profile_change'] = True
+
+            return redirect('user_profile')
+    else:
+        form = CustomUserChangeForm(instance=user)
 
     return render(request, 'profile.html' , {
-        'account': account,
+        'form': form,
+        'account': user,
+        'profile_change': profile_change,
     })
 
 @login_required
-@require_http_methods(["POST"])
+def user_profile_reset(request):
+    user = get_object_or_404(ACCOUNT, username=request.user.username)
+
+    if request.method == 'POST':
+        form = CustomPasswordResetForm(request.POST)
+
+        if form.is_valid():
+            new_password = form.cleaned_data.get("password1")
+
+            user.set_password(new_password)
+
+            user.save()
+
+            messages.success(request, 'Password has been reset successfully!')
+
+            logout(request)
+
+            return redirect('user_login')
+
+    else:
+        form = CustomPasswordResetForm()
+
+    return render(request, 'profile.html', {
+        'form': form,
+        'account': user,
+        'password_reset_page': True})
+
+@login_required
 def user_delete(request):
-    user = request.user
+    user = get_object_or_404(ACCOUNT, username=request.user.username)
 
-    user.delete()
-    logout(request)
+    if request.method == 'POST':
+        user = request.user
 
-    messages.success(request, "Account deleted successfully.")
+        user.delete()
+        logout(request)
 
-    return redirect('home')  # 메인 페이지 또는 원하는 페이지로 리다이렉트
+        messages.success(request, "Account deleted successfully.")
+
+        return redirect('user_login')
+    else:
+        return render(request, 'profile.html', {
+            'account': user,
+            'deactivate_page': True
+        })
 
 # 이용약관
 def user_terms(request):

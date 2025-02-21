@@ -50,12 +50,10 @@
                             {% endif %}
 
                             <!-- 비밀번호 변경 성공 표시 -->
-                            {% if password_reset_success == True %}
-                            <div class="alert alert-success">
-                                <div>
-                                    Your password has been successfully changed! Please log in again.
-                                </div>
-                            </div>
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <div class="alert alert-success">{{ message }}</div>
+                                {% endfor %}
                             {% endif %}
 
                             <!-- 이메일(username) 필드 -->

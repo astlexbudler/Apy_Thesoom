@@ -20,118 +20,15 @@
   <!-- 프로필 정보 -->
   <section class="container my-5">
     <div class="row">
-      <div class="col-lg-4">
-        <div class="osahan-account bg-white rounded shadow overflow-hidden">
+      {% include 'profile/nav.html' %}
 
-          <!-- 프로필 요약 -->
-          <div class="p-4 profile text-center border-bottom">
-            <h6 class="font-weight-bold m-0 mt-2">
-              {{account.name}}
-            </h6>
-            <p class="small text-muted m-0">
-              {{account.id}} / {{account.contact}}
-            </p>
-          </div>
-
-          <!-- 네비게이션 바 -->
-          <div class="account-sections">
-            <ul class="list-group">
-              <a href="/profile" class="text-decoration-none text-dark">
-                <li class="border-bottom bg-white d-flex align-items-center p-3">
-                  <span class="text-white bg-danger rounded-pill p-2 icofont-size border shadow-sm mr-2">
-                    <i class="fi fi-rr-user"></i>
-                  </span> My Account
-                  <span class="badge badge-success p-1 badge-pill ml-auto"><i class="icofont-simple-right"></i></span>
-                </li>
-              </a>
-              <a href="/profile?tab=change_password" class="text-decoration-none text-dark">
-                <li class="border-bottom bg-white d-flex align-items-center p-3">
-                  <span class="text-white bg-success rounded-pill p-2 icofont-size border shadow-sm mr-2">
-                    <i class="fi fi-rr-key"></i>
-                  </span> Change Password
-                  <span class="badge badge-success p-1 badge-pill ml-auto"><i class="icofont-simple-right"></i></span>
-                </li>
-              </a>
-              <a href="/purchase/history" class="text-decoration-none text-dark">
-                <li class="border-bottom bg-white d-flex align-items-center p-3">
-                  <span class="text-white bg-secondary rounded-pill p-2 icofont-size border shadow-sm mr-2">
-                    <i class="fi fi-rr-book"></i>
-                  </span> Purchase History
-                  <span class="badge badge-success p-1 badge-pill ml-auto"><i class="icofont-simple-right"></i></span>
-                </li>
-              </a>
-              <a href="#" class="text-decoration-none text-dark">
-                <li class="border-bottom bg-red d-flex align-items-center p-3">
-                  <span class="text-white rounded-pill p-2 icofont-size border shadow-sm mr-2" style="background-color: red;">
-                    <i class="fi fi-rr-delete-user"></i>
-                  </span> Deactivate Account
-                  <span class="badge badge-success p-1 badge-pill ml-auto"><i class="icofont-simple-right"></i></span>
-                </li>
-              </a>
-              <a href="/terms" class="text-decoration-none text-dark">
-                <li class="border-bottom bg-white d-flex align-items-center p-3">
-                  <i class="icofont-info-circle osahan-icofont bg-primary"></i>Terms, Privacy & Policy
-                  <span class="badge badge-success p-1 badge-pill ml-auto"><i class="icofont-simple-right"></i></span>
-                </li>
-              </a>
-              <a href="/contact" class="text-decoration-none text-dark">
-                <li class="border-bottom bg-white d-flex align-items-center p-3">
-                  <i class="icofont-phone osahan-icofont bg-warning"></i>Help & Support
-                  <span class="badge badge-success p-1 badge-pill ml-auto"><i class="icofont-simple-right"></i></span>
-                </li>
-              </a>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <!-- 프로필 정보 수정 -->
-      <div class="col-lg-8 p-4 bg-white rounded shadow d-none" id="edit_profile">
-        <h4 class="mb-4 profile-title">My account</h4>
-        <div class="p-0">
-          <form action="#">
-            <div class="form-group">
-              <label for="email">Email</label>
-              <input type="email" class="form-control" id="email" value="{{account.id}}" readonly>
-            </div>
-            <div class="form-group">
-              <label for="name">User Name</label>
-              <input class="form-control" id="name" value="{{account.name}}">
-            </div>
-            <div class="form-group">
-              <label for="contact">Contact</label>
-              <input class="form-control" id="contact" value="{{account.contact}}">
-            </div>
-            <div class="text-right">
-              <button type="submit" class="btn btn-success">
-                Save Changes
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-
-      <!-- 비밀번호 수정 -->
-      <div class="col-lg-8 p-4 bg-white rounded shadow d-none" id="change_password">
-        <h4 class="mb-4 profile-title">Change Password</h4>
-        <div class="p-0">
-          <form action="#">
-            <div class="form-group">
-              <label for="password1">New Password</label>
-              <input type="password" class="form-control" id="password1" placeholder="New Password">
-            </div>
-            <div class="form-group">
-              <label for="password2">User Name</label>
-              <input type="password" class="form-control" id="password2" placeholder="Confirm Password">
-            </div>
-            <div class="text-right">
-              <button type="submit" class="btn btn-success">
-                Save Change
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
+      {% if password_reset_page %}
+        {% include 'profile/password_reset.html' %}
+      {% elif deactivate_page %}
+        {% include 'profile/deactivate.html' %}
+      {% else %}
+        {% include 'profile/change.html' %}
+      {% endif %}
 
     </div>
   </section>
