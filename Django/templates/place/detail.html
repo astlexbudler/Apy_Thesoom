@@ -42,26 +42,38 @@
                      Infomation
                   </a>
                </li>
-               <li class="nav-item active">
+               <li class="nav-item ">
                   <a class="nav-link text-white pl-4" href="#">
                      Images
                   </a>
                </li>
-               <li class="nav-item active">
+               <li class="nav-item">
                   <a class="nav-link text-white pl-4" href="#">
                      Pricing
                   </a>
                </li>
-               <li class="nav-item active">
+               <li class="nav-item">
                   <a class="nav-link text-white pl-4" href="#">
                      All Reviews
                   </a>
                </li>
-               <li class="nav-item active">
+               <li class="nav-item">
                   <a class="nav-link text-white pl-4" href="#">
                      Related
                   </a>
                </li>
+               {% if request.user.is_superuser %}
+               <li class="nav-item">
+                  <a class="nav-link text-white pl-4" href="/place/edit?place_id={{place.id}}">
+                     Edit
+                  </a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link text-white pl-4" href="javascript: deletePlace({{place.id}});">
+                     Delete
+                  </a>
+               </li>
+               {% endif %}
             </ul>
          </div>
       </div>
@@ -139,7 +151,9 @@
          <div class="promo-slider pb-0 mb-0">
             {% for img in place.sub_images %}
             <div class="osahan-slider-item mx-2">
-               <img src="{{img.image}}" class="img-fluid mx-auto rounded">
+               <a href="{{img.image}}" target="_blank">
+                  <img src="{{img.image}}" class="img-fluid mx-auto rounded">
+               </a>
             </div>
             {% endfor %}
          </div>
@@ -328,6 +342,31 @@
             location.reload();
          } else {
             alert('Failed to write review.');
+         }
+      }
+
+      deletePlace = async () => {
+         if(!confirm('Are you sure you want to delete this place?')) {
+            return;
+         }
+
+         const success = await fetch(`/api/place?place_id={{ place.id }}`, {
+            method: 'DELETE',
+            headers: {
+               'X-CSRFToken': '{{ csrf_token }}'
+            }
+         })
+         .then(response => response.json())
+         .then(data => {
+            console.log(data);
+            return data['success']
+         });
+
+         // 삭제 성공 시
+         if (success) {
+            location.href = '/';
+         } else {
+            alert('Failed to delete place.');
          }
       }
 

@@ -67,6 +67,27 @@ def api_review(request):
 
 # 장소 API
 def api_place(request):
+
+
+    if request.method == 'DELETE':
+        # 요청 데이터 가져오기
+        place_id = request.GET.get('place_id')
+        if not place_id:
+            return JsonResponse({'success': False, 'message': 'place_id is required'}, status=400)
+
+        delete_place = do.delete_place(place_id)
+
+        if not delete_place['success']:
+            return JsonResponse({
+                'success': False,
+                'message': delete_place['message'],
+            }, status=400)
+
+        return JsonResponse({
+            'success': True,
+            'message': 'Place deleted successfully',
+        })
+
     return JsonResponse({'result': 'success'})
 
 # 장소 수정 API
@@ -369,7 +390,6 @@ def create_item_date(request):
         year = full_date.split('-')[0]
         month = full_date.split('-')[1]
         date = full_date.split('-')[2]
-        print(year, month, date, full_date)
 
         add_item_date = do.create_item_date(
             item_id=item_id,

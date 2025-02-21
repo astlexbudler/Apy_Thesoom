@@ -1,3 +1,4 @@
+import datetime
 from django.shortcuts import render, redirect
 from app_core import daos
 from django.views.decorators.csrf import csrf_exempt
@@ -30,6 +31,18 @@ def purchase_request(request):
         memo = request.POST.get('memo')
 
         daos.create_purchase(request.user.id, item_id, start_date, end_date, 'alipay', 'card', '{}', memo)
+
+        # 예약된 날짜에 'No Vacancy' 추가
+        start_datetime = datetime.datetime.strptime(start_date, '%Y-%m-%d')
+        end_datetime = datetime.datetime.strptime(end_date, '%Y-%m-%d')
+        for i in range((end_datetime - start_datetime).days + 1):
+            daos.create_item_date(
+                item_id=item_id,
+                year=int((start_datetime + datetime.timedelta(days=i)).strftime('%Y')),
+                month=int((start_datetime + datetime.timedelta(days=i)).strftime('%m')),
+                date=int((start_datetime + datetime.timedelta(days=i)).strftime('%d')),
+                content='No Vacancy'
+            )
 
         return JsonResponse({'result': 'success'})
 

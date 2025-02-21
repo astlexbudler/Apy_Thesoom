@@ -36,28 +36,28 @@
             <!-- 정보 -->
             <div class="osahan-cart-item-des d-flex w-100 ml-3">
                <div class="flex-fill">
-                     <!-- 상품 이름 -->
-                     <h5 class="mb-1">
-                        {{item.name}}
-                     </h5>
+                  <!-- 상품 이름 -->
+                  <h5 class="mb-1">
+                     {{item.name}}
+                  </h5>
 
-                     <!-- 상품 설명 -->
-                     <div id="itemDescriptionViewer"></div>
-                     <script>
-                        const itemDescriptionViewer = new toastui.Editor.factory({
-                           el: document.querySelector('#itemDescriptionViewer'),
-                           viewer: true,
-                           height: '200px',
-                           initialValue: `{{ item.description|safe }}`,
-                        });
-                     </script>
+                  <!-- 상품 설명 -->
+                  <div id="itemDescriptionViewer"></div>
+                  <script>
+                     const itemDescriptionViewer = new toastui.Editor.factory({
+                        el: document.querySelector('#itemDescriptionViewer'),
+                        viewer: true,
+                        height: '200px',
+                        initialValue: `{{ item.description|safe }}`,
+                     });
+                  </script>
 
-                     <!-- 상품 가격 -->
-                     <div class="text-right">
-                        <p class="m-0 text-success" style="font-size: 20px;">
-                           from $ {{item.price}}
-                        </p>
-                     </div>
+                  <!-- 상품 가격 -->
+                  <div class="text-right">
+                     <p class="m-0 text-success" style="font-size: 20px;">
+                        from $ {{item.price}}
+                     </p>
+                  </div>
                </div>
             </div>
          </div>
@@ -68,11 +68,11 @@
    <section class="container mt-5">
       <div id="calendar-widget">
          <div id="head-wrapper" class="d-flex align-items-center justify-content-center">
-            <button id="prev-button" class="btn btn-light d-none">
+            <button id="prev-button" class="btn btn-light">
                <i class="fi fi-rr-angle-left"></i>
             </button>
             <h3 id="month" class="mx-3 text-black"></h3>
-            <button id="next-button" class="btn btn-light d-none">
+            <button id="next-button" class="btn btn-light">
                <i class="fi fi-rr-angle-right"></i>
             </button>
          </div>
@@ -116,7 +116,8 @@
                <input type="date" class="form-control" name="end_date">
             </div>
             <p class="small text-muted">
-               ※ Please select the available date. If you want to book for one day, please select the same date for the start and end dates.
+               ※ Please select the available date. If you want to book for one day, please select the same date for the
+               start and end dates.
             </p>
          </div>
 
@@ -125,7 +126,8 @@
             <label for="exampleInputPassword1">Memo</label>
             <textarea rows="5" placeholder="can we improve?" class="form-control" name="memo"></textarea>
             <p class="small text-muted">
-               ※ Please enter the reservation information. Please enter the name, contact information, email address, and request.
+               ※ Please enter the reservation information. Please enter the name, contact information, email address,
+               and request.
             </p>
          </div>
 
@@ -145,23 +147,318 @@
    <!-- 주의 사항 안내 -->
    <section class="container mt-5">
       <h5 class="mb-4">Cautions</h5>
-      <div class="px-10 py-8"><div class="flex items-center space-x-2 justify-between"><h3 class="font-bold text-gray-800 text-2xl"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Cancellation Policy</font></font></h3></div><div class="mt-4"><table class="pc:text-base w-full border-x border-t text-left text-sm"><tbody><tr class="grid grid-cols-4 border-b"><th class="pc:col-span-1 col-span-2 flex break-all border-r bg-gray-100 p-3 font-normal"><span><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">From 15:00 3 days before</font></font></span></th><td class="pc:col-span-3 col-span-2 break-all p-3"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">100%</font></font></td></tr><tr class="grid grid-cols-4 border-b"><th class="pc:col-span-1 col-span-2 flex break-all border-r bg-gray-100 p-3 font-normal"><span><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">No stay</font></font></span></th><td class="pc:col-span-3 col-span-2 break-all p-3"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">100%</font></font></td></tr></tbody></table></div><!----></div>
-      <div class="px-10 py-8"><div class="flex items-center space-x-2 justify-between"><h3 class="font-bold text-gray-800 text-2xl"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Children</font></font></h3></div><div class="mt-5"><table class="pc:text-base w-full border-x border-t text-left text-sm"><tbody><tr class="grid grid-cols-4 border-b"><th class="pc:col-span-1 col-span-2 flex break-all border-r bg-gray-100 p-3 font-normal"><span><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Sleeping together</font></font></span></th><td class="pc:col-span-3 col-span-2 break-all p-3"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Up to 2 people</font></font></td></tr><tr class="grid grid-cols-4 border-b"><th class="pc:col-span-1 col-span-2 flex break-all border-r bg-gray-100 p-3 font-normal"><span><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Upper grades of elementary school</font></font></span></th><td class="pc:col-span-3 col-span-2 break-all p-3"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">100% of adult rate</font></font></td></tr><tr class="grid grid-cols-4 border-b"><th class="pc:col-span-1 col-span-2 flex break-all border-r bg-gray-100 p-3 font-normal"><span><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Elementary school lower grades</font></font></span></th><td class="pc:col-span-3 col-span-2 break-all p-3"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">100% of adult rate</font></font></td></tr><tr class="grid grid-cols-4 border-b"><th class="pc:col-span-1 col-span-2 flex break-all border-r bg-gray-100 p-3 font-normal"><span><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Infants and toddlers (meals and bedding provided)</font></font></span></th><td class="pc:col-span-3 col-span-2 break-all p-3"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Not acceptable</font></font></td></tr><tr class="grid grid-cols-4 border-b"><th class="pc:col-span-1 col-span-2 flex break-all border-r bg-gray-100 p-3 font-normal"><span><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Infants (no meals, bedding provided)</font></font></span></th><td class="pc:col-span-3 col-span-2 break-all p-3"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Not acceptable</font></font></td></tr><tr class="grid grid-cols-4 border-b"><th class="pc:col-span-1 col-span-2 flex break-all border-r bg-gray-100 p-3 font-normal"><span><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Infants (meals provided, bedding not provided)</font></font></span></th><td class="pc:col-span-3 col-span-2 break-all p-3"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Not acceptable</font></font></td></tr><tr class="grid grid-cols-4 border-b"><th class="pc:col-span-1 col-span-2 flex break-all border-r bg-gray-100 p-3 font-normal"><span><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Infants (no meals or bedding)</font></font></span></th><td class="pc:col-span-3 col-span-2 break-all p-3"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">free</font></font></td></tr></tbody></table></div><p class="mt-8 text-gray-800"><span class="whitespace-pre-line"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">[About children sharing existing beds] Children aged 11 years and under (elementary school students) can stay free of charge if they share existing beds. (Breakfast excluded) Please note that children aged 12 years and over will be charged the same price as adults. If children staying on the Club Floor or Heritage Wing (with Club Lounge access) wish to use the Club Lounge or have breakfast, an additional fee will be charged. *Club Lounge access... 0-5 years: Free 6-11 years: 4,500 yen (incl. consumption tax and service charge)</font></font></span></p><p class="mt-4 text-gray-800"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">*The number of meals for children will be based on the meal conditions of the plan.</font></font></p></div>
-      <div class="px-10 py-8"><div class="flex items-center space-x-2 justify-between"><h3 class="font-bold text-gray-800 text-2xl"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Notice from the facility</font></font></h3></div><div class="mt-4"><p class="mb-2"><span class="whitespace-pre-line"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">(Updated February 15, 2025) Please check the official website for the latest information on the facilities in the hotel. ● Changes and reductions The business hours of some facilities at The Okura Tokyo have been changed. Please be sure to check the official website. * Breakfast at Orchid is only available to guests staying at the hotel on Saturdays, Sundays, and holidays, and from March 1st (Sat) to April 27th (Sun). * Nouvelle Epoque will only be open for breakfast on Tuesdays, except for holidays and the day before holidays. * Yamazato will only be open for breakfast on Wednesdays, except for holidays and the day before holidays. ● Prestige Tower All guest rooms will be non-smoking From September 1st (Sun), 2024, all guest rooms in the Prestige Tower will be non-smoking. Smoking will continue to be permitted in the hotel's smoking booths and some guest rooms in the Heritage Wing. Please note that heated tobacco products are also permitted in smoking areas. Thank you for your understanding and cooperation. * Reservations for the Heritage Wing Smoking Room can be made by phone. Please contact the room reservation department for availability, rates, etc.</font></font></span></p></div><!----></div>
-      <div class="px-10 py-8"><div class="flex items-center space-x-2 justify-between"><h3 class="font-bold text-gray-800 text-2xl"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">About fees</font></font></h3></div><div class="mt-4"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">* The lowest price is the lowest price for the cheapest dates currently on sale. </font></font><br><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">* Actual prices may vary depending on the date, so please be sure to check the availability calendar before making a reservation. </font></font><br><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">* </font><a href="https://faq.ikyu.com/app/answers/detail/a_id/154/" target="_blank"><font style="vertical-align: inherit;">Accommodation tax</font></a><font style="vertical-align: inherit;"> may be charged. It is not included in the accommodation fee unless otherwise specified.</font></font><a href="https://faq.ikyu.com/app/answers/detail/a_id/154/" target="_blank"><font style="vertical-align: inherit;"></font></a><font style="vertical-align: inherit;"></font><!----></div></div>
-      <div class="px-10 py-8"><div class="flex items-center space-x-2 justify-between"><h3 class="font-bold text-gray-800 text-2xl"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Payment</font></font></h3></div><div class="mt-4"><!----><p class="mb-2"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">*This plan allows you to choose your payment method (on-site payment or online card payment).</font></font></p><p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">If you choose on-site payment, please pay on the day of your stay. A receipt will be issued at the accommodation facility.</font></font></p><p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">For online card payments, an authentication procedure will be carried out on our website when you make a reservation. You can issue your own receipt on the Ikyu.com website.</font></font></p></div></div>
-      <div class="px-10 py-8"><div class="flex items-center space-x-2 justify-between"><h3 class="font-bold text-gray-800 text-2xl"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Notes</font></font></h3></div><div class="mt-4"><!----><p class="mb-2"><span class="whitespace-pre-line"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">*Some facilities and restaurants may have changed their business hours or service content. Please check the official website for the latest information when using. *Reservations must be made up to 60 days before the date of stay. There is no change or cancellation fee if made up to 3:00 p.m. three days before. *All twin rooms can be reconfigured into king size rooms by bed making. Please write to us if you wish to do so. *Please note that we cannot accommodate requests for rooms with specific views, floors, etc. *Please note that images are for illustrative purposes only and may differ from the actual content. *Due to changes in room availability, the price and number of remaining rooms at the time of booking may differ from those announced. *Guest reservations and reservations made via external sites are not eligible for instant point redemption.</font></font></span></p><p class="mb-2"><span class="whitespace-pre-line"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">■When paying for your accommodation fee, please choose either 1 or 2 below when you check in. (*This includes prepayment by card, regardless of the payment method) 1. If you pay by credit card, we will ask you to print the card in advance. 2. If you pay by cash, we will hold 200% of the amount and settle it at the time of check-out. ■Please make a reservation in advance if you wish to use the in-house restaurants and bars, or spa treatments during your stay. ■Some plans have a designated check-in time. Please note that we will not be able to prepare your room if you arrive before the designated time. ■Some plans may not be available for consecutive nights, so please be sure to check the plan details. ■Normal check-out time is 12:00, but please note that some plans have an earlier check-out time. ■Request in the comments section The hotel will not respond to any information you add in the comments section when making a reservation. Thank you for your understanding. (In some cases, the hotel may contact you by email or phone.) ■&lt;To One Harmony members&gt; Please note that you will not be able to earn points on accommodation fees or use member benefits during your stay. If you pay for meals at restaurants or other establishments directly during your stay, you will be able to earn points for the amount spent at those establishments as usual.</font></font></span></p></div></div>
+      <div class="px-10 py-8">
+         <div class="flex items-center space-x-2 justify-between">
+            <h3 class="font-bold text-gray-800 text-2xl">
+               <font style="vertical-align: inherit;">
+                  <font style="vertical-align: inherit;">Cancellation Policy</font>
+               </font>
+            </h3>
+         </div>
+         <div class="mt-4">
+            <table class="pc:text-base w-full border-x border-t text-left text-sm">
+               <tbody>
+                  <tr class="grid grid-cols-4 border-b">
+                     <th class="pc:col-span-1 col-span-2 flex break-all border-r bg-gray-100 p-3 font-normal"><span>
+                           <font style="vertical-align: inherit;">
+                              <font style="vertical-align: inherit;">From 15:00 3 days before</font>
+                           </font>
+                        </span></th>
+                     <td class="pc:col-span-3 col-span-2 break-all p-3">
+                        <font style="vertical-align: inherit;">
+                           <font style="vertical-align: inherit;">100%</font>
+                        </font>
+                     </td>
+                  </tr>
+                  <tr class="grid grid-cols-4 border-b">
+                     <th class="pc:col-span-1 col-span-2 flex break-all border-r bg-gray-100 p-3 font-normal"><span>
+                           <font style="vertical-align: inherit;">
+                              <font style="vertical-align: inherit;">No stay</font>
+                           </font>
+                        </span></th>
+                     <td class="pc:col-span-3 col-span-2 break-all p-3">
+                        <font style="vertical-align: inherit;">
+                           <font style="vertical-align: inherit;">100%</font>
+                        </font>
+                     </td>
+                  </tr>
+               </tbody>
+            </table>
+         </div><!---->
+      </div>
+      <div class="px-10 py-8">
+         <div class="flex items-center space-x-2 justify-between">
+            <h3 class="font-bold text-gray-800 text-2xl">
+               <font style="vertical-align: inherit;">
+                  <font style="vertical-align: inherit;">Children</font>
+               </font>
+            </h3>
+         </div>
+         <div class="mt-5">
+            <table class="pc:text-base w-full border-x border-t text-left text-sm">
+               <tbody>
+                  <tr class="grid grid-cols-4 border-b">
+                     <th class="pc:col-span-1 col-span-2 flex break-all border-r bg-gray-100 p-3 font-normal"><span>
+                           <font style="vertical-align: inherit;">
+                              <font style="vertical-align: inherit;">Sleeping together</font>
+                           </font>
+                        </span></th>
+                     <td class="pc:col-span-3 col-span-2 break-all p-3">
+                        <font style="vertical-align: inherit;">
+                           <font style="vertical-align: inherit;">Up to 2 people</font>
+                        </font>
+                     </td>
+                  </tr>
+                  <tr class="grid grid-cols-4 border-b">
+                     <th class="pc:col-span-1 col-span-2 flex break-all border-r bg-gray-100 p-3 font-normal"><span>
+                           <font style="vertical-align: inherit;">
+                              <font style="vertical-align: inherit;">Upper grades of elementary school</font>
+                           </font>
+                        </span></th>
+                     <td class="pc:col-span-3 col-span-2 break-all p-3">
+                        <font style="vertical-align: inherit;">
+                           <font style="vertical-align: inherit;">100% of adult rate</font>
+                        </font>
+                     </td>
+                  </tr>
+                  <tr class="grid grid-cols-4 border-b">
+                     <th class="pc:col-span-1 col-span-2 flex break-all border-r bg-gray-100 p-3 font-normal"><span>
+                           <font style="vertical-align: inherit;">
+                              <font style="vertical-align: inherit;">Elementary school lower grades</font>
+                           </font>
+                        </span></th>
+                     <td class="pc:col-span-3 col-span-2 break-all p-3">
+                        <font style="vertical-align: inherit;">
+                           <font style="vertical-align: inherit;">100% of adult rate</font>
+                        </font>
+                     </td>
+                  </tr>
+                  <tr class="grid grid-cols-4 border-b">
+                     <th class="pc:col-span-1 col-span-2 flex break-all border-r bg-gray-100 p-3 font-normal"><span>
+                           <font style="vertical-align: inherit;">
+                              <font style="vertical-align: inherit;">Infants and toddlers (meals and bedding provided)
+                              </font>
+                           </font>
+                        </span></th>
+                     <td class="pc:col-span-3 col-span-2 break-all p-3">
+                        <font style="vertical-align: inherit;">
+                           <font style="vertical-align: inherit;">Not acceptable</font>
+                        </font>
+                     </td>
+                  </tr>
+                  <tr class="grid grid-cols-4 border-b">
+                     <th class="pc:col-span-1 col-span-2 flex break-all border-r bg-gray-100 p-3 font-normal"><span>
+                           <font style="vertical-align: inherit;">
+                              <font style="vertical-align: inherit;">Infants (no meals, bedding provided)</font>
+                           </font>
+                        </span></th>
+                     <td class="pc:col-span-3 col-span-2 break-all p-3">
+                        <font style="vertical-align: inherit;">
+                           <font style="vertical-align: inherit;">Not acceptable</font>
+                        </font>
+                     </td>
+                  </tr>
+                  <tr class="grid grid-cols-4 border-b">
+                     <th class="pc:col-span-1 col-span-2 flex break-all border-r bg-gray-100 p-3 font-normal"><span>
+                           <font style="vertical-align: inherit;">
+                              <font style="vertical-align: inherit;">Infants (meals provided, bedding not provided)
+                              </font>
+                           </font>
+                        </span></th>
+                     <td class="pc:col-span-3 col-span-2 break-all p-3">
+                        <font style="vertical-align: inherit;">
+                           <font style="vertical-align: inherit;">Not acceptable</font>
+                        </font>
+                     </td>
+                  </tr>
+                  <tr class="grid grid-cols-4 border-b">
+                     <th class="pc:col-span-1 col-span-2 flex break-all border-r bg-gray-100 p-3 font-normal"><span>
+                           <font style="vertical-align: inherit;">
+                              <font style="vertical-align: inherit;">Infants (no meals or bedding)</font>
+                           </font>
+                        </span></th>
+                     <td class="pc:col-span-3 col-span-2 break-all p-3">
+                        <font style="vertical-align: inherit;">
+                           <font style="vertical-align: inherit;">free</font>
+                        </font>
+                     </td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+         <p class="mt-8 text-gray-800"><span class="whitespace-pre-line">
+               <font style="vertical-align: inherit;">
+                  <font style="vertical-align: inherit;">[About children sharing existing beds] Children aged 11 years
+                     and under (elementary school students) can stay free of charge if they share existing beds.
+                     (Breakfast excluded) Please note that children aged 12 years and over will be charged the same
+                     price as adults. If children staying on the Club Floor or Heritage Wing (with Club Lounge access)
+                     wish to use the Club Lounge or have breakfast, an additional fee will be charged. *Club Lounge
+                     access... 0-5 years: Free 6-11 years: 4,500 yen (incl. consumption tax and service charge)</font>
+               </font>
+            </span></p>
+         <p class="mt-4 text-gray-800">
+            <font style="vertical-align: inherit;">
+               <font style="vertical-align: inherit;">*The number of meals for children will be based on the meal
+                  conditions of the plan.</font>
+            </font>
+         </p>
+      </div>
+      <div class="px-10 py-8">
+         <div class="flex items-center space-x-2 justify-between">
+            <h3 class="font-bold text-gray-800 text-2xl">
+               <font style="vertical-align: inherit;">
+                  <font style="vertical-align: inherit;">Notice from the facility</font>
+               </font>
+            </h3>
+         </div>
+         <div class="mt-4">
+            <p class="mb-2"><span class="whitespace-pre-line">
+                  <font style="vertical-align: inherit;">
+                     <font style="vertical-align: inherit;">(Updated February 15, 2025) Please check the official
+                        website for the latest information on the facilities in the hotel. ● Changes and reductions The
+                        business hours of some facilities at The Okura Tokyo have been changed. Please be sure to check
+                        the official website. * Breakfast at Orchid is only available to guests staying at the hotel on
+                        Saturdays, Sundays, and holidays, and from March 1st (Sat) to April 27th (Sun). * Nouvelle
+                        Epoque will only be open for breakfast on Tuesdays, except for holidays and the day before
+                        holidays. * Yamazato will only be open for breakfast on Wednesdays, except for holidays and the
+                        day before holidays. ● Prestige Tower All guest rooms will be non-smoking From September 1st
+                        (Sun), 2024, all guest rooms in the Prestige Tower will be non-smoking. Smoking will continue to
+                        be permitted in the hotel's smoking booths and some guest rooms in the Heritage Wing. Please
+                        note that heated tobacco products are also permitted in smoking areas. Thank you for your
+                        understanding and cooperation. * Reservations for the Heritage Wing Smoking Room can be made by
+                        phone. Please contact the room reservation department for availability, rates, etc.</font>
+                  </font>
+               </span></p>
+         </div><!---->
+      </div>
+      <div class="px-10 py-8">
+         <div class="flex items-center space-x-2 justify-between">
+            <h3 class="font-bold text-gray-800 text-2xl">
+               <font style="vertical-align: inherit;">
+                  <font style="vertical-align: inherit;">About fees</font>
+               </font>
+            </h3>
+         </div>
+         <div class="mt-4">
+            <font style="vertical-align: inherit;">
+               <font style="vertical-align: inherit;">* The lowest price is the lowest price for the cheapest dates
+                  currently on sale. </font>
+            </font><br>
+            <font style="vertical-align: inherit;">
+               <font style="vertical-align: inherit;">* Actual prices may vary depending on the date, so please be sure
+                  to check the availability calendar before making a reservation. </font>
+            </font><br>
+            <font style="vertical-align: inherit;">
+               <font style="vertical-align: inherit;">* </font><a
+                  href="https://faq.ikyu.com/app/answers/detail/a_id/154/" target="_blank">
+                  <font style="vertical-align: inherit;">Accommodation tax</font>
+               </a>
+               <font style="vertical-align: inherit;"> may be charged. It is not included in the accommodation fee
+                  unless otherwise specified.</font>
+            </font><a href="https://faq.ikyu.com/app/answers/detail/a_id/154/" target="_blank">
+               <font style="vertical-align: inherit;"></font>
+            </a>
+            <font style="vertical-align: inherit;"></font><!---->
+         </div>
+      </div>
+      <div class="px-10 py-8">
+         <div class="flex items-center space-x-2 justify-between">
+            <h3 class="font-bold text-gray-800 text-2xl">
+               <font style="vertical-align: inherit;">
+                  <font style="vertical-align: inherit;">Payment</font>
+               </font>
+            </h3>
+         </div>
+         <div class="mt-4"><!---->
+            <p class="mb-2">
+               <font style="vertical-align: inherit;">
+                  <font style="vertical-align: inherit;">*This plan allows you to choose your payment method (on-site
+                     payment or online card payment).</font>
+               </font>
+            </p>
+            <p>
+               <font style="vertical-align: inherit;">
+                  <font style="vertical-align: inherit;">If you choose on-site payment, please pay on the day of your
+                     stay. A receipt will be issued at the accommodation facility.</font>
+               </font>
+            </p>
+            <p>
+               <font style="vertical-align: inherit;">
+                  <font style="vertical-align: inherit;">For online card payments, an authentication procedure will be
+                     carried out on our website when you make a reservation. You can issue your own receipt on the
+                     Ikyu.com website.</font>
+               </font>
+            </p>
+         </div>
+      </div>
+      <div class="px-10 py-8">
+         <div class="flex items-center space-x-2 justify-between">
+            <h3 class="font-bold text-gray-800 text-2xl">
+               <font style="vertical-align: inherit;">
+                  <font style="vertical-align: inherit;">Notes</font>
+               </font>
+            </h3>
+         </div>
+         <div class="mt-4"><!---->
+            <p class="mb-2"><span class="whitespace-pre-line">
+                  <font style="vertical-align: inherit;">
+                     <font style="vertical-align: inherit;">*Some facilities and restaurants may have changed their
+                        business hours or service content. Please check the official website for the latest information
+                        when using. *Reservations must be made up to 60 days before the date of stay. There is no change
+                        or cancellation fee if made up to 3:00 p.m. three days before. *All twin rooms can be
+                        reconfigured into king size rooms by bed making. Please write to us if you wish to do so.
+                        *Please note that we cannot accommodate requests for rooms with specific views, floors, etc.
+                        *Please note that images are for illustrative purposes only and may differ from the actual
+                        content. *Due to changes in room availability, the price and number of remaining rooms at the
+                        time of booking may differ from those announced. *Guest reservations and reservations made via
+                        external sites are not eligible for instant point redemption.</font>
+                  </font>
+               </span></p>
+            <p class="mb-2"><span class="whitespace-pre-line">
+                  <font style="vertical-align: inherit;">
+                     <font style="vertical-align: inherit;">■When paying for your accommodation fee, please choose
+                        either 1 or 2 below when you check in. (*This includes prepayment by card, regardless of the
+                        payment method) 1. If you pay by credit card, we will ask you to print the card in advance. 2.
+                        If you pay by cash, we will hold 200% of the amount and settle it at the time of check-out.
+                        ■Please make a reservation in advance if you wish to use the in-house restaurants and bars, or
+                        spa treatments during your stay. ■Some plans have a designated check-in time. Please note that
+                        we will not be able to prepare your room if you arrive before the designated time. ■Some plans
+                        may not be available for consecutive nights, so please be sure to check the plan details.
+                        ■Normal check-out time is 12:00, but please note that some plans have an earlier check-out time.
+                        ■Request in the comments section The hotel will not respond to any information you add in the
+                        comments section when making a reservation. Thank you for your understanding. (In some cases,
+                        the hotel may contact you by email or phone.) ■&lt;To One Harmony members&gt; Please note that
+                        you will not be able to earn points on accommodation fees or use member benefits during your
+                        stay. If you pay for meals at restaurants or other establishments directly during your stay, you
+                        will be able to earn points for the amount spent at those establishments as usual.</font>
+                  </font>
+               </span></p>
+         </div>
+      </div>
    </section>
 
 </main>
 
 <!-- 스크립트 -->
 <script>
+   memoDates = [];
 
    window.onload = () => {
+      var now = new Date();
+      checkItemDate(now.getMonth() + 1);
+
       {% for date in item_dates %}
-      document.querySelector(`[data-day="{{date.date}}"]`).style.backgroundColor = 'gainsboro';
-      document.querySelector(`[data-day="{{date.date}}"]`).innerHTML += '<p class="small text-center">{{date.content}}</p>';
+      if ('{{date.month}}'.length == 1) {
+         var month = '0' + '{{date.month}}';
+      } else {
+         var month = '{{date.month}}';
+      }
+      if ('{{date.date}}'.length == 1) {
+         var date = '0' + '{{date.date}}';
+      } else {
+         var date = '{{date.date}}';
+      }
+      memoDates.push('{{date.year}}-' + month + '-' + date);
       {% endfor %}
    }
 
@@ -176,6 +473,53 @@
          return;
       }
 
+      // memoDates에 있는 날짜인지 확인 ['2022-01-01', '2022-01-02', ...]
+
+      // 입력된 시작일과 종료일 가져오기
+      var startDate = document.querySelector('input[name="start_date"]').value;
+      var endDate = document.querySelector('input[name="end_date"]').value;
+
+      // 문자열을 Date 객체로 변환하는 함수
+      function parseDate(str) {
+         var parts = str.split('-');
+         return new Date(parts[0], parts[1] - 1, parts[2]);
+      }
+
+      // 시작일과 종료일 사이의 날짜 배열 생성 (밀림 문제 해결)
+      function getBetweenDates(start, end) {
+         var result = [];
+         var currentDate = new Date(start);
+         var endDateObj = new Date(end);
+
+         // 시간을 00:00:00으로 초기화해 밀림 문제 방지
+         currentDate.setHours(0, 0, 0, 0);
+         endDateObj.setHours(0, 0, 0, 0);
+
+         while (currentDate <= endDateObj) {
+            // 로컬 시간 기준 'YYYY-MM-DD' 형식으로 변환
+            var formattedDate = currentDate.toLocaleDateString('sv-SE'); // 'sv-SE'는 ISO 형식과 동일한 날짜 포맷 반환
+            result.push(formattedDate);
+
+            // 다음 날짜로 이동
+            currentDate.setDate(currentDate.getDate() + 1);
+         }
+
+         return result;
+      }
+
+      // 날짜 배열 생성
+      var betweenDates = getBetweenDates(parseDate(startDate), parseDate(endDate));
+      console.log('betweenDates:', betweenDates);
+      console.log('memoDates:', memoDates);
+
+      // memoDates 중 betweenDates에 포함된 날짜가 있는지 확인
+      if (memoDates.some(date => betweenDates.includes(date))) {
+         if (!confirm('There is some memo on the selected date. Do you want to continue?')) {
+            // 사용자가 취소한 경우 함수 종료
+            return;
+         }
+      }
+
       var formData = document.getElementById('reservation-form');
 
       // 예약 정보 작성 요청
@@ -183,16 +527,26 @@
          method: 'POST',
          body: new FormData(formData),
       })
-      .then(response => response.json())
-      .then(data => {
-         console.log(data);
-         if (data.result == 'success') {
-            alert('Successfully reserved.');
-            location.href = '/purchase/history';
-         } else {
-            alert('Failed to reserve.');
-         }
-      });
+         .then(response => response.json())
+         .then(data => {
+            console.log(data);
+            if (data.result == 'success') {
+               alert('Successfully reserved.');
+               location.href = '/purchase/history';
+            } else {
+               alert('Failed to reserve.');
+            }
+         });
+   }
+
+   // 캘린더에 예약 일정 확인
+   checkItemDate = (Month) => {
+      {% for date in item_dates %}
+      if ('{{date.month}}' == Month) {
+         document.querySelector(`[data-day="{{date.date}}"]`).style.backgroundColor = 'gainsboro';
+         document.querySelector(`[data-day="{{date.date}}"]`).innerHTML += '<p class="small text-center">{{date.content}}</p>';
+      }
+      {% endfor %}
    }
 
 </script>

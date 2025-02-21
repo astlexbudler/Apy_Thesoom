@@ -20,7 +20,7 @@ def user_index(request):
 
     account = daos.get_account(request.user.username)
     if request.user.is_superuser:
-        places = daos.search_places(search, ['active', 'inactive'])
+        places = daos.search_places(search, ['active', 'writing'])
     else:
         places = daos.search_places(search, ['active'])
 

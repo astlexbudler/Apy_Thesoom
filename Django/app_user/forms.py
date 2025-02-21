@@ -47,8 +47,9 @@ class CustomPasswordResetForm(forms.Form):
                 raise forms.ValidationError("Passwords do not match.")
             if len(password1) < 8:
                 raise forms.ValidationError("Password must be at least 8 characters long")
-            # 영문자와 숫자가 모두 포함되었는지 체크
-            if not re.search(r'[A-Za-z]', password1) or not re.search(r'[0-9]', password1):
+            # 영문자와 숫자와 특수문자가 모두 포함되어야 함
+            #if not re.search(r'[A-Za-z]', password1) or not re.search(r'[0-9]', password1): # 영문자와 숫자 추가
+            if not re.search(r'[A-Za-z0-9]', password1) or not re.search(r'[!@#$%^&*()_+]', password1): # 특수문자 추가
                 raise forms.ValidationError("Password must contain a combination of letters and numbers.")
         return cleaned_data
 
