@@ -499,26 +499,27 @@ def create_item_date(item_id, year, month, date, content):
     # date: 날짜
     # content: 표시할 내용
 
-    # models.create를 이용해서 쿼리 작성
-    try:
-        item = mo.PLACE_ITEM.objects.get(id=item_id)
-        item_date = mo.ITEM_DATE.objects.create(
-            item=item,
-            year=year,
-            month=month,
-            date=date,
-            content=content
-        )
-        return {
-            'success': True,
-            'message': 'Item date created successfully.',
-            'item_date_id': item_date.pk,
-        }
-    except Exception as e:
+    # 이미 해당 날짜에 일정이 있는 경우 스킵
+    if mo.ITEM_DATE.objects.filter(item_id=item_id, year=year, month=month, date=date).exists():
         return {
             'success': False,
-            'message': str(e),
+            'message': 'Item date already exists.',
         }
+
+    # models.create를 이용해서 쿼리 작성
+    item = mo.PLACE_ITEM.objects.get(id=item_id)
+    item_date = mo.ITEM_DATE.objects.create(
+        item=item,
+        year=year,
+        month=month,
+        date=date,
+        content=content
+    )
+    return {
+        'success': True,
+        'message': 'Item date created successfully.',
+        'item_date_id': item_date.pk,
+    }
 
 # 아이템 일정 삭제
 def delete_item_date(item_date_id):
