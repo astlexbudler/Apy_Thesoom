@@ -75,14 +75,14 @@ const CalendarWidget = {
             //});
 
             // 만약 이미 on 상태라면 해제
-            if (this.selectedDate && this.selectedDate === selectedDate) {
-                event.target.classList.remove("on");
-                this.selectedDate = null;
-                return;
-            }
+            //if (this.selectedDate && this.selectedDate === selectedDate) {
+            //    event.target.classList.remove("on");
+            //    this.selectedDate = null;
+            //    return;
+            //}
 
             // 방금 선택한 on 선택
-            event.target.classList.add("on");
+            //event.target.classList.add("on");
 
             this.selectedDate = selectedDate;
         }
@@ -91,11 +91,13 @@ const CalendarWidget = {
     handleNextMonthClick: function () {
         this.today = new Date(this.today.getFullYear(), this.today.getMonth() + 1, this.today.getDate());
         this.createCal();
+        checkItemDate(this.today.getMonth() + 1); // checkItemDate 함수 호출
     },
 
     handlePrevMonthClick: function () {
         this.today = new Date(this.today.getFullYear(), this.today.getMonth() - 1, this.today.getDate());
         this.createCal();
+        checkItemDate(this.today.getMonth() + 1); // checkItemDate 함수 호출
     }
 
 };

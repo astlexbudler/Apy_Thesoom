@@ -67,7 +67,7 @@ MIDDLEWARE = [
 SITE_ID = 2
 SITE_DOMAIN = 'ifyougo.applifyapplication.com'
 CSRF_TRUSTED_ORIGINS=[
-    'http://ifyougo.applifyapplication.com', 'https://ifyougo.applifyapplication.com',
+    'https://ifyougo.applifyapplications.com',
     'http://127.0.0.1:8000',
 ]
 

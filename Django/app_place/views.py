@@ -14,8 +14,12 @@ def place_detail(request):
     # 사용자가 구매한적이 있는지 확인
     reviewable = False
     for item in place['items']:
-        if mo.PURCHASE.objects.select_related('item').filter(account=request.user, item__id=item['id']).exists():
-            reviewable = True
+        try:
+            if mo.PURCHASE.objects.select_related('item').filter(account=request.user, item__id=item['id']).exists():
+                reviewable = True
+                break
+        except:
+            pass
 
     contexts = {
         "place": place,

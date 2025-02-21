@@ -40,12 +40,14 @@ def get_account(account_id):
 
     # account_id: 사용자 아이디(username)
 
-    account = User.objects.get(username=account_id)
+    account = User.objects.filter(username=account_id).first()
+    if not account:
+        return None
 
     return {
         'id': account_id,
         'name': account.first_name,
-        'contact': account.last_name,
+        'contact': account.contact,
         'is_superuser': account.is_superuser,
     }
 
@@ -497,26 +499,27 @@ def create_item_date(item_id, year, month, date, content):
     # date: 날짜
     # content: 표시할 내용
 
-    # models.create를 이용해서 쿼리 작성
-    try:
-        item = mo.PLACE_ITEM.objects.get(id=item_id)
-        item_date = mo.ITEM_DATE.objects.create(
-            item=item,
-            year=year,
-            month=month,
-            date=date,
-            content=content
-        )
-        return {
-            'success': True,
-            'message': 'Item date created successfully.',
-            'item_date_id': item_date.pk,
-        }
-    except Exception as e:
+    # 이미 해당 날짜에 일정이 있는 경우 스킵
+    if mo.ITEM_DATE.objects.filter(item_id=item_id, year=year, month=month, date=date).exists():
         return {
             'success': False,
-            'message': str(e),
+            'message': 'Item date already exists.',
         }
+
+    # models.create를 이용해서 쿼리 작성
+    item = mo.PLACE_ITEM.objects.get(id=item_id)
+    item_date = mo.ITEM_DATE.objects.create(
+        item=item,
+        year=year,
+        month=month,
+        date=date,
+        content=content
+    )
+    return {
+        'success': True,
+        'message': 'Item date created successfully.',
+        'item_date_id': item_date.pk,
+    }
 
 # 아이템 일정 삭제
 def delete_item_date(item_date_id):
@@ -596,7 +599,7 @@ def get_purchases(account_id):
             'name': purchase.item.name,
             'description': purchase.item.description,
             'price': purchase.item.price,
-            'image': purchase.item.image.url,
+            'image': '/media/' + str(purchase.item.image) if purchase.item.image else None,
         },
         'book_start_datetime': datetime.datetime.strftime(purchase.book_start_datetime, '%Y-%m-%d'),
         'book_end_datetime': datetime.datetime.strftime(purchase.book_end_datetime, '%Y-%m-%d'),

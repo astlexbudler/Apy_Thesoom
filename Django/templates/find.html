@@ -1,8 +1,12 @@
 {% extends 'base/base.html' %}
 {% block content %}
 
-{% load widget_tweaks %}
+<!-- 헤더 -->
+<div class="d-none">
+    {% include 'parts/header.html' %}
+</div>
 
+{% load widget_tweaks %}
 
 <!-- 메인 -->
 <main class="flex-grow-1">
