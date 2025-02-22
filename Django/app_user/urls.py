@@ -60,6 +60,12 @@ urlpatterns = [
     # 결제 기록 확인 페이지 이동 버튼이 있어야함. (/purchase/history)
     path('profile', v.user_profile, name='user_profile'),
 
+    # 프로필에서 비밀번호 변경
+    path('profile_reset', v.user_profile_reset, name='user_profile_reset'),
+
+    # 프로필에서 회원탈퇴
+    path('delete', v.user_delete, name='user_delete'),
+
     # 이용약관
     path('terms', v.user_terms, name='user_terms'),
 

@@ -1,0 +1,33 @@
+<!-- 프로필 정보 수정 -->
+<div class="col-lg-8 p-4 bg-white rounded shadow d-none" id="edit_profile">
+  <h4 class="mb-4 profile-title">Deactivate Account</h4>
+    <div class="p-0">
+      <form id="deactivate_form" method="post" action="">
+        {% csrf_token %}
+
+        <div class="text-left">
+          <button id="deactivate_btn" type="submit" class="btn btn-danger">
+            Deactivate
+          </button>
+        </div>
+      </form>
+    </div>
+</div>
+
+<script>
+  const btn = document.getElementById('deactivate_btn');
+  const form = document.getElementById('deactivate_form');
+
+  btn.addEventListener('click', (e) => {
+    // 자동 폼 전송 막기
+    e.preventDefault();
+
+    // 사용자 확인 대화상자
+    const confirmed = confirm("Are you sure you want to delete this?\nThis action cannot be undone.");
+
+    // 사용자가 OK를 누른 경우 → 폼 제출
+    if (confirmed) {
+      form.submit();
+    }
+  })
+</script>

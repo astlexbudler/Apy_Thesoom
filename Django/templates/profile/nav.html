@@ -1,0 +1,64 @@
+<div class="col-lg-4">
+<div class="osahan-account bg-white rounded shadow overflow-hidden">
+
+  <!-- 프로필 요약 -->
+  <div class="p-4 profile text-center border-bottom">
+    <h6 class="font-weight-bold m-0 mt-2">
+      {{account.name}}
+    </h6>
+    <p class="small text-muted m-0">
+      {{account.username}} / {{account.contact}}
+    </p>
+  </div>
+
+  <!-- 네비게이션 바 -->
+  <div class="account-sections">
+    <ul class="list-group">
+      <a href="/profile" class="text-decoration-none text-dark">
+        <li class="border-bottom bg-white d-flex align-items-center p-3">
+          <span class="text-white bg-danger rounded-pill p-2 icofont-size border shadow-sm mr-2">
+            <i class="fi fi-rr-user"></i>
+          </span> My Account
+          <span class="badge badge-success p-1 badge-pill ml-auto"><i class="icofont-simple-right"></i></span>
+        </li>
+      </a>
+      <a href="/profile_reset" class="text-decoration-none text-dark">
+        <li class="border-bottom bg-white d-flex align-items-center p-3">
+          <span class="text-white bg-success rounded-pill p-2 icofont-size border shadow-sm mr-2">
+            <i class="fi fi-rr-key"></i>
+          </span> Change Password
+          <span class="badge badge-success p-1 badge-pill ml-auto"><i class="icofont-simple-right"></i></span>
+        </li>
+      </a>
+      <a href="/purchase/history" class="text-decoration-none text-dark">
+        <li class="border-bottom bg-white d-flex align-items-center p-3">
+          <span class="text-white bg-secondary rounded-pill p-2 icofont-size border shadow-sm mr-2">
+            <i class="fi fi-rr-book"></i>
+          </span> Purchase History
+          <span class="badge badge-success p-1 badge-pill ml-auto"><i class="icofont-simple-right"></i></span>
+        </li>
+      </a>
+      <a href="/delete" class="text-decoration-none text-dark">
+        <li class="border-bottom bg-red d-flex align-items-center p-3">
+          <span class="text-white rounded-pill p-2 icofont-size border shadow-sm mr-2" style="background-color: red;">
+            <i class="fi fi-rr-delete-user"></i>
+          </span> Deactivate Account
+          <span class="badge badge-success p-1 badge-pill ml-auto"><i class="icofont-simple-right"></i></span>
+        </li>
+      </a>
+      <a href="/terms" class="text-decoration-none text-dark">
+        <li class="border-bottom bg-white d-flex align-items-center p-3">
+          <i class="icofont-info-circle osahan-icofont bg-primary"></i>Terms, Privacy & Policy
+          <span class="badge badge-success p-1 badge-pill ml-auto"><i class="icofont-simple-right"></i></span>
+        </li>
+      </a>
+      <a href="/contact" class="text-decoration-none text-dark">
+        <li class="border-bottom bg-white d-flex align-items-center p-3">
+          <i class="icofont-phone osahan-icofont bg-warning"></i>Help & Support
+          <span class="badge badge-success p-1 badge-pill ml-auto"><i class="icofont-simple-right"></i></span>
+        </li>
+      </a>
+    </ul>
+  </div>
+</div>
+</div>

@@ -26,6 +26,12 @@ class ACCOUNT(AbstractUser):
     # groups = models.ManyToManyField(Group)
     contact = models.CharField(max_length=60) # 연락처(연락처, 이메일 자유 기입. 연락할 수 있는 수단을 기입)
 
+    # 소프트 삭제 구현
+    def delete(self, using=None, keep_parents=False):
+        self.is_active = False
+
+        self.save()
+
 class PLACE(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255, verbose_name="장소 이름")
@@ -59,14 +65,14 @@ class ITEM_DATE(models.Model):
 
 class REVIEW(models.Model):
     place = models.ForeignKey(PLACE, on_delete=models.CASCADE, related_name="reviews")
-    author = models.ForeignKey(ACCOUNT, on_delete=models.CASCADE, related_name="reviews")
+    author = models.ForeignKey(ACCOUNT, on_delete=models.SET_NULL, null=True, related_name="reviews")
     rate = models.PositiveIntegerField(verbose_name="평점")
     content = models.TextField(verbose_name="내용")
     images = models.FileField(upload_to="review_images/", blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="작성일")
 
 class PURCHASE(models.Model):
-    account = models.ForeignKey(ACCOUNT, on_delete=models.CASCADE, related_name="purchases")
+    account = models.ForeignKey(ACCOUNT, on_delete=models.SET_NULL, null=True, related_name="purchases")
     item = models.ForeignKey(PLACE_ITEM, on_delete=models.CASCADE, related_name="purchases")
     book_start_datetime = models.DateTimeField(verbose_name="예약 시작 일시")
     book_end_datetime = models.DateTimeField(verbose_name="예약 종료 일시")

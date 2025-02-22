@@ -54,9 +54,16 @@ class CustomPasswordResetForm(forms.Form):
         return cleaned_data
 
 
-class CustomUserProfileForm(forms.ModelForm):
-
+class CustomUserChangeForm(forms.ModelForm):
+    first_name = forms.CharField(
+        label="First name",
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+    )
+    contact = forms.CharField(
+        label="Contact",
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+    )
 
     class Meta:
         model = ACCOUNT
-        fields = ('username', 'first_name', 'contact')
+        fields = ('first_name', 'contact')

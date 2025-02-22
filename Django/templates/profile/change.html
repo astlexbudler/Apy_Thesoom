@@ -1,0 +1,80 @@
+<!-- 프로필 정보 수정 -->
+<div class="col-lg-8 p-4 bg-white rounded shadow d-none" id="edit_profile">
+  <!-- 프로필 변경 성공 표시 -->
+  {% if profile_change == True %}
+  <div class="alert alert-success">
+    <div>
+      You have successfully chagned!
+    </div>
+  </div>
+  {% endif %}
+
+  <h4 class="mb-4 profile-title">My account</h4>
+    <div class="p-0">
+      <form method="post" action="">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" class="form-control" id="email" value="{{account.username}}" readonly>
+        </div>
+        <div class="form-group">
+          {{ form.first_name.label_tag }}
+          {{ form.first_name }}
+          <small id="error_first_name" class="text-danger"></small>
+        </div>
+        <div class="form-group">
+          {{ form.contact.label_tag }}
+          {{ form.contact }}
+          <small id="error_contact" class="text-danger"></small>
+        </div>
+        <div class="text-right">
+          <button type="submit" class="btn btn-success">
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const firstNameInput = document.getElementById('id_first_name');
+    const contactInput   = document.getElementById('id_contact');
+    const errorFirstName = document.getElementById('error_first_name');
+    const errorContact   = document.getElementById('error_contact');
+
+    // 검증 함수
+    function validateFields() {
+        // 유효성 체크용 플래그 (true면 모두 통과)
+        let valid = true;
+
+        // 1) first_name 검사
+        const firstNameValue = firstNameInput.value.trim();
+        if (firstNameValue.length < 2 || firstNameValue.length >= 30) {
+            errorFirstName.textContent = "Please enter a valid name.";
+            firstNameInput.classList.add('is-invalid');
+            valid = false;
+        } else {
+            errorFirstName.textContent = "";
+            firstNameInput.classList.remove('is-invalid');
+        }
+
+        // 2) contact 검사
+        const contactValue = contactInput.value.trim();
+        if (contactValue.length < 1 || contactValue.length >= 60) {
+            errorContact.textContent = "Please enter a valid contact.";
+            contactInput.classList.add('is-invalid');
+            valid = false;
+        } else {
+            errorContact.textContent = "";
+            contactInput.classList.remove('is-invalid');
+        }
+
+        return valid;
+    }
+
+    // 실시간 검사: input 이벤트마다 호출
+    firstNameInput.addEventListener('input', validateFields);
+    contactInput.addEventListener('input', validateFields);
+});
+</script>
