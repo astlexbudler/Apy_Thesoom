@@ -8,7 +8,14 @@
    <div class="d-flex p-3">
 
       <!-- 이미지 -->
-      <img src="{{item.image}}" width="240" class="rounded shadow-sm">
+      {% if item.images %}
+      <div class="recommend-slider2 rounded mb-0">
+         {% for img in item.images %}
+         <div class="osahan-slider-item m-2 rounded" style="background: url({{img}}) no-repeat center center grey; background-size: contain; width: 100%; height: 200px;">
+         </div>
+         {% endfor %}
+      </div>
+      {% endif %}
 
       <!-- 정보 -->
       <div class="osahan-cart-item-des d-flex w-100 ml-3">

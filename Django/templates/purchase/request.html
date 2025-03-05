@@ -31,7 +31,14 @@
          <div class="d-flex p-3">
 
             <!-- 이미지 -->
-            <img src="{{item.image}}" width="240" class="rounded shadow-sm">
+            {% if item.images %}
+            <div class="recommend-slider2 rounded mb-0">
+               {% for img in item.images %}
+               <div class="osahan-slider-item m-2 rounded" style="background: url({{img}}) no-repeat center center grey; background-size: contain; width: 100%; height: 200px;">
+               </div>
+               {% endfor %}
+            </div>
+            {% endif %}
 
             <!-- 정보 -->
             <div class="osahan-cart-item-des d-flex w-100 ml-3">
@@ -107,13 +114,17 @@
 
          <!-- 시작일, 종료일 -->
          <div class="row">
-            <div class="form-group col-6">
+            <div class="form-group col-5">
                <label>Start Date</label>
-               <input type="date" class="form-control" name="start_date">
+               <input type="date" class="form-control" name="start_date" onchange="checkItemPrice()">
             </div>
-            <div class="form-group col-6">
+            <div class="form-group col-5">
                <label>End Date</label>
-               <input type="date" class="form-control" name="end_date">
+               <input type="date" class="form-control" name="end_date" onchange="checkItemPrice()">
+            </div>
+            <div class="form-group col-2">
+               <label>People</label>
+               <input type="number" class="form-control" name="people" value="1" max="{{item.max}}" min="1" onchange="checkItemPrice()">
             </div>
             <p class="small text-muted">
                ※ Please select the available date. If you want to book for one day, please select the same date for the
@@ -123,11 +134,19 @@
 
          <!-- 예약정보 -->
          <div class="form-group">
-            <label for="exampleInputPassword1">Memo</label>
-            <textarea rows="5" placeholder="can we improve?" class="form-control" name="memo"></textarea>
+            <label for="memo">Memo</label>
+            <textarea rows="5" placeholder="can we improve?" class="form-control" name="memo"id='memo'></textarea>
             <p class="small text-muted">
                ※ Please enter the reservation information. Please enter the name, contact information, email address,
                and request.
+            </p>
+         </div>
+
+         <!-- 가격 -->
+         <div class="form-group">
+            <label>Price Estimate</label>
+            <p class="m-0 text-success" style="font-size: 20px;">
+               $ <span id="price">0</span>
             </p>
          </div>
 

@@ -3,8 +3,7 @@
       <div class="list-card bg-white h-100 rounded overflow-hidden position-relative shadow border">
          <div class="recommend-slider2 rounded mb-0">
             {% for img in place.main_images %}
-            <div class="osahan-slider-item m-2 rounded">
-               <img src="{{img}}" class="img-fluid mx-auto rounded shadow-sm">
+            <div class="osahan-slider-item m-2 rounded" style="background: url({{img}}) no-repeat center center grey; background-size: contain; width: 100%; height: 200px;">
             </div>
             {% endfor %}
          </div>

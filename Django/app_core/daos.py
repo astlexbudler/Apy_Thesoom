@@ -3,6 +3,7 @@ from app_core import models as mo
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import datetime
+from django.contrib.auth import get_user_model
 
 # 함수 목록
 # get_account(account_id): 사용자 계정 정보 조회
@@ -30,8 +31,6 @@ import datetime
 # create_purchase(item_id, book_start_datetime, book_end_datetime, payment_agency, payment_method, payment_info, memo=''): 구매 생성
 # update_purchase_status(purchase_id, status): 구매 상태 변경
 # get_purchases(account_id): 구매 정보 조회
-
-from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
